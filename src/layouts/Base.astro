@@ -73,13 +73,12 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astr
 			paging and anchor links all keep working — while wheel, touch and
 			programmatic jumps share one eased feel.
 
-			`autoRaf` because nothing else in this project needs the frame loop —
-			there is no GSAP here. If a scroll-linked animation is added later,
-			switch to a manual `requestAnimationFrame` loop and call `lenis.raf(time)`
-			from it instead.
+			GSAP's ticker owns the frame loop (autoRaf off) so Lenis and
+			ScrollTrigger stay in step; see src/scripts/motion.ts.
 		-->
 		<script>
 			import Lenis from "lenis";
+			import { initMotion } from "../scripts/motion";
 
 			// Progressive enhancement, twice over. Under `reduce`, Lenis would
 			// force `lerp: 1` and jump instantly anyway (respectReducedMotion), but
@@ -87,7 +86,7 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astr
 			// global.css:108 already neutralises CSS animation for the same query.
 			if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 				const lenis = new Lenis({
-					autoRaf: true,
+					autoRaf: false,
 					// Anchor links (#enquire, #directory, ...) are off by default. Lenis
 					// reads `scroll-padding-top` off the root element itself, so the
 					// 6rem header clearance in global.css still applies — no offset here.
@@ -96,6 +95,8 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astr
 					// native touch scrolling is both smoother and more expected.
 					syncTouch: false,
 				});
+
+				initMotion(lenis);
 
 				// The skip link is the one jump that must not glide: a keyboard user
 				// activating it needs to land on <main> now, not sail past it. Handled

@@ -49,15 +49,17 @@ const principal = sec("welcome").items[0];
 <Base title="Home" description="Mountain Home School & Junior College, Coonoor. Knowledge Is Power. A co-educational day and residential school in the Nilgiri hills since 1911.">
 	<!-- HERO -->
 	<section aria-labelledby="hero-title" class="relative overflow-hidden bg-navy">
-		<SmartImage src="/images/hero-campus.jpg"
-			alt="A cream school building with a red roof among tall trees at dusk, Coonoor"
-			loading="eager"
-			fetchpriority="high"
-			quality={65}
-			sizes="100vw"
-			width={1920}
-			class="absolute inset-0 size-full object-cover object-[60%_50%]"
-		/>
+		<div data-parallax-hero="0.08" class="absolute inset-x-0 -top-[10%] -bottom-[10%]">
+			<SmartImage src="/images/hero-campus.jpg"
+				alt="A cream school building with a red roof among tall trees at dusk, Coonoor"
+				loading="eager"
+				fetchpriority="high"
+				quality={65}
+				sizes="100vw"
+				width={1920}
+				class="size-full object-cover object-[60%_50%]"
+			/>
+		</div>
 		<div class="absolute inset-0 bg-navy-deep/75"></div>
 		<div class="absolute inset-0 shadow-wash"></div>
 		<div class="mist"></div>
@@ -146,7 +148,7 @@ const principal = sec("welcome").items[0];
 		</div>
 		<div class="grid gap-10 md:grid-cols-3">
 			{pillars.map((p) => (
-				<article class="flex flex-col gap-5">
+				<article data-reveal class="flex flex-col gap-5">
 					{p.art ? (
 						<PhotoFrame src={p.art.img} alt={p.art.alt} heightClass="h-56 lg:h-75" lift />
 					) : (
@@ -165,7 +167,9 @@ const principal = sec("welcome").items[0];
 
 	<!-- PULL QUOTE -->
 	<section aria-label="Our promise" class="on-navy relative flex flex-col items-center gap-6 overflow-hidden px-5 py-16 text-center lg:gap-7 lg:px-30 lg:py-24">
-		<CrestWatermark class="pointer-events-none absolute top-1/2 left-1/2 size-80 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.06] lg:size-140" />
+		<div data-parallax="0.12" class="pointer-events-none absolute inset-0">
+			<CrestWatermark class="absolute top-1/2 left-1/2 size-80 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.06] lg:size-140" />
+		</div>
 		<BeadRule beads={10} class="relative" />
 		<blockquote class="relative max-w-245 font-serif text-4xl leading-[1.1] font-medium text-cream italic md:text-6xl">{sec("promise").heading}</blockquote>
 		<p class="relative max-w-[40ch] text-base leading-relaxed text-brass-light">{sec("promise").note}</p>
@@ -179,7 +183,9 @@ const principal = sec("welcome").items[0];
 		</div>
 		<div class="grid gap-8 lg:grid-cols-3">
 			{news.map((n) => (
-				<NewsCard href={`/news/${n.slug}`} title={n.title} category={n.category} excerpt={n.excerpt} eventDate={n.event_date} image={n.featured_image} />
+				<div data-reveal class="flex flex-col *:flex-1">
+					<NewsCard href={`/news/${n.slug}`} title={n.title} category={n.category} excerpt={n.excerpt} eventDate={n.event_date} image={n.featured_image} />
+				</div>
 			))}
 			<Card variant="navy" class="gap-4 p-8 lg:p-9">
 				<CrestWatermark class="pointer-events-none absolute -right-15 -bottom-15 size-65 object-contain opacity-10" />
