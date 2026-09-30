@@ -1,0 +1,42 @@
+---
+// Photo hero used at the top of the inner pages: navy wash, headline, intro.
+//
+// There is deliberately no eyebrow and no accent fragment here. A label above a
+// page headline restates it, and colouring one word of the headline says nothing
+// the sentence does not already say. The headline is set as a single block.
+import SmartImage from "./SmartImage.astro";
+
+interface Props {
+	titleId: string;
+	image: string;
+	alt: string;
+	/** CSS object-position for the photo. */
+	position?: string;
+	/** Overlay between the photo and the text. */
+	wash?: string;
+}
+
+const { titleId, image, alt, position = "50% 50%", wash = "bg-navy-deep/75" } = Astro.props;
+---
+
+<section aria-labelledby={titleId} class="relative overflow-hidden bg-navy">
+	<SmartImage
+		src={image}
+		alt={alt}
+		sizes="100vw"
+		width={1920}
+		loading="eager"
+		fetchpriority="high"
+		class="absolute inset-0 size-full object-cover"
+		style={`object-position:${position}`}
+	/>
+	<div class={`absolute inset-0 ${wash}`}></div>
+	<div class="mist"></div>
+	<div class="relative mx-auto grid min-h-88 max-w-site items-end gap-8 px-4 pt-24 pb-12 lg:min-h-115 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12 lg:px-30 lg:pb-16">
+		<div class="flex max-w-265 flex-col gap-5">
+			<h1 id={titleId} class="text-5xl leading-none font-medium text-cream md:text-7xl lg:text-display-2xl"><slot /></h1>
+			<p class="max-w-[62ch] text-lg text-sand lg:text-xl"><slot name="intro" /></p>
+		</div>
+		<slot name="action" />
+	</div>
+</section>

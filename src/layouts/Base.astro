@@ -1,0 +1,129 @@
+---
+import { Font } from "astro:assets";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SCHOOL } from "../lib/site";
+import "../styles/global.css";
+// Lenis's own stylesheet: `html.lenis { height: auto }` plus the
+// `data-lenis-prevent` / `overscroll-behavior` rules the nested scroll
+// containers in this project rely on. Imported here (not linked by hand) so it
+// is bundled and hashed with the rest of the CSS.
+import "lenis/dist/lenis.css";
+
+interface Props {
+	title?: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	robots?: string | null;
+}
+
+const { title, pageTitle, description, image, canonical, robots } = Astro.props;
+
+const siteTitle = SCHOOL.fullName;
+const fullTitle = title ? (title.includes(siteTitle) ? title : `${title} — ${siteTitle}`) : siteTitle;
+const siteDescription =
+	"A heritage co-educational day and residential school in Coonoor, The Nilgiris. ICSE and ISC, LKG to Class XII. Established 1911.";
+
+const metaDescription = description || siteDescription;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#1E2A4A" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<title>{fullTitle}</title>
+		<meta name="description" content={metaDescription} />
+		<link rel="canonical" href={canonicalUrl} />
+		{robots && <meta name="robots" content={robots} />}
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={siteTitle} />
+		<meta property="og:title" content={pageTitle ?? title ?? siteTitle} />
+		<meta property="og:description" content={metaDescription} />
+		<meta property="og:url" content={canonicalUrl} />
+		{image && <meta property="og:image" content={image} />}
+		<Font cssVariable="--font-cormorant" preload />
+		<Font cssVariable="--font-source-sans" preload />
+	</head>
+	<body>
+		<a
+			href="#main"
+			class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-100 focus:rounded-control focus:bg-navy focus:px-5 focus:py-3 focus:font-semibold focus:text-cream focus:shadow-lg"
+		>
+			Skip to main content
+		</a>
+		<Header />
+		<main id="main" tabindex="-1">
+			<slot />
+		</main>
+		<Footer />
+
+		<!--
+			Smooth scrolling, in one place, for every page. Progressive enhancement:
+			with JS off the page scrolls natively and every link still works.
+
+			Why a script and not `scroll-behavior: smooth` in global.css: Lenis runs
+			*on* native scroll (it reads real scrollTop and writes back with
+			`behavior: "instant"`), so the sticky header, the scrollbar, keyboard
+			paging and anchor links all keep working — while wheel, touch and
+			programmatic jumps share one eased feel.
+
+			`autoRaf` because nothing else in this project needs the frame loop —
+			there is no GSAP here. If a scroll-linked animation is added later,
+			switch to a manual `requestAnimationFrame` loop and call `lenis.raf(time)`
+			from it instead.
+		-->
+		<script>
+			import Lenis from "lenis";
+
+			// Progressive enhancement, twice over. Under `reduce`, Lenis would
+			// force `lerp: 1` and jump instantly anyway (respectReducedMotion), but
+			// not starting it at all means no rAF loop is running for nothing.
+			// global.css:108 already neutralises CSS animation for the same query.
+			if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+				const lenis = new Lenis({
+					autoRaf: true,
+					// Anchor links (#enquire, #directory, ...) are off by default. Lenis
+					// reads `scroll-padding-top` off the root element itself, so the
+					// 6rem header clearance in global.css still applies — no offset here.
+					anchors: true,
+					// Stay off: emulated touch inertia misbehaves on iOS < 16, and
+					// native touch scrolling is both smoother and more expected.
+					syncTouch: false,
+				});
+
+				// The skip link is the one jump that must not glide: a keyboard user
+				// activating it needs to land on <main> now, not sail past it. Handled
+				// here rather than via `anchors: { immediate }` because every other
+				// in-page link on the site should still ease.
+				document.querySelector<HTMLAnchorElement>('a[href="#main"]')?.addEventListener("click", (e) => {
+					e.preventDefault();
+					// Also stop the event reaching window. `anchors: true` makes Lenis
+					// listen for clicks on the wrapper and glide to any same-page hash —
+					// and its handler does not check defaultPrevented, so preventDefault
+					// alone would leave this link gliding anyway. Nothing else listens
+					// for clicks on the skip link, so stopping here is safe.
+					e.stopPropagation();
+					const main = document.getElementById("main");
+					// #main is tabindex="-1" so it can hold focus; without this the
+					// viewport moves but the next Tab still resumes from the header.
+					main?.focus();
+					lenis.scrollTo(0, { immediate: true });
+				});
+
+				// Hold the page still behind the mobile menu. Header.astro dispatches
+				// this; neither script knows about the other.
+				document.addEventListener("menu:toggle", (e) => {
+					const open = (e as CustomEvent<{ open: boolean }>).detail.open;
+					if (open) lenis.stop();
+					else lenis.start();
+				});
+			}
+		</script>
+	</body>
+</html>

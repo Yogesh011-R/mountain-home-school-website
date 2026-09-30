@@ -1,0 +1,26 @@
+---
+// Marks a fact still to be confirmed with the school. Editors delete the bracket
+// from the CMS text as each fact is verified; the badge then disappears on its own.
+//
+// `inline-block` + `align-middle` keeps it on the text baseline, and it wraps
+// rather than overflowing because editorial notes can be a full sentence long.
+interface Props {
+	onDark?: boolean;
+	/** Wire this to a control's `aria-describedby` to explain why it is disabled. */
+	id?: string;
+}
+
+const { onDark = false, id } = Astro.props;
+---
+
+<span
+	id={id}
+	class:list={[
+		"inline-block max-w-full rounded-control border border-dashed px-1.5 align-middle font-sans text-xs leading-[1.5] font-bold tracking-wide break-words uppercase",
+		onDark
+			? "border-mustard-tint/60 bg-mustard-tint/10 text-mustard-tint"
+			: "border-bronze bg-mustard-tint text-bronze-ink",
+	]}
+>
+	<slot>CONFIRM</slot>
+</span>

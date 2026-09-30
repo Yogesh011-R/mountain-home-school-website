@@ -1,0 +1,104 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/ui/Button.astro";
+import Card from "../components/ui/Card.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import LinkArrow from "../components/ui/LinkArrow.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { loadSections } from "../lib/sections";
+import { SCHOOL } from "../lib/site";
+
+const sec = await loadSections("contact", Astro);
+
+const field = "flex flex-col gap-1.5 text-sm font-bold tracking-wide text-navy";
+const input = "min-h-12 w-full rounded-control border border-grey-light bg-white px-3.5 text-base font-normal text-ink";
+---
+
+<Base title="Contact" description="Visit or write to Mountain Home School & Junior College, Coonoor: address, office contacts, a message form and directions.">
+	<section aria-labelledby="ct-title" class="border-b border-brass/50">
+		<div class="mx-auto grid max-w-site items-end gap-8 px-4 pt-16 pb-10 lg:grid-cols-[7fr_5fr] lg:gap-18 lg:px-30 lg:pt-22 lg:pb-16">
+			<div class="flex flex-col gap-4">
+				<h1 id="ct-title" class="text-5xl leading-none font-medium text-navy md:text-7xl lg:text-display-2xl">
+					{sec("hero").heading} {sec("hero").accent}
+				</h1>
+			</div>
+			<p class="muted"><Tagged text={sec("hero").intro} /></p>
+		</div>
+	</section>
+
+	<section aria-label="Contact details" class="mx-auto grid max-w-site items-start gap-12 px-4 py-14 lg:grid-cols-[5fr_7fr] lg:gap-18 lg:px-30 lg:py-24">
+		<div class="flex flex-col gap-7">
+			<div class="on-navy flex flex-col gap-3 rounded-card border border-brass px-8.5 py-8">
+				<Eyebrow onDark>Postal address</Eyebrow>
+				<address class="font-serif text-title-md leading-snug font-medium text-mount not-italic">
+					{SCHOOL.fullName}<br />
+					{SCHOOL.address.map((line, i) => (<>{line}{i < SCHOOL.address.length - 1 && <br />}</>))}
+				</address>
+			</div>
+			<dl class="m-0 flex flex-col">
+				{
+					sec("office").items.map((l) => (
+						<div class="grid gap-x-4 gap-y-1 border-b border-grey/40 py-4 sm:grid-cols-[170px_minmax(0,1fr)]">
+							<dt class="text-caption leading-relaxed font-bold tracking-label text-ink-muted uppercase">{l.title}</dt>
+							<dd class="m-0">{/^\[.*\]$/.test(l.body.trim()) ? <Confirm>{l.body}</Confirm> : l.body}</dd>
+						</div>
+					))
+				}
+			</dl>
+			<div class="relative flex h-60 items-center justify-center overflow-hidden rounded-frame border border-brass bg-track">
+				<img src="/images/contours.svg" alt="" class="absolute inset-0 size-full object-cover opacity-60" />
+				<div class="relative flex flex-col items-center gap-3 p-5 text-center">
+					<span class="size-5 rounded-full border-[3px] border-paper bg-brick ring-1 ring-brick"></span>
+					<strong class="font-serif text-title-sm leading-none font-semibold text-navy">Mountain Home School, Coonoor</strong>
+					<Confirm>[MAP TO BE ADDED]</Confirm>
+				</div>
+			</div>
+		</div>
+
+		<!-- No endpoint yet: complete form, sending disabled until the school confirms where messages go. -->
+		<form class="grid gap-x-5 gap-y-4.5 rounded-card border border-brass/50 bg-paper p-6 sm:grid-cols-2 lg:p-10" aria-labelledby="cf-title" onsubmit="return false">
+			<h2 id="cf-title" class="h3 sm:col-span-2">{sec("form").heading}</h2>
+			<p class="rounded-control border border-dashed border-bronze bg-mustard-tint px-4 py-3 text-base text-bronze-ink sm:col-span-2">
+				This form is not connected yet, so messages cannot be sent from this page. Please use the office details on this page instead.
+			</p>
+			<div class={field}><label for="c-name">Your name</label><input id="c-name" name="name" class={input} type="text" autocomplete="name" required aria-required="true" /></div>
+			<div class={field}><label for="c-email">Email</label><input id="c-email" name="email" class={input} type="email" autocomplete="email" required aria-required="true" /></div>
+			<div class={field}><label for="c-phone">Phone <span class="font-normal text-ink-muted">(optional)</span></label><input id="c-phone" name="phone" class={input} type="tel" autocomplete="tel" /></div>
+			<div class={field}>
+				<label for="c-topic">About</label>
+				<select id="c-topic" name="topic" class={input}>
+					<option>Admissions</option><option>Arrange a visit</option><option>Alumni office</option><option>Current parents</option><option>Something else</option>
+				</select>
+			</div>
+			<div class={`${field} sm:col-span-2`}><label for="c-msg">Message</label><textarea id="c-msg" name="message" required aria-required="true" class={`${input} min-h-44 py-3`}></textarea></div>
+			<div class="flex flex-col justify-between gap-5 sm:col-span-2 sm:flex-row sm:items-center">
+				<p class="muted text-sm"><Tagged text={sec("form").intro} /></p>
+				<div class="flex flex-wrap items-center gap-3">
+					<Button type="submit" aria-disabled="true" aria-describedby="cf-why" class="aria-disabled:cursor-not-allowed aria-disabled:opacity-60">Send message</Button>
+					<Confirm id="cf-why">[FORM NOT YET CONNECTED]</Confirm>
+				</div>
+			</div>
+		</form>
+	</section>
+
+	<section aria-labelledby="gt-title" class="bg-mustard-tint">
+		<div class="mx-auto grid max-w-site items-start gap-10 px-4 py-16 lg:grid-cols-[4fr_8fr] lg:gap-16 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-3.5">
+				<h2 id="gt-title" class="h2">{sec("directions").heading}</h2>
+				<LinkArrow href="/admissions#gt-title">Full travel notes</LinkArrow>
+			</div>
+			<ol class="m-0 grid list-none gap-6 p-0 md:grid-cols-3">
+				{
+					sec("directions").items.map((d) => (
+						<Card as="li" class="gap-2.5 p-7">
+							<span class="font-serif text-4xl leading-none font-semibold text-brick">{d.subtitle}</span>
+							<h3 class="font-serif text-title-md">{d.title}</h3>
+							<p class="muted text-sm"><Tagged text={d.body} /></p>
+						</Card>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+</Base>

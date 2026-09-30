@@ -1,0 +1,123 @@
+---
+import SmartImage from "../components/ui/SmartImage.astro";
+import Base from "../layouts/Base.astro";
+import Card from "../components/ui/Card.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import HouseBanner from "../components/ui/HouseBanner.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import HouseMark from "../components/ui/HouseMark.astro";
+import Section from "../components/ui/Section.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { capitalise, houseColour, houseColourLabel } from "../lib/houses";
+import { loadSections } from "../lib/sections";
+import { houses as allHouses } from "../lib/content";
+
+const sec = await loadSections("houses", Astro);
+
+const houses = allHouses;
+const board = [...houses].sort((a, b) => (b.points ?? 0) - (a.points ?? 0));
+const maxPoints = Math.max(1, ...board.map((h) => h.points ?? 0));
+const hasPoints = board.some((h) => (h.points ?? 0) > 0);
+const shapeName = capitalise;
+---
+
+<Base title="Houses" description="Bower, Trutwin, Pound and D'Prazer: the four houses of Mountain Home School, Coonoor.">
+	<!-- HERO -->
+	<section aria-labelledby="hs-title" class="relative overflow-hidden bg-navy">
+		<SmartImage src="/images/investiture.jpg" alt="Students on stage with hands on their hearts in front of the yellow, red, blue and green house flags" loading="eager" fetchpriority="high" quality={80} sizes="100vw" width={1920} class="absolute inset-0 size-full object-cover object-[50%_20%]" />
+		<div class="absolute inset-0 bg-navy-deep/75"></div>
+		<div class="relative mx-auto flex min-h-88 max-w-site flex-col justify-end gap-4 px-4 pt-24 pb-12 lg:min-h-110 lg:px-30 lg:pb-16">
+			<h1 id="hs-title" class="max-w-265 text-5xl leading-none font-medium text-cream md:text-7xl lg:text-display-2xl">
+				{sec("hero").heading} {sec("hero").accent}
+			</h1>
+			<p class="max-w-2xl text-lg text-sand lg:text-xl">{sec("hero").intro}</p>
+		</div>
+	</section>
+
+	<!-- HOUSE CARDS -->
+	<Section labelledby="hc-title" innerClass="flex flex-col gap-10 lg:gap-12 lg:py-24">
+		<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+				<h2 id="hc-title" class="h2">{sec("cards").heading}</h2>
+			<p class="muted">{sec("cards").intro}</p>
+		</div>
+
+		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+			{houses.map((h) => (
+				<Card class="items-center gap-3.5 px-7 pb-8 text-center">
+					<HouseBanner name={h.title} colour={h.colour} shape={h.shape} hex={h.colour_hex} />
+					<h3 class="mt-2 font-serif text-4xl">{h.title}</h3>
+					<span class="inline-flex items-center gap-1.5 rounded-control border border-grey-light bg-white py-1 pr-2.5 pl-1 text-xs font-semibold tracking-wide text-ink uppercase">
+						<HouseMark name={h.title} colour={h.colour} shape={h.shape} hex={h.colour_hex} />
+						{houseColourLabel(h.colour, h.colour_hex)} · {shapeName(h.shape)}
+					</span>
+					{/* Every one of these is a CMS field an editor can fill. An empty
+					    one renders a Confirm badge, never a placeholder string written
+					    into the template. */}
+					<p class="muted max-w-[30ch] text-label leading-normal">
+						{h.named_after ? <>Named after {h.named_after}</> : <>Named after <Confirm>[CONFIRM WHO OR WHAT]</Confirm></>}
+					</p>
+					<p class="font-serif text-xl leading-tight font-medium text-navy italic">
+						{h.motto ? `“${h.motto}”` : <Confirm>[HOUSE MOTTO]</Confirm>}
+					</p>
+					<div class="w-full border-t border-grey/40 pt-3.5 text-label">
+						<span class="muted">House master / mistress:</span>{" "}
+						{h.house_master ? <strong>{h.house_master}</strong> : <Confirm>[CONFIRM NAME]</Confirm>}
+					</div>
+				</Card>
+			))}
+		</div>
+	</Section>
+
+	<!-- POINTS TABLE -->
+	<section aria-labelledby="lb-title" class="border-y border-brass/40 bg-paper">
+		<div class="mx-auto grid max-w-site items-start gap-10 px-4 py-16 lg:grid-cols-[4fr_8fr] lg:gap-18 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-4">
+				<h2 id="lb-title" class="h2">{sec("points").heading}</h2>
+				<p class="muted">{sec("points").intro}</p>
+				{!hasPoints && <p><Tagged text={sec("points").note} /></p>}
+			</div>
+			<ol class="flex flex-col">
+				{board.map((h, i) => (
+					<li class="grid grid-cols-[32px_minmax(0,1fr)_64px] items-center gap-x-4 gap-y-2 border-b border-grey/35 py-4 sm:grid-cols-[44px_180px_minmax(0,1fr)_90px] sm:gap-x-5 sm:py-4.5">
+						<span class="font-serif text-3xl leading-none font-semibold text-navy sm:text-4xl">{i + 1}</span>
+						<span class="flex items-center gap-2.5 font-serif text-2xl leading-none font-semibold text-navy">
+							<HouseMark name={h.title} colour={h.colour} shape={h.shape} hex={h.colour_hex} />{h.title}
+						</span>
+						<span class="order-last col-span-3 h-5.5 border border-grey/40 bg-bar sm:order-none sm:col-span-1" role="img" aria-label={`${h.points ?? 0} points`}>
+							<span class="block h-full" style={`width:${Math.round(((h.points ?? 0) / maxPoints) * 100)}%;background:${houseColour(h.colour, h.colour_hex)}`}></span>
+						</span>
+						<span class="text-right font-bold">{h.points ?? 0}</span>
+					</li>
+				))}
+			</ol>
+		</div>
+	</section>
+
+	<!-- CAPTAINS -->
+	<Section labelledby="cp-title" innerClass="flex flex-col gap-10 lg:gap-11 lg:py-24">
+		<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+				<h2 id="cp-title" class="h2">{sec("captains").heading}</h2>
+			<p class="muted text-label">{sec("captains").intro}</p>
+		</div>
+		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+			{houses.map((h) => (
+				<Card class="border-t-[6px]" style={`border-top-color:${houseColour(h.colour, h.colour_hex)}`}>
+					<div class="grid grid-cols-2 gap-px bg-brass/40">
+						<div class="flex h-40 items-center justify-center bg-mount"><Eyebrow muted>Portrait to come</Eyebrow></div>
+						<div class="flex h-40 items-center justify-center bg-mount"><Eyebrow muted>Portrait to come</Eyebrow></div>
+					</div>
+					<div class="flex flex-col gap-2.5 px-5 pt-5 pb-6">
+						<span class="inline-flex items-center gap-1.5 self-start rounded-control border border-grey-light bg-white py-1 pr-2.5 pl-1 text-xs font-semibold tracking-wide text-ink uppercase">
+							<HouseMark name={h.title} colour={h.colour} shape={h.shape} hex={h.colour_hex} />{h.title}
+						</span>
+						<p class="text-base leading-normal">
+							{h.captain ? <><strong>{h.captain}</strong>, Captain</> : <>Captain: <Confirm>[CONFIRM NAME]</Confirm></>}
+							<br />
+							{h.vice_captain ? <><strong>{h.vice_captain}</strong>, Vice-captain</> : <>Vice-captain: <Confirm>[CONFIRM NAME]</Confirm></>}
+						</p>
+					</div>
+				</Card>
+			))}
+		</div>
+	</Section>
+</Base>

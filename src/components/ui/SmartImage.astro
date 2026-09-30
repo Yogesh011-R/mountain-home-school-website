@@ -1,0 +1,79 @@
+---
+// The one place the site decides between astro:assets and a plain <img>.
+//
+// Local paths (the keys in IMAGES) are bundled by Vite, so they can go through
+// <Image> and get a responsive `srcset`, an optimised format and real width/height.
+// CMS/R2 URLs arrive as strings at runtime and cannot be imported — passing one to
+// <Image> throws — so those fall back to a plain <img>.
+//
+// Everything that renders a site image should use this rather than branching itself.
+import { Image } from "astro:assets";
+import { resolveImage } from "../../lib/images";
+
+interface Props {
+	src: string;
+	alt: string;
+	/** Value for the `sizes` attribute on the generated <img>. */
+	sizes?: string;
+	quality?: number;
+	/** Intrinsic width for the remote fallback, so it also reserves layout space. */
+	width?: number;
+	/** Intrinsic height for the remote fallback, paired with `width`. */
+	height?: number;
+	loading?: "eager" | "lazy";
+	fetchpriority?: "high" | "low" | "auto";
+	class?: string;
+	style?: string;
+	/** Decorative images get an empty alt and are hidden from assistive tech. */
+	decorative?: boolean;
+}
+
+const {
+	src,
+	alt,
+	sizes,
+	quality = 80,
+	width,
+	height,
+	fetchpriority,
+	// An image marked high priority is above the fold; lazy-loading it delays LCP.
+	loading = fetchpriority === "high" ? "eager" : "lazy",
+	class: className,
+	style,
+	decorative = false,
+} = Astro.props;
+
+const image = resolveImage(src);
+const altText = decorative ? "" : alt;
+const ariaHidden = decorative ? ("true" as const) : undefined;
+---
+
+{
+	image.local ? (
+		<Image
+			src={image.local}
+			alt={altText}
+			{width}
+			{quality}
+			{sizes}
+			{loading}
+			{fetchpriority}
+			class={className}
+			{style}
+			aria-hidden={ariaHidden}
+		/>
+	) : (
+		<img
+			src={image.src}
+			alt={altText}
+			width={width}
+			height={height}
+			loading={loading}
+			decoding="async"
+			fetchpriority={fetchpriority}
+			class={className}
+			style={style}
+			aria-hidden={ariaHidden}
+		/>
+	)
+}

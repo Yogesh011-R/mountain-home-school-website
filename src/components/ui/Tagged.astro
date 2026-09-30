@@ -1,0 +1,41 @@
+---
+// Renders CMS text, turning bracketed editorial notes into the dashed CONFIRM badge.
+//
+// The convention is simply "brackets mean not settled yet": editors write
+// "[CONFIRM]", "[Alumnus name]", "[₹ goal]" or "[08:15 – 15:30]" and delete the
+// bracket once the fact is verified. Every bracketed run counts, whatever case it
+// is written in -- an earlier version matched only an uppercase keyword list and
+// let 60-odd lowercase notes through as literal page copy.
+import Confirm from "./Confirm.astro";
+
+interface Props {
+	text?: string | null;
+	/** Badge style for dark backgrounds. */
+	onDark?: boolean;
+}
+
+const { text, onDark = false } = Astro.props;
+
+// A bracketed run, capped at 90 characters and barred from spanning lines so a
+// verse or a paragraph can never be swallowed whole.
+const PLACEHOLDER = /\[([^\]\n]{1,90})\]/g;
+
+/** The source split into literal runs and placeholder runs, in order. */
+function split(source: string) {
+	const parts: Array<{ text: string; placeholder: boolean }> = [];
+	let at = 0;
+	// matchAll clones the regex, so the module-level `g` flag stays stateless.
+	for (const match of source.matchAll(PLACEHOLDER)) {
+		const start = match.index ?? 0;
+		if (start > at) parts.push({ text: source.slice(at, start), placeholder: false });
+		parts.push({ text: match[0], placeholder: true });
+		at = start + match[0].length;
+	}
+	if (at < source.length) parts.push({ text: source.slice(at), placeholder: false });
+	return parts;
+}
+
+const parts = split(text ?? "");
+---
+
+{parts.map((p) => (p.placeholder ? <Confirm onDark={onDark}>{p.text}</Confirm> : p.text))}

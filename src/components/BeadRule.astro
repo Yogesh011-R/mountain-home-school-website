@@ -1,0 +1,20 @@
+---
+// Double rule with beads, echoing the beaded cross on the crest.
+interface Props {
+	beads?: number;
+	class?: string;
+}
+const { beads = 8, class: className } = Astro.props;
+const step = 14;
+const width = beads * step + 8;
+---
+
+<svg width={width} height="14" viewBox={`0 0 ${width} 14`} aria-hidden="true" class:list={["text-brass", className]}>
+	<g stroke="currentColor">
+		<line x1="0" y1="2.5" x2={width} y2="2.5"></line>
+		<line x1="0" y1="11.5" x2={width} y2="11.5"></line>
+	</g>
+	<g fill="currentColor">
+		{Array.from({ length: beads }, (_, i) => <circle cx={8 + i * step} cy="7" r="2.3" />)}
+	</g>
+</svg>

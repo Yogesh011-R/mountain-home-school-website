@@ -1,0 +1,50 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "primary" | "ghost" | "outline";
+type Size = "md" | "sm";
+
+interface Props extends HTMLAttributes<"a"> {
+	variant?: Variant;
+	size?: Size;
+	/** Render a <button> instead of a link when no href is given. */
+	type?: "button" | "submit";
+	/** Button only. Also mutes the styling via the `disabled:` variants above. */
+	disabled?: boolean;
+}
+
+const { variant = "primary", size = "md", href, type = "button", disabled = false, class: className, ...rest } = Astro.props;
+
+// Base styles -> Variants -> Sizes -> States -> Overrides (skill Pattern 1,
+// CVA-style: the `variants` / `sizes` records below are this project's
+// Astro equivalent -- no React/CVA dependency to add for a static site).
+const base =
+	"inline-flex items-center justify-center gap-2.5 rounded-control border font-sans leading-none font-semibold tracking-wide no-underline pressable focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-brass disabled:cursor-not-allowed disabled:opacity-60 disabled:active:translate-y-0 not-disabled:cursor-pointer";
+
+const variants: Record<Variant, string> = {
+	primary: "border-transparent bg-brick text-white hover:bg-brick-dark",
+	ghost: "border-brass-light bg-transparent text-cream hover:bg-brass-light/15",
+	outline: "border-navy bg-transparent text-navy hover:bg-navy hover:text-white",
+};
+
+const sizes: Record<Size, string> = {
+	md: "min-h-12 px-6 text-base",
+	sm: "min-h-11 px-5 text-label",
+};
+
+const classes = [base, variants[variant], sizes[size], className];
+---
+
+{
+	href ? (
+		<a href={href} class:list={classes} {...rest}>
+			<slot />
+		</a>
+	) : (
+		// `{...rest}` has to reach the <button> too, or `disabled`, `id` and
+		// `aria-*` are silently dropped on this branch.
+		<button type={type} class:list={classes} disabled={disabled} {...rest}>
+			<slot />
+		</button>
+	)
+}

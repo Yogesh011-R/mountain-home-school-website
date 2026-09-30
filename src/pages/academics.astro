@@ -1,0 +1,144 @@
+---
+import Base from "../layouts/Base.astro";
+import CrestWatermark from "../components/ui/CrestWatermark.astro";
+import Card from "../components/ui/Card.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import PageHero from "../components/ui/PageHero.astro";
+import PhotoFrame from "../components/ui/PhotoFrame.astro";
+import Caption from "../components/ui/Caption.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { lines, loadSections } from "../lib/sections";
+
+const sec = await loadSections("academics", Astro);
+
+// The band above each stage card stays in code: red-and-white check for the Junior School, then a colour per stage.
+const bands = ["gingham", "gingham", "bg-grey", "bg-navy", "bg-brick"];
+---
+
+<Base title="Academics" description="ICSE and ISC at Mountain Home School, Coonoor: five stages from LKG to Class XII, streams, facilities and co-curricular life.">
+	<PageHero titleId="ac-title" image="/images/computer-lab.jpg" alt="Rows of students in grey sweaters working at computers in the lab" position="50% 60%" wash="bg-navy-deep/76">
+		{sec("hero").heading} {sec("hero").accent}
+		<Fragment slot="intro">{sec("hero").intro}</Fragment>
+	</PageHero>
+
+	<!-- STAGES -->
+	<section aria-labelledby="stg-title" class="mx-auto flex max-w-site flex-col gap-11 px-4 py-16 lg:px-30 lg:py-24">
+		<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+			<h2 id="stg-title" class="h2">{sec("stages").heading}</h2>
+			<p class="muted"><Tagged text={sec("stages").intro} /></p>
+		</div>
+		<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+			{
+				sec("stages").items.map((s, i) => (
+					<Card class="overflow-hidden">
+						<div class:list={["h-3", bands[i] ?? "bg-brass/40"]}></div>
+						<div class="flex flex-col gap-3 px-6 pt-6.5 pb-7">
+							<Eyebrow muted>{s.subtitle}</Eyebrow>
+							<h3 class="font-serif text-3xl">{s.title}</h3>
+							<strong class="font-serif text-xl leading-none font-semibold text-brick">{s.meta}</strong>
+							<p class="muted text-sm"><Tagged text={s.body} /></p>
+						</div>
+					</Card>
+				))
+			}
+		</div>
+		<p class="muted max-w-[68ch] text-sm"><Tagged text={sec("stages").note} /></p>
+	</section>
+
+	<!-- ISC STREAMS -->
+	<section aria-labelledby="jc-title" class="on-navy relative overflow-hidden">
+		<CrestWatermark class="pointer-events-none absolute -top-15 -right-25 size-120 object-contain opacity-[0.06]" />
+		<div class="relative mx-auto flex max-w-site flex-col gap-11 px-4 py-16 lg:px-30 lg:py-24">
+			<div class="grid items-end gap-6 lg:grid-cols-2 lg:gap-16">
+					<h2 id="jc-title" class="h2">{sec("streams").heading}</h2>
+				<p class="max-w-[46ch] text-haze"><Tagged text={sec("streams").intro} onDark /></p>
+			</div>
+			<div class="grid gap-6 md:grid-cols-3">
+				{
+					sec("streams").items.map((s) => (
+						<article class="flex flex-col gap-3.5 border border-brass-light/55 bg-navy-deep/50 p-8">
+							<h3 class="font-serif text-4xl">{s.title}</h3>
+							<p class="max-w-[46ch] text-base text-haze"><Tagged text={s.body} /></p>
+							{sec("streams").note && <div><Tagged text={sec("streams").note} onDark /></div>}
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<!-- FACILITIES -->
+	<section aria-labelledby="fa-title" class="mx-auto grid max-w-site items-start gap-12 px-4 py-16 lg:grid-cols-[7fr_5fr] lg:gap-18 lg:px-30 lg:py-24">
+		<div class="grid gap-5 sm:grid-cols-2">
+			<figure class="m-0 sm:col-span-2">
+				<PhotoFrame src="/images/computer-lab.jpg" alt="Students at monitors in the computer lab, one looking across at a classmate" heightClass="h-72 lg:h-95" />
+				<Caption>Computer lab <span slot="note">Senior &amp; middle school</span></Caption>
+			</figure>
+			<div class="flex h-44 items-center justify-center rounded-frame border border-brass bg-mount lg:h-50"><Confirm>[PHOTO: SCIENCE LAB]</Confirm></div>
+			<div class="flex h-44 items-center justify-center rounded-frame border border-brass bg-mount lg:h-50"><Confirm>[PHOTO: LIBRARY]</Confirm></div>
+		</div>
+		<div class="flex flex-col gap-5.5">
+			<h2 id="fa-title" class="h2">{sec("facilities").heading}</h2>
+			<dl class="m-0 flex flex-col">
+				{
+					sec("facilities").items.map((f) => (
+						<div class="border-b border-grey/40 py-4.5 last:border-b-0">
+							<dt class="font-serif text-2xl leading-tight font-semibold text-navy">{f.title}</dt>
+							<dd class="muted m-0 mt-1.5"><Tagged text={f.body} /></dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</section>
+
+	<!-- CO-CURRICULAR -->
+	<section aria-labelledby="cc-title" class="bg-mustard-tint">
+		<div class="mx-auto grid max-w-site items-center gap-10 px-4 py-16 lg:grid-cols-[5fr_7fr] lg:gap-18 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-3.5">
+				<h2 id="cc-title" class="h2">{sec("cocurricular").heading}</h2>
+				<p class="text-soot"><Tagged text={sec("cocurricular").intro} /></p>
+			</div>
+			<ul class="m-0 flex list-none flex-wrap gap-3 p-0">
+				{lines(sec("cocurricular").body).map((a) => <li class="flex min-h-12 items-center border border-brass bg-paper px-5.5 font-serif text-title-sm leading-none font-semibold text-navy">{a}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<!-- RESULTS -->
+	<section aria-labelledby="rs-title" class="mx-auto grid max-w-site items-start gap-10 px-4 py-16 lg:grid-cols-[5fr_7fr] lg:gap-18 lg:px-30 lg:py-24">
+		<div class="flex flex-col gap-3.5">
+			<h2 id="rs-title" class="h2">{sec("results").heading}</h2>
+			<p class="muted">{sec("results").intro}</p>
+		</div>
+		<Card class="px-5 pt-3 pb-7 sm:px-7">
+		<div class="overflow-x-auto" data-lenis-prevent tabindex="0" role="region" aria-label="Board results, scrollable table">
+			<table class="w-full border-collapse text-left">
+				<caption class="py-4 pb-1.5 text-left text-sm text-ink-muted">{sec("results").note}</caption>
+				<thead>
+					<tr class="border-b-2 border-brass text-sm tracking-wider text-ink-muted uppercase">
+						<th scope="col" class="py-3 pr-4 font-bold">Year</th>
+						<th scope="col" class="py-3 pr-4 font-bold">Examination</th>
+						<th scope="col" class="py-3 pr-4 font-bold">Candidates</th>
+						<th scope="col" class="py-3 font-bold">Pass rate</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						sec("results").items.map((r) => (
+							<tr class="border-b border-grey/35">
+								<td class="py-3.5 pr-4"><Tagged text={r.title} /></td>
+								<td class="py-3.5 pr-4"><Tagged text={r.subtitle} /></td>
+								<td class="py-3.5 pr-4"><Tagged text={r.body} /></td>
+								<td class="py-3.5"><Tagged text={r.meta} /></td>
+							</tr>
+						))
+					}
+				</tbody>
+		</table>
+		</div>
+		<p class="muted mt-4 text-sm"><Tagged text={sec("results").body} /></p>
+		</Card>
+	</section>
+</Base>

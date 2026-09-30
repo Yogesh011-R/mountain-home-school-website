@@ -1,0 +1,669 @@
+---
+import SmartImage from "../components/ui/SmartImage.astro";
+import Base from "../layouts/Base.astro";
+import CrestWatermark from "../components/ui/CrestWatermark.astro";
+import Button from "../components/ui/Button.astro";
+import Card from "../components/ui/Card.astro";
+import Caption from "../components/ui/Caption.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import HouseMark from "../components/ui/HouseMark.astro";
+import LinkArrow from "../components/ui/LinkArrow.astro";
+import PhotoFrame from "../components/ui/PhotoFrame.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { cells, loadSections } from "../lib/sections";
+
+const years = Array.from({ length: 2026 - 1980 + 1 }, (_, i) => 1980 + i);
+const defaultYear = 1998;
+
+const houseStyle: Record<string, { colour: string; shape: string }> = {
+	Bower: { colour: "red", shape: "circle" },
+	Trutwin: { colour: "blue", shape: "diamond" },
+	Pound: { colour: "green", shape: "square" },
+	"D'Prazer": { colour: "yellow", shape: "triangle" },
+};
+
+const sec = await loadSections("alumni", Astro);
+
+// Directory entries from the CMS. "Extra lines" = city | country | house.
+const people = sec("directory").items.map((i) => {
+	const [city = "", country = "", house = ""] = cells(i.meta);
+	return { name: i.title, batch: Number(i.subtitle) || 0, field: i.body, city, country, house };
+});
+const countries = [...new Set(people.map((p) => p.country).filter(Boolean))];
+// Only decades that can actually return a row, so the filter never dead-ends.
+const decades = [...new Set(people.map((p) => Math.floor(p.batch / 10) * 10))].sort((a, b) => a - b);
+
+// Photos stay in code; the words come from the CMS. Each entry looks up its own
+// art by position and falls back to a placeholder once the CMS runs past the
+// code, rather than silently reusing the first entry.
+const memTilt = ["-rotate-1", "rotate-[0.8deg]", "rotate-[1.2deg]"];
+const memPhotos = [
+	{ src: "/images/archive-hall.jpg", alt: "Rebeiro Hall with its pillared veranda, in sepia", rot: "rotate-[1.4deg]", h: "h-44" },
+	{ src: "/images/sports-day.jpg", alt: "Sports Day on the red-earth ground, in sepia", rot: "-rotate-[1.8deg]", h: "h-55" },
+	{ src: "/images/investiture.jpg", alt: "Students on stage with hands on their hearts, in sepia", rot: "-rotate-[0.8deg]", h: "h-50" },
+];
+const memories = sec("memories").items.map((m, i) => ({
+	label: m.subtitle,
+	text: m.body,
+	by: m.meta,
+	// The tilt is decoration and is meant to cycle. Photographs are not: see below.
+	rot: memTilt[i % memTilt.length],
+	photo: memPhotos[i] ?? null,
+	cap: sec("memory_photos").items[i]?.title ?? "",
+}));
+
+const fundPhotos = [
+	{ img: "/images/computer-lab.jpg", alt: "Students at computers in the lab" },
+	{ img: "/images/hostel-block.jpg", alt: "The two-storey yellow block with its long balcony" },
+	{ img: "/images/archive-hall.jpg", alt: "A gabled yellow hall with arched windows" },
+];
+const funds = sec("give").items.map((f, i) => ({
+	title: f.title,
+	body: f.body,
+	pct: Math.min(100, Math.max(0, Number(f.meta) || 0)),
+	photo: fundPhotos[i] ?? null,
+	// An HTML id may not contain whitespace, and titles are free text.
+	slug: f.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+}));
+
+// The CMS note is an instruction to the editor ("class photograph | [REPLACE
+// WITH BATCH PHOTO]"), not a caption. Only the tagged half is shown to readers.
+const [, ...batchCaptionTag] = sec("batches").note.split("|").map((c) => c.trim());
+
+const candles = [
+	{ h: 70, delay: "0s" },
+	{ h: 100, delay: "0.7s" },
+	{ h: 84, delay: "1.4s" },
+];
+
+const subnav = [
+	["#batches", "Batches"],
+	["#directory", "Directory"],
+	["#map", "Around the world"],
+	["#memories", "Memory wall"],
+	["#thennow", "Then & Now"],
+	["#reunions", "Reunions"],
+	["#give", "Give back"],
+	["#mentor", "Mentorship"],
+	["#distinguished", "Distinguished alumni"],
+];
+
+const field = "flex flex-col gap-1.5 text-caption font-bold tracking-wide";
+const input = "min-h-12 w-full rounded-control border border-brass-light/60 bg-paper px-3.5 text-base font-normal text-ink";
+const inputLight = "min-h-12 w-full rounded-control border border-grey-light bg-white px-3.5 text-base font-normal text-ink";
+---
+
+<Base title="Alumni" description="Come home: find your batch, search the alumni directory, pin a memory, and help the next generation of Mountain Home children.">
+	<!-- HERO -->
+	<section aria-labelledby="a-title" class="relative overflow-hidden bg-navy">
+		<SmartImage src="/images/hero-campus.jpg" alt="The Mountain Home School campus among tall trees, Coonoor" loading="eager" fetchpriority="high" quality={80} sizes="100vw" width={1920} class="absolute inset-0 size-full object-cover" />
+		<div class="absolute inset-0 bg-navy-deep/72"></div>
+		<div class="pointer-events-none absolute inset-0 shadow-wash"></div>
+		<div class="mist"></div>
+		<div class="relative mx-auto flex min-h-130 max-w-site flex-col items-center justify-center gap-7 px-4 py-24 text-center lg:min-h-175 lg:px-30">
+			<h1 id="a-title" class="text-7xl leading-none font-medium text-cream md:text-9xl lg:text-[120px]">{sec("hero").heading} {sec("hero").accent}</h1>
+			<p class="max-w-[62ch] text-lg leading-relaxed text-sand lg:text-title-sm">{sec("hero").intro}</p>
+			<div class="flex flex-wrap justify-center gap-4">
+				<Button href="#register">Join the alumni register</Button>
+				<Button href="#batches" variant="ghost">Find your batch</Button>
+			</div>
+		</div>
+	</section>
+
+	<!-- SUBNAV -->
+	<nav aria-label="Alumni sections" class="border-b border-brass/50 bg-paper">
+		<div class="mx-auto flex max-w-site items-center gap-7.5 overflow-x-auto px-4 text-label font-semibold whitespace-nowrap lg:px-30" data-lenis-prevent>
+			{subnav.map(([href, label]) => <a href={href} class="inline-flex min-h-18 items-center text-navy no-underline hover:text-brick">{label}</a>)}
+			<a href="/remembering" class="ml-auto inline-flex min-h-18 items-center text-brick no-underline hover:underline">Remembering</a>
+		</div>
+	</nav>
+
+<!-- BATCHES -->
+	<section id="batches" aria-labelledby="b-title" class="mx-auto flex max-w-site flex-col gap-9 px-4 py-16 lg:px-30 lg:py-24" data-batches>
+		<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+			<h2 id="b-title" class="h2">{sec("batches").heading}</h2>
+			<p class="muted">{sec("batches").intro}</p>
+		</div>
+		<div role="group" aria-label="Choose a batch year" class="flex gap-2.5 overflow-x-auto border-b border-brass/50 px-0.5 pt-2 pb-4.5 [scrollbar-width:thin]" data-lenis-prevent>
+			{
+				years.map((y) => (
+					<button
+						type="button"
+						data-year={y}
+						aria-pressed={y === defaultYear ? "true" : "false"}
+						class="pressable min-h-13 min-w-21 shrink-0 cursor-pointer border border-grey-light bg-paper py-0 pr-5.5 pl-4 font-serif text-title-sm leading-none font-semibold text-navy [clip-path:polygon(0_0,100%_0,88%_50%,100%_100%,0_100%)] hover:border-navy aria-pressed:border-navy aria-pressed:bg-navy aria-pressed:text-mustard-tint"
+					>
+						{y}
+					</button>
+				))
+			}
+		</div>
+		<p class="sr-only" role="status" data-batch-status>Showing batch of {defaultYear}</p>
+		<div class="grid items-stretch gap-10 lg:grid-cols-[7fr_5fr] lg:gap-12">
+			<figure class="m-0">
+				<PhotoFrame src="/images/school-council.jpg" alt="A class in blazers gathered on the stage, standing in for this batch's photograph" heightClass="h-72 lg:h-95" sepia />
+				<Caption mount>
+					Batch of <span data-batch-year>{defaultYear}</span>
+					{batchCaptionTag.length > 0 && <Fragment slot="note"><Tagged text={batchCaptionTag.join(" | ")} /></Fragment>}
+				</Caption>
+			</figure>
+			<Card class="gap-4.5 p-7 lg:p-9">
+				<h3 class="font-serif text-5xl leading-none font-semibold text-navy lg:text-display-lg">Batch of&nbsp;<span class="text-brick" data-batch-year>{defaultYear}</span></h3>
+				<dl class="m-0 grid grid-cols-[150px_minmax(0,1fr)] gap-y-3 text-base">
+					{sec("batches").items.map((r) => (<><dt class="muted">{r.title}</dt><dd class="m-0 font-semibold"><Tagged text={r.body} /></dd></>))}
+				</dl>
+				<div class="my-1.5 h-px bg-brass/50"></div>
+				<div class="mt-auto flex flex-wrap gap-3">
+					<Button href="#directory">See who is here</Button>
+					<Button href="#memories" variant="outline">Share a memory of this year</Button>
+				</div>
+			</Card>
+		</div>
+	</section>
+
+	<!-- DIRECTORY -->
+	<section id="directory" aria-labelledby="d-title" class="border-y border-brass/40 bg-paper" data-directory>
+		<div class="mx-auto flex max-w-site flex-col gap-8 px-4 py-16 lg:px-30 lg:py-24">
+			<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+				<h2 id="d-title" class="h2">{sec("directory").heading}</h2>
+				<p class="muted text-sm">{sec("directory").intro}</p>
+			</div>
+			<div role="search" aria-label="Filter the alumni directory" class="grid items-end gap-4 border border-brass/40 bg-parchment p-5 md:grid-cols-[2fr_1fr_1fr]">
+				<div class={`${field} text-navy`}><label for="dir-q">Search by name, batch, city or country</label><input id="dir-q" class={inputLight} type="search" placeholder="e.g. Chennai, or 1998" data-q /></div>
+				<div class={`${field} text-navy`}>
+					<label for="dir-house">House</label>
+					<select id="dir-house" class={inputLight} data-house>
+						<option value="">All houses</option>
+						{Object.keys(houseStyle).map((h) => <option value={h}>{h}</option>)}
+					</select>
+				</div>
+				<div class={`${field} text-navy`}>
+					<label for="dir-decade">Decade</label>
+					<select id="dir-decade" class={inputLight} data-decade>
+						<option value="">All decades</option>
+						{decades.map((d) => <option value={d}>{d}s</option>)}
+					</select>
+				</div>
+			</div>
+			<div role="group" aria-label="Filter by country" class="flex flex-wrap gap-2.5">
+				{
+					["All", ...countries].map((c) => (
+						<button
+							type="button"
+							data-country={c}
+							aria-pressed={c === "All" ? "true" : "false"}
+							class="pressable inline-flex min-h-11 cursor-pointer items-center rounded-control border border-brass bg-transparent px-4 text-sm font-semibold text-navy hover:border-navy aria-pressed:border-navy aria-pressed:bg-navy aria-pressed:text-white"
+						>
+							{c === "All" ? "All countries" : c}
+						</button>
+					))
+				}
+			</div>
+			<p class="muted text-sm">Showing <span data-count>{people.length}</span> of {people.length} sample entries</p>
+			<p class="sr-only" role="status" data-dir-status>{people.length} of {people.length} sample entries match</p>
+			<div class="grid min-h-95 content-start gap-5 sm:grid-cols-2 lg:grid-cols-4">
+				{
+					people.map((p) => (
+						<article data-person data-name={p.name} data-batch={p.batch} data-house={p.house} data-country={p.country} data-city={p.city} class="relative flex flex-col gap-3.5 rounded-card border border-brass/50 bg-paper px-5.5 pt-5.5 pb-5 [&[hidden]]:hidden">
+							<div class="flex items-center gap-3.5">
+								<div class="flex size-13 shrink-0 items-center justify-center rounded-full bg-navy"><CrestWatermark class="size-8.5 object-contain" /></div>
+								<div class="flex flex-col gap-0.5">
+									<strong class="font-serif text-body-lg leading-tight font-semibold text-navy"><Tagged text={p.name} /></strong>
+									<span class="text-sm text-ink-muted">Batch of {p.batch}</span>
+								</div>
+							</div>
+							<div class="flex flex-col gap-1 text-label">
+								<span>{p.city}, {p.country}</span>
+								<span class="muted"><Tagged text={p.field} /></span>
+							</div>
+							<div class="mt-auto flex items-center justify-between gap-2 border-t border-grey/35 pt-3">
+								<span class="inline-flex min-w-0 items-center gap-1.5 rounded-control border border-grey-light bg-white py-1 pr-2.5 pl-1 text-xs font-semibold tracking-wide text-ink uppercase">
+									{houseStyle[p.house] && <HouseMark name={p.house} {...houseStyle[p.house]} />}{p.house}
+								</span>
+								<a href="/contact" class="inline-flex min-h-11 shrink-0 items-center text-sm font-semibold">Ask the office to pass on a message</a>
+							</div>
+						</article>
+					))
+				}
+			</div>
+			<p data-empty hidden class="muted">
+				No sample entries match. Clear the search box, or choose a different house, decade or country.
+				<button type="button" data-clear class="pressable ml-2 min-h-11 font-semibold underline">Clear all filters</button>
+			</p>
+			<div id="register" class="on-navy flex flex-col justify-between gap-6 p-7 sm:flex-row sm:items-center lg:px-8">
+				<div class="flex flex-col gap-1">
+					<strong class="font-serif text-title-lg leading-tight font-semibold text-cream">{sec("register").heading}</strong>
+					<span class="text-fog">{sec("register").intro}</span>
+				</div>
+				<div class="flex flex-wrap items-center gap-3">
+					<Button href="/contact">Sign the register</Button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- MAP -->
+	<section id="map" aria-labelledby="m-title" class="mx-auto grid max-w-site items-center gap-10 px-4 py-16 lg:grid-cols-[8fr_4fr] lg:gap-14 lg:px-30 lg:py-24">
+		<div class="flex flex-col gap-6">
+				<h2 id="m-title" class="h2">{sec("map").heading}</h2>
+			<div class="relative flex h-64 items-center justify-center overflow-hidden rounded-frame border border-brass bg-track lg:h-75.5">
+				<img src="/images/contours.svg" alt="" class="absolute inset-0 size-full object-cover opacity-60" />
+				<div class="relative flex flex-col items-center gap-3 p-5 text-center">
+					<span class="size-5 rounded-full border-[3px] border-paper bg-brick ring-1 ring-brick"></span>
+					<strong class="font-serif text-title-sm leading-none font-semibold text-navy"><Tagged text={sec("map").intro} /></strong>
+				</div>
+			</div>
+			<p class="muted text-sm"><Tagged text={sec("map").note} /></p>
+		</div>
+		<Card class="gap-1.5 p-8">
+			<h3 class="h4 mb-2.5">{sec("chapters").heading}</h3>
+			{sec("chapters").items.map((c) => <div class="flex items-center justify-between gap-3 border-b border-grey/35 py-3 text-base"><span><Tagged text={c.title} /></span><span class="muted"><Tagged text={c.body} /></span></div>)}
+			<p class="mt-3 text-sm">
+				<a href="/contact">Start a chapter in your city</a>
+			</p>
+		</Card>
+	</section>
+
+	<!-- MEMORY WALL -->
+	<section id="memories" aria-labelledby="mw-title" class="relative overflow-hidden bg-mustard-tint">
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-x-0 top-0 h-105 w-full object-cover opacity-30" />
+		<div class="relative mx-auto flex max-w-site flex-col gap-10 px-4 py-16 lg:px-30 lg:py-24">
+			<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+				<h2 id="mw-title" class="h2">{sec("memories").heading}</h2>
+				<p class="max-w-[68ch] text-soot">{sec("memories").intro}</p>
+			</div>
+			<div class="grid items-start gap-10 lg:grid-cols-[8fr_4fr]">
+				<div class="grid items-start gap-6 sm:grid-cols-2 xl:grid-cols-3">
+					{
+						memories.map((m) => (
+							<div class="flex flex-col gap-6">
+								<article class:list={["bg-paper px-6 pt-7.5 pb-5.5 shadow-pinned", m.rot]}>
+									<Eyebrow muted>{m.label}</Eyebrow>
+									<p class="mt-2.5 max-w-[46ch] font-serif text-title-sm leading-snug font-medium text-ink italic">“{m.text}”</p>
+									<p class="muted mt-3 text-sm"><Tagged text={m.by} /></p>
+								</article>
+								<figure class:list={["m-0 bg-paper px-2.5 pt-2.5 pb-3.5 shadow-pinned", m.photo?.rot]}>
+									{m.photo ? (
+										<>
+											<div class:list={["sepia-photo overflow-hidden", m.photo.h]}>
+												<SmartImage src={m.photo.src} alt={m.photo.alt} sizes="(min-width: 1024px) 30vw, 90vw" class="size-full object-cover" />
+											</div>
+											<figcaption class="pt-2.5 font-serif text-lg leading-tight font-semibold text-navy italic"><Tagged text={m.cap} /></figcaption>
+										</>
+									) : (
+										<div class="flex h-50 flex-col items-center justify-center gap-3 rounded-frame border border-dashed border-brass bg-mount">
+											<Eyebrow muted>[PHOTO NEEDED]</Eyebrow>
+										</div>
+									)}
+								</figure>
+							</div>
+						))
+					}
+				</div>
+				<!-- No endpoint yet: complete form, sending disabled until the alumni office confirms where memories go. -->
+				<form class="flex flex-col gap-4.5 rounded-card border border-brass/50 bg-paper p-7 lg:p-8" aria-labelledby="mf-title" onsubmit="return false">
+					<h3 id="mf-title" class="h4">{sec("memory_form").heading}</h3>
+					<div class={`${field} text-navy`}><label for="mf-story">Your story</label><textarea id="mf-story" class={`${inputLight} min-h-32 py-3`} placeholder="A teacher, a friend, a smell, a sound…"></textarea></div>
+					<div class="grid grid-cols-[minmax(0,1fr)_110px] gap-3">
+						<div class={`${field} text-navy`}><label for="mf-name">Name</label><input id="mf-name" class={inputLight} type="text" /></div>
+						<div class={`${field} text-navy`}><label for="mf-batch">Batch</label><input id="mf-batch" class={inputLight} type="text" inputmode="numeric" placeholder="YYYY" /></div>
+					</div>
+					<div class={`${field} text-navy`}><label for="mf-photo">Photograph (optional)</label><input id="mf-photo" class={`${inputLight} py-2.5`} type="file" accept="image/*" /></div>
+					<label class="flex items-start gap-2.5 text-sm text-ink-muted"><input type="checkbox" class="mt-0.5 size-5 accent-navy" />I have permission to share this photo, and anyone named in my story may be shown.</label>
+					<div class="flex flex-wrap items-center gap-3">
+						<Button type="submit" disabled aria-describedby="mf-why">Share on the memory wall</Button>
+						<Confirm id="mf-why">[FORM NOT YET CONNECTED]</Confirm>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<!-- THEN & NOW -->
+	<section id="thennow" aria-labelledby="tn-title" class="on-navy relative overflow-hidden" data-compare>
+		<CrestWatermark class="pointer-events-none absolute -bottom-30 -left-30 size-120 object-contain opacity-[0.06]" />
+		<div class="relative mx-auto grid max-w-site items-center gap-10 px-4 py-16 lg:grid-cols-[4fr_8fr] lg:gap-14 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-4.5">
+				<h2 id="tn-title" class="h2">{sec("thennow").heading}</h2>
+				<p class="max-w-[46ch] text-haze">{sec("thennow").intro}</p>
+				<p class="max-w-[52ch] text-sm text-haze"><Tagged text={sec("thennow").note} onDark /></p>
+			</div>
+			<div class="relative flex flex-col gap-2.5">
+				<div class="relative h-80 overflow-hidden border border-brass bg-navy-deep lg:h-130" style="--pos:50%" data-stage>
+					{/* One image carries the description and stays in the accessibility
+					    tree. The reveal is decorative, so it carries none: clip-path
+					    hides pixels, not content, from assistive tech. */}
+					<figure class="absolute inset-0 m-0">
+						<SmartImage src="/images/archive-hall.jpg" alt="Rebeiro Hall as an archive photograph, side by side with the campus today" width={1600} quality={80} sizes="(min-width: 1024px) 60vw, 100vw" class="sepia-photo size-full object-cover" />
+					</figure>
+					<SmartImage src="/images/hero-campus.jpg" alt="" decorative width={1600} quality={80} sizes="(min-width: 1024px) 60vw, 100vw" class="absolute inset-0 size-full object-cover" />
+					<div aria-hidden="true" class="absolute inset-y-0 -ml-px w-0.5 bg-brass-light" style="left:var(--pos)" data-handle></div>
+					<span aria-hidden="true" class="absolute top-4 left-4 bg-navy-deep/85 px-2.5 py-2 text-xs leading-none font-semibold tracking-label text-mustard-tint uppercase">Then</span>
+					<span aria-hidden="true" class="absolute top-4 right-4 bg-navy-deep/85 px-2.5 py-2 text-xs leading-none font-semibold tracking-label text-mustard-tint uppercase">Now</span>
+				</div>
+				<label for="tn-range" class="sr-only">Compare then and now</label>
+				<input id="tn-range" class="al-rng" type="range" min="0" max="100" value="50" aria-valuetext="Halfway between then and now" />
+				<p class="sr-only" role="status" data-compare-status>Halfway between then and now</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- REUNIONS -->
+	<section id="reunions" aria-labelledby="r-title" class="mx-auto flex max-w-site flex-col gap-10 px-4 py-16 lg:px-30 lg:py-24">
+		<div class="flex items-end justify-between gap-6">
+				<h2 id="r-title" class="h2">{sec("reunions").heading}</h2>
+			<LinkArrow href="/news">Full calendar</LinkArrow>
+		</div>
+		<div class="grid gap-7 md:grid-cols-3">
+			{
+				sec("reunions").items.map((ev) => (
+					<Card class="grid grid-cols-[72px_minmax(0,1fr)] gap-5.5 p-7">
+						<div class="flex h-fit flex-col items-center gap-1.5 border border-brass px-2 py-2.5">
+							<Confirm>[DD]</Confirm>
+							<Confirm>[MON]</Confirm>
+						</div>
+						<div class="flex flex-col gap-2">
+							<Eyebrow muted>{ev.subtitle}</Eyebrow>
+							<h3 class="font-serif text-title-lg"><Tagged text={ev.title} /></h3>
+							<p class="muted text-sm"><Tagged text={ev.body} /></p>
+							<a href="/contact" class="inline-flex min-h-11 items-center text-sm font-semibold">{ev.meta}</a>
+						</div>
+					</Card>
+				))
+			}
+		</div>
+	</section>
+
+	<!-- GIVE BACK -->
+	<section id="give" aria-labelledby="g-title" class="border-y border-brass/40 bg-paper">
+		<div class="mx-auto flex max-w-site flex-col gap-10 px-4 py-16 lg:px-30 lg:py-24">
+			<div class="grid items-end gap-6 lg:grid-cols-2 lg:gap-16">
+					<h2 id="g-title" class="h2">{sec("give").heading}</h2>
+				<p class="muted"><Tagged text={sec("give").intro} /></p>
+			</div>
+			<div class="grid gap-7 md:grid-cols-3">
+				{
+					funds.map((f) => (
+						<Card>
+							{f.photo && <PhotoFrame src={f.photo.img} alt={f.photo.alt} heightClass="h-55" framed={false} />}
+							<div class="flex grow flex-col gap-3.5 px-7 pt-6.5 pb-7">
+								<h3 class="font-serif text-3xl">{f.title}</h3>
+								<p class="muted text-sm"><Tagged text={f.body} /></p>
+								<div class="mt-auto flex justify-between gap-3 text-sm">
+									<strong class="text-navy">{f.pct}% of the target</strong>
+									<span class="muted">Illustrative</span>
+								</div>
+								<div role="progressbar" aria-label={`${f.title} fund, illustrative`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={f.pct} aria-valuetext={`${f.pct} per cent of an illustrative target`} class="h-2.5 border border-brass/50 bg-track">
+									<div class="h-full bg-brick" style={`width:${f.pct}%`}></div>
+								</div>
+								<Button type="button" disabled class="mt-2 w-full" aria-describedby={`give-why-${f.slug}`}>Give to {f.title}</Button>
+								<Confirm id={`give-why-${f.slug}`}>[DONATIONS NOT YET OPEN]</Confirm>
+							</div>
+						</Card>
+					))
+				}
+			</div>
+			<p class="muted text-sm"><Tagged text={sec("give").note} /></p>
+		</div>
+	</section>
+
+	<!-- MENTORSHIP -->
+	<section id="mentor" aria-labelledby="mt-title" class="on-navy relative overflow-hidden">
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-x-0 bottom-0 h-65 w-full object-cover opacity-35" />
+		<div class="relative mx-auto grid max-w-site items-start gap-10 px-4 py-16 lg:grid-cols-[5fr_7fr] lg:gap-18 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-5">
+				<h2 id="mt-title" class="h2">{sec("mentor").heading}</h2>
+				<p class="max-w-[46ch] text-haze">{sec("mentor").intro}</p>
+				<PhotoFrame src="/images/computer-lab.jpg" alt="Students at work in the computer lab" heightClass="h-56 lg:h-65" class="mt-3" />
+			</div>
+			<!-- No endpoint yet: complete form, sending disabled until the school confirms the mentoring process. -->
+			<form class="relative flex flex-col gap-5 border border-brass-light/50 bg-navy-deep/60 p-6 lg:p-9" aria-labelledby="mt-form-title" onsubmit="return false">
+				<h3 id="mt-form-title" class="h4">Offer to mentor a current student</h3>
+				<div class="grid gap-4 sm:grid-cols-2">
+					<div class={`${field} text-mustard-tint`}><label for="mt-name">Full name</label><input id="mt-name" class={input} type="text" /></div>
+					<div class={`${field} text-mustard-tint`}><label for="mt-batch">Batch</label><input id="mt-batch" class={input} type="text" placeholder="YYYY" /></div>
+					<div class={`${field} text-mustard-tint`}><label for="mt-field">Field of work</label><input id="mt-field" class={input} type="text" placeholder="e.g. Medicine, Engineering, Law" /></div>
+					<div class={`${field} text-mustard-tint`}><label for="mt-city">City &amp; country</label><input id="mt-city" class={input} type="text" /></div>
+				</div>
+				<fieldset class="m-0 flex flex-col gap-3 border-0 p-0">
+					<legend class="mb-3 text-caption font-bold tracking-wide text-mustard-tint">I can offer</legend>
+					<div class="grid gap-3 sm:grid-cols-2">
+						{["Career talks", "College & course guidance", "Internships or shadowing", "One-to-one mentoring"].map((o) => (
+							<label class="flex min-h-11 items-center gap-2.5"><input type="checkbox" class="size-5 accent-brass-light" />{o}</label>
+						))}
+					</div>
+				</fieldset>
+				<div class={`${field} text-mustard-tint`}><label for="mt-note">Anything else</label><textarea id="mt-note" class={`${input} min-h-24 py-3`}></textarea></div>
+				<p class="text-caption text-fog"><Tagged text={sec("mentor").note} onDark /></p>
+				<div class="flex flex-wrap items-center gap-3">
+					<Button type="submit" disabled aria-describedby="mt-why">Offer to mentor</Button>
+					<Confirm id="mt-why" onDark>[FORM NOT YET CONNECTED]</Confirm>
+				</div>
+			</form>
+		</div>
+	</section>
+
+	<!-- DISTINGUISHED -->
+	<section id="distinguished" aria-labelledby="di-title" class="mx-auto flex max-w-site flex-col gap-10 px-4 py-16 lg:px-30 lg:py-24">
+		<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+			<h2 id="di-title" class="h2">{sec("distinguished").heading}</h2>
+			<p class="muted text-sm"><Tagged text={sec("distinguished").intro} /></p>
+		</div>
+		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+			{
+				sec("distinguished").items.map((d) => (
+					<article class="flex flex-col gap-3.5">
+						<div class="flex h-70 flex-col items-center justify-center gap-3 rounded-frame border border-brass bg-mount">
+							<CrestWatermark class="size-24 object-contain opacity-35" />
+							<Eyebrow muted>Portrait to come</Eyebrow>
+						</div>
+						<h3 class="font-serif text-title-md"><Tagged text={d.title} /></h3>
+						<p class="muted text-sm"><Tagged text={d.subtitle} /></p>
+						<p class="max-w-[42ch] text-sm"><Tagged text={d.body} /></p>
+					</article>
+				))
+			}
+		</div>
+		<div><Button href="/contact" variant="outline">Nominate an old student</Button></div>
+	</section>
+
+	<!-- REMEMBERING TEASER -->
+	<section aria-labelledby="rm-title" class="on-navy bg-navy-deep">
+		<div class="mx-auto flex max-w-site flex-col items-start justify-between gap-12 px-4 py-16 lg:flex-row lg:items-center lg:gap-16 lg:px-30 lg:py-24">
+			<div class="flex max-w-175 flex-col gap-4.5">
+				<h2 id="rm-title" class="font-serif text-4xl leading-tight font-medium text-cream md:text-5xl lg:text-display-lg lg:leading-[1.05]">{sec("remembering").heading}</h2>
+				<p class="max-w-[52ch] text-fog">{sec("remembering").intro}</p>
+				<div><Button href="/remembering" variant="ghost">Read the roll of remembrance</Button></div>
+			</div>
+			<div aria-hidden="true" class="flex items-end gap-8 lg:gap-11">
+				{
+					candles.map((k) => (
+						<div class="flex flex-col items-center">
+							<div class="al-glow -mb-15 size-22.5 rounded-full candle-glow" style={`animation-delay:${k.delay}`}></div>
+							<div class="al-flame h-8.5 w-4.5 rounded-[50%_50%_50%_50%/65%_65%_35%_35%] bg-flame shadow-flame" style={`animation-delay:${k.delay}`}></div>
+							<div class="h-2 w-0.5 bg-soot"></div>
+							<div class="w-11 rounded-t-[3px] bg-parchment-deep" style={`height:${k.h}px`}></div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+	/* Scoped to this page. A previous version was `is:global`, which leaked
+	   .flame, .glow and .tn into every page on the site. Prefixed so the candle
+	   classes cannot collide with a future component. */
+	.al-rng {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 100%;
+		height: 44px;
+		background: transparent;
+		cursor: ew-resize;
+	}
+	.al-rng::-webkit-slider-runnable-track {
+		height: 2px;
+		background: var(--color-brass);
+	}
+	.al-rng::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		width: 28px;
+		height: 28px;
+		margin-top: -13px;
+		border-radius: 50%;
+		background: var(--color-navy);
+		border: 3px solid var(--color-brass-light);
+	}
+	.al-rng::-moz-range-track {
+		height: 2px;
+		background: var(--color-brass);
+	}
+	.al-rng::-moz-range-thumb {
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		background: var(--color-navy);
+		border: 3px solid var(--color-brass-light);
+	}
+	@keyframes al-flicker {
+		0%, 100% { transform: scale(1) translateY(0); opacity: 1; }
+		35% { transform: scale(0.94, 1.06) translateY(-1px); opacity: 0.92; }
+		70% { transform: scale(1.04, 0.96); opacity: 1; }
+	}
+	@keyframes al-glow {
+		0%, 100% { opacity: 0.85; }
+		50% { opacity: 1; }
+	}
+	/* prefers-reduced-motion is already handled globally in global.css, so this
+	   page does not repeat it. */
+	.al-flame { animation: al-flicker 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+	.al-glow { animation: al-glow 3.2s ease-in-out infinite; }
+</style>
+
+<script>
+	// Year ribbon: choose a batch year and the caption, heading and status follow.
+	const batches = document.querySelector<HTMLElement>("[data-batches]");
+	if (batches) {
+		const buttons = [...batches.querySelectorAll<HTMLButtonElement>("[data-year]")];
+		const status = batches.querySelector("[data-batch-status]");
+		const show = (year: string) => {
+			batches.querySelectorAll("[data-batch-year]").forEach((el) => (el.textContent = year));
+			if (status) status.textContent = `Showing batch of ${year}`;
+		};
+		buttons.forEach((b) =>
+			b.addEventListener("click", () => {
+				buttons.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+				show(b.dataset.year ?? "");
+				// The ribbon scrolls horizontally, so a year at either end can be
+				// chosen and then left sitting half off-screen. `nearest` on both
+				// axes brings the pressed year into view and leaves the page
+				// exactly where it was, which the load path still never does.
+				b.scrollIntoView({ block: "nearest", inline: "nearest" });
+			}),
+		);
+		// No scrollIntoView on load: the page moved itself under nobody's request.
+	}
+
+	// Directory: name, batch, city or country, narrowed by house, decade and
+	// country. Every term is OR'd, so "Chennai" and "1998" both find rows.
+	const dir = document.querySelector<HTMLElement>("[data-directory]");
+	if (dir) {
+		// `@cloudflare/workers-types` does not model HTMLSelectElement, so these
+		// are typed by the two members actually used.
+		type Field = HTMLInputElement | (HTMLSelectElement & { value: string });
+		const q = dir.querySelector("[data-q]") as Field | null;
+		const house = dir.querySelector("[data-house]") as Field | null;
+		const decade = dir.querySelector("[data-decade]") as Field | null;
+		const chips = [...dir.querySelectorAll("[data-country]")] as HTMLButtonElement[];
+		const cards = [...dir.querySelectorAll("[data-person]")] as HTMLElement[];
+		const count = dir.querySelector("[data-count]");
+		const dirStatus = dir.querySelector("[data-dir-status]");
+		const empty = dir.querySelector("[data-empty]") as HTMLElement | null;
+		let country = "All";
+		let said = -1;
+
+		if (!q || !house || !decade) throw new Error("Alumni directory filters are missing their inputs");
+
+		const apply = () => {
+			// Comma-separated terms are OR'd, which is what the placeholder promises.
+			const terms = q.value.toLowerCase().split(",").map((t) => t.trim()).filter(Boolean);
+			const houseValue = house.value;
+			const decadeValue = decade.value;
+			let n = 0;
+			cards.forEach((c) => {
+				const batch = Number(c.dataset.batch);
+				const haystack = [c.dataset.name, c.dataset.batch, c.dataset.city, c.dataset.country, c.dataset.house]
+					.filter(Boolean)
+					.join(" ")
+					.toLowerCase();
+				const ok =
+					(country === "All" || c.dataset.country === country) &&
+					(!houseValue || c.dataset.house === houseValue) &&
+					(!decadeValue || batch >= Number(decadeValue) && batch < Number(decadeValue) + 10) &&
+					(!terms.length || terms.some((t) => haystack.includes(t)));
+				c.hidden = !ok;
+				if (ok) n++;
+			});
+			if (count) count.textContent = String(n);
+			if (empty) empty.hidden = n > 0;
+			// The live region carries the count and nothing else — no permanent
+			// copy, no controls — so it is not re-read on every update. It still
+			// speaks on every keystroke, because the count is the feedback, but
+			// only when the count actually moves.
+			if (n !== said) {
+				said = n;
+				// `cards.length`, not `people.length`: a bundled <script> cannot
+				// read the frontmatter, and the cards are the people.
+				if (dirStatus) dirStatus.textContent = `${n} of ${cards.length} sample entries match`;
+			}
+		};
+
+		const reset = () => {
+			q.value = "";
+			house.value = "";
+			decade.value = "";
+			country = "All";
+			chips.forEach((x, i) => x.setAttribute("aria-pressed", String(i === 0)));
+			apply();
+			q.focus();
+		};
+
+		([q, house, decade] as Field[]).forEach((el) => el.addEventListener("input", apply));
+		dir.querySelector("[data-clear]")?.addEventListener("click", reset);
+		chips.forEach((b) =>
+			b.addEventListener("click", () => {
+				country = b.dataset.country ?? "All";
+				chips.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+				apply();
+			}),
+		);
+	}
+
+	// Then & Now: the range moves the reveal line and says where it landed.
+	const cmp = document.querySelector<HTMLElement>("[data-compare]");
+	if (cmp) {
+		const stage = cmp.querySelector<HTMLElement>("[data-stage]");
+		const range = cmp.querySelector<HTMLInputElement>("input[type=range]");
+		const status = cmp.querySelector("[data-compare-status]");
+		if (!stage || !range) throw new Error("Then & Now compare is missing its stage or range");
+		const phrase = (v: number) =>
+			v < 10 ? "Almost all now" : v > 90 ? "Almost all then" : v < 45 ? "Mostly now" : v > 55 ? "Mostly then" : "Halfway between then and now";
+		let said = phrase(Number(range.value));
+		range.addEventListener("input", () => {
+			stage.style.setProperty("--pos", `${range.value}%`);
+			const text = phrase(Number(range.value));
+			// aria-valuetext has to track the thumb: it *is* the value a screen
+			// reader reads out. The live region must not. `input` fires for every
+			// pixel of a drag, and rewriting the region each time queues the same
+			// five phrases dozens deep, so it only speaks when the phrase changes.
+			range.setAttribute("aria-valuetext", text);
+			if (text !== said) {
+				said = text;
+				if (status) status.textContent = text;
+			}
+		});
+	}
+</script>

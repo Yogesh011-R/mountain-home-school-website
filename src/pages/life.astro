@@ -1,0 +1,119 @@
+---
+import Base from "../layouts/Base.astro";
+import Card from "../components/ui/Card.astro";
+import Caption from "../components/ui/Caption.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import LinkArrow from "../components/ui/LinkArrow.astro";
+import PageHero from "../components/ui/PageHero.astro";
+import PhotoFrame from "../components/ui/PhotoFrame.astro";
+import Button from "../components/ui/Button.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { lines, loadSections } from "../lib/sections";
+
+const sec = await loadSections("life", Astro);
+
+const dot: Record<string, string> = { red: "bg-brick", navy: "bg-navy" };
+
+// Photos stay in code, matched to the traditions by position; later cards show a placeholder.
+const traditionPhotos = [
+	{ img: "/images/school-council.jpg", alt: "Students in blazers gathered on the stage" },
+	{ img: "/images/investiture.jpg", alt: "Students with hands on hearts at the investiture" },
+	{ img: "/images/sports-day.jpg", alt: "Students seated by house on Sports Day" },
+];
+
+const [dayCaption, ...dayCaptionTag] = sec("day").note.split("|").map((c) => c.trim());
+---
+
+<Base title="Life at Mountain Home" description="Day and residential life at Mountain Home School, Coonoor: the boarder's weekday, traditions and uniform.">
+	<PageHero titleId="lf-title" image="/images/hostel-block.jpg" alt="A two-storey yellow building with a long upper balcony, framed by tall pines" wash="bg-navy-deep/72">
+		{sec("hero").heading} {sec("hero").accent}
+		<Fragment slot="intro">{sec("hero").intro}</Fragment>
+	</PageHero>
+
+	<!-- DAY & RESIDENTIAL -->
+	<section aria-labelledby="dr-title" class="mx-auto flex max-w-site flex-col gap-10 px-4 py-16 lg:px-30 lg:py-24">
+			<h2 id="dr-title" class="h2">{sec("belong").heading}</h2>
+		<div class="grid gap-8 md:grid-cols-2">
+			{
+				sec("belong").items.map((c, i) => {
+					const dark = i === 1;
+					return (
+						<Card variant={dark ? "navy" : "paper"} class="gap-4 p-8 lg:p-10">
+							<h3 class:list={["h3", dark && "text-cream"]}>{c.title}</h3>
+							<p class={dark ? "text-haze" : "muted"}><Tagged text={c.body} onDark={dark} /></p>
+							<ul class="mt-1.5 flex flex-col gap-2">
+								{lines(c.meta).map((l) => <li><Tagged text={l} onDark={dark} /></li>)}
+							</ul>
+						</Card>
+					);
+				})
+			}
+		</div>
+	</section>
+
+	<!-- A DAY -->
+	<section aria-labelledby="dy-title" class="border-y border-brass/40 bg-paper">
+		<div class="mx-auto grid max-w-site items-start gap-12 px-4 py-16 lg:grid-cols-[5fr_7fr] lg:gap-20 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-4.5">
+				<h2 id="dy-title" class="h2">{sec("day").heading}</h2>
+				<p class="muted"><Tagged text={sec("day").intro} /></p>
+				<figure class="mt-3 mb-0">
+					<PhotoFrame src="/images/hostel-block.jpg" alt="The two-storey yellow block with its long upper balcony between tall pines" heightClass="h-64 lg:h-75" />
+					<Caption>{dayCaption}{dayCaptionTag.length > 0 && <Fragment slot="note"><Tagged text={dayCaptionTag.join(" | ")} /></Fragment>}</Caption>
+				</figure>
+			</div>
+			<ol class="m-0 ml-2 flex list-none flex-col border-l border-brass p-0">
+				{
+					sec("day").items.map((d) => (
+						<li class="relative grid grid-cols-[72px_minmax(0,1fr)] gap-4 border-b border-grey/30 py-3.5 pl-8 sm:grid-cols-[110px_minmax(0,1fr)] sm:gap-5">
+							<span class:list={["absolute top-5.5 -left-1.5 size-2.75 rounded-full", dot[d.meta.trim()] ?? "bg-brass"]}></span>
+							<strong class="font-serif text-2xl leading-tight font-semibold text-navy">{d.title}</strong>
+							<span>
+								<strong>{d.subtitle}</strong> {d.body && <span class="muted">{d.body}</span>}
+							</span>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<!-- TRADITIONS -->
+	<section aria-labelledby="tr-title" class="mx-auto flex max-w-site flex-col gap-11 px-4 py-16 lg:px-30 lg:py-24">
+		<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+				<h2 id="tr-title" class="h2">{sec("traditions").heading}</h2>
+			<LinkArrow href="/houses">The four houses</LinkArrow>
+		</div>
+		<div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				sec("traditions").items.map((t, i) => (
+					<article class="flex flex-col gap-3.5">
+						{traditionPhotos[i] ? (
+							<PhotoFrame src={traditionPhotos[i].img} alt={traditionPhotos[i].alt} heightClass="h-60" />
+						) : (
+							<div class="flex h-60 items-center justify-center rounded-frame border border-brass bg-mount">
+								<Confirm>[PHOTO NEEDED]</Confirm>
+							</div>
+						)}
+						<Eyebrow muted><Tagged text={t.subtitle} /></Eyebrow>
+						<h3 class="font-serif text-3xl">{t.title}</h3>
+						<p class="muted text-sm"><Tagged text={t.body} /></p>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<!-- UNIFORM -->
+	<section aria-labelledby="un-title" class="bg-mustard-tint">
+		<div class="mx-auto grid max-w-site items-center gap-8 px-4 py-16 lg:grid-cols-[220px_minmax(0,1fr)_auto] lg:gap-12 lg:px-30 lg:py-24">
+			<div class="gingham h-28 border border-brick lg:h-35"></div>
+			<div class="flex flex-col gap-2.5">
+				<h2 id="un-title" class="font-serif text-4xl font-semibold text-navy">{sec("uniform").heading}</h2>
+				<p class="max-w-[68ch] text-soot">{sec("uniform").intro}</p>
+			</div>
+			<Button href="/uniform" variant="outline">See the uniform guide</Button>
+		</div>
+	</section>
+</Base>

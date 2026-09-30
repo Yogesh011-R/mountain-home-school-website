@@ -1,0 +1,120 @@
+---
+import SmartImage from "./ui/SmartImage.astro";
+import { NAV, SCHOOL } from "../lib/site";
+import Button from "./ui/Button.astro";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="sticky top-0 z-50 border-b border-brass bg-navy text-linen">
+	<div class="mx-auto flex h-16 max-w-site items-center justify-between px-4 lg:h-22 lg:px-12">
+		<a href="/" aria-label={`${SCHOOL.name}: home`} class="flex items-center gap-3 no-underline lg:gap-3.5">
+			<SmartImage src="/images/crest.png"
+				alt=""
+				width={120}
+				quality={80}
+				class="size-10 object-contain lg:size-15"
+			/>
+			<span class="flex flex-col gap-0.5">
+				<span class="font-serif text-xl leading-none font-semibold text-cream lg:text-2xl">{SCHOOL.name}</span>
+				<span class="text-xs leading-tight font-semibold tracking-nav text-brass-light uppercase">
+					<span class="hidden lg:inline">&amp; Junior College · </span>{SCHOOL.place} · Estd. {SCHOOL.established}
+				</span>
+			</span>
+		</a>
+
+		<nav aria-label="Main" class="hidden items-center gap-5 xl:flex xl:gap-6">
+			{
+				NAV.map((item) => (
+					<a
+						href={item.href}
+						aria-current={isActive(item.href) ? "page" : undefined}
+						class:list={[
+							"border-b-2 pt-4 pb-3.5 text-label leading-none font-semibold text-linen no-underline transition-colors hover:text-white",
+							isActive(item.href) ? "border-brass-light" : "border-transparent",
+						]}
+					>
+						{item.label}
+					</a>
+				))
+			}
+			<Button href="/admissions" size="sm" class="ml-1">Apply</Button>
+		</nav>
+
+		<button
+			type="button"
+			id="menu-toggle"
+			class="pressable flex size-12 items-center justify-center xl:hidden"
+			aria-label="Menu"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+		>
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" class="text-mustard-tint">
+				<line x1="3" y1="7" x2="21" y2="7"></line>
+				<line x1="3" y1="12" x2="21" y2="12"></line>
+				<line x1="3" y1="17" x2="21" y2="17"></line>
+			</svg>
+		</button>
+	</div>
+
+	<nav id="mobile-menu" aria-label="Mobile" hidden class="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-brass/50 bg-navy-deep xl:hidden" data-lenis-prevent>
+		<ul class="mx-auto flex max-w-site flex-col px-4 py-3">
+			{
+				NAV.map((item) => (
+					<li>
+						<a
+							href={item.href}
+							aria-current={isActive(item.href) ? "page" : undefined}
+							class="flex min-h-12 items-center border-b border-white/10 font-serif text-2xl text-cream no-underline aria-[current=page]:text-brass-light"
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+			<li class="py-4"><Button href="/admissions" class="w-full">Apply for Admission</Button></li>
+		</ul>
+	</nav>
+</header>
+
+<script>
+	const toggle = document.getElementById("menu-toggle");
+	const menu = document.getElementById("mobile-menu");
+	const desktop = window.matchMedia("(min-width: 1280px)");
+
+	const setOpen = (open: boolean) => {
+		if (!menu || !toggle) return;
+		menu.hidden = !open;
+		toggle.setAttribute("aria-expanded", String(open));
+		// Lenis owns page scrolling (Base.astro), so tell it to hold still while
+		// the menu is open. A custom event keeps the two scripts decoupled: the
+		// menu need not know Lenis exists, and Lenis need not know about the menu.
+		document.dispatchEvent(new CustomEvent("menu:toggle", { detail: { open } }));
+	};
+
+	toggle?.addEventListener("click", () => setOpen(!!menu?.hidden));
+
+	// A link to the current page (or a #anchor) does not reload, so close the
+	// menu ourselves; a click outside the header dismisses it too.
+	menu?.addEventListener("click", (e) => {
+		if ((e.target as Element).closest("a")) setOpen(false);
+	});
+	document.addEventListener("click", (e) => {
+		if (!menu || menu.hidden) return;
+		if (!(e.target as Element).closest("header")) setOpen(false);
+	});
+
+	// Escape closes the menu and returns focus to the toggle.
+	document.addEventListener("keydown", (e) => {
+		if (e.key !== "Escape" || !menu || menu.hidden) return;
+		setOpen(false);
+		toggle?.focus();
+	});
+
+	// Crossing into the desktop breakpoint hides the mobile nav via CSS;
+	// clear the open state so it does not reappear when the viewport shrinks again.
+	desktop.addEventListener("change", (e) => {
+		if (e.matches) setOpen(false);
+	});
+</script>

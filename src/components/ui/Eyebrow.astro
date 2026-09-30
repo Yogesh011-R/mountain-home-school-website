@@ -1,0 +1,25 @@
+---
+// A small tracked label. Use it only where the label carries information the
+// nearby text does not already give -- a news category, a batch year, a class
+// range. Do NOT put one above a section heading: when every heading is preceded
+// by a label, the label stops being information and becomes page furniture.
+interface Props {
+	/** Use on navy or photo backgrounds. */
+	onDark?: boolean;
+	/** Muted grey instead of brick red (for card kickers). */
+	muted?: boolean;
+	class?: string;
+}
+
+const { onDark = false, muted = false, class: className } = Astro.props;
+---
+
+<span
+	class:list={[
+		"font-sans text-xs leading-snug font-semibold tracking-label uppercase",
+		onDark ? "text-brass-light" : muted ? "text-ink-muted" : "text-brick",
+		className,
+	]}
+>
+	<slot />
+</span>

@@ -1,0 +1,52 @@
+---
+import Card from "./ui/Card.astro";
+import Eyebrow from "./ui/Eyebrow.astro";
+import PhotoFrame from "./ui/PhotoFrame.astro";
+import { CATEGORY_LABELS, newsImage } from "../lib/news";
+import { dateBadge, getDateSettings } from "../lib/dates";
+
+interface Props {
+	title: string;
+	category: string;
+	excerpt?: string | null;
+	eventDate?: Date | string | null;
+	image?: { src?: string; alt?: string } | null;
+	/** Makes the whole card a link to the story. */
+	href?: string;
+}
+
+const { title, category, excerpt, eventDate, image, href } = Astro.props;
+
+const photo = newsImage(category, image);
+const dates = getDateSettings();
+const badge = dateBadge(eventDate, dates.timeZone);
+---
+
+<Card lift>
+	<PhotoFrame src={photo.src} alt={photo.alt} heightClass="h-56" framed={false} />
+	<div class:list={["gap-5 px-6 pt-6 pb-7", badge ? "grid grid-cols-[64px_minmax(0,1fr)]" : "flex flex-col"]}>
+		{
+			badge && (
+				<div class="flex h-fit flex-col items-center rounded-control border border-brass py-2">
+					<span class="font-serif text-3xl leading-none font-semibold text-navy">{badge.day}</span>
+					<span class="text-xs leading-snug font-semibold tracking-label text-brick uppercase">{badge.month}</span>
+				</div>
+			)
+		}
+		<div class="flex flex-col gap-2">
+			<Eyebrow muted>{CATEGORY_LABELS[category] ?? category}</Eyebrow>
+			<h3 class="font-serif text-title-md leading-tight">
+				{
+					href ? (
+						<a href={href} class="text-navy no-underline after:absolute after:inset-0 hover:text-brick">
+							{title}
+						</a>
+					) : (
+						title
+					)
+				}
+			</h3>
+			{excerpt && <p class="muted text-label leading-normal">{excerpt}</p>}
+		</div>
+	</div>
+</Card>

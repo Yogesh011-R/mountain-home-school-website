@@ -1,0 +1,60 @@
+---
+import SmartImage from "./ui/SmartImage.astro";
+import { FOOTER_ALUMNI, FOOTER_EXPLORE, SCHOOL } from "../lib/site";
+import CrestWatermark from "./ui/CrestWatermark.astro";
+import Button from "./ui/Button.astro";
+import Confirm from "./ui/Confirm.astro";
+
+const year = new Date().getFullYear();
+const linkClass = "flex min-h-11 items-center text-linen no-underline hover:text-white hover:underline lg:min-h-0";
+const headClass = "mb-1.5 text-caption leading-snug font-semibold tracking-label text-brass-light uppercase";
+---
+
+<footer class="relative overflow-hidden border-t border-brass bg-navy-deep text-haze">
+	<img src="/images/contours.svg" alt="" class="pointer-events-none absolute bottom-0 left-0 h-56 w-full object-cover opacity-40 lg:h-75 lg:opacity-45" />
+	<CrestWatermark class="pointer-events-none absolute -top-10 -right-20 hidden size-130 object-contain opacity-[0.07] lg:block" />
+
+	<div class="relative mx-auto grid max-w-site gap-10 px-4 pt-12 pb-10 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:gap-14 lg:px-30 lg:pt-20 lg:pb-14">
+		<div class="flex flex-col gap-4">
+			<div class="flex items-center gap-3.5">
+				<SmartImage src="/images/crest.png" alt=""width={144} quality={80} class="size-14 object-contain lg:size-18" />
+				<div class="font-serif text-2xl leading-tight font-semibold text-cream lg:text-title-md">
+					{SCHOOL.name}<br />&amp; Junior College
+				</div>
+			</div>
+			<address class="text-base leading-relaxed not-italic">
+				{SCHOOL.address.map((line) => <div>{line}</div>)}
+			</address>
+			<div class="flex flex-col gap-1 text-base">
+				<span>Phone <Confirm onDark>[CONFIRM NUMBER]</Confirm></span>
+				<span>Email <Confirm onDark>[CONFIRM EMAIL]</Confirm></span>
+			</div>
+		</div>
+
+		<nav aria-label="Explore" class="flex flex-col gap-3">
+			<div class={headClass}>Explore</div>
+			{FOOTER_EXPLORE.map((l) => <a href={l.href} class={linkClass}>{l.label}</a>)}
+		</nav>
+
+		<nav aria-label="Alumni" class="flex flex-col gap-3">
+			<div class={headClass}>Alumni</div>
+			{FOOTER_ALUMNI.map((l) => <a href={l.href} class={linkClass}>{l.label}</a>)}
+		</nav>
+
+		<div class="flex flex-col gap-3">
+			<div class={headClass}>Admissions</div>
+			<p class="max-w-[46ch] text-base leading-relaxed">Enquiries for LKG to XII, day and residential.</p>
+			<Button href="/admissions" class="self-start">Apply for Admission</Button>
+			<a href="/contact" class="inline-flex min-h-11 items-center text-mustard-tint hover:text-white">Plan a visit to Coonoor</a>
+		</div>
+	</div>
+
+	<div class="relative mx-auto flex max-w-site flex-col gap-4 px-4 pb-7 lg:px-30 lg:pb-9">
+		<div class="h-px bg-brass/60"></div>
+		<div class="flex flex-col gap-3 text-sm text-fog lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+			<span>© {year} {SCHOOL.fullName}, {SCHOOL.place}</span>
+			<span class="font-serif text-xl leading-none font-semibold text-brass-light italic">{SCHOOL.motto}</span>
+			<span class="max-w-md">An alumni-initiated concept, offered to the school for adoption. Not an official site until approved.</span>
+		</div>
+	</div>
+</footer>

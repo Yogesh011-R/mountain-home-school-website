@@ -1,0 +1,38 @@
+---
+import Base from "../../layouts/Base.astro";
+import Eyebrow from "../../components/ui/Eyebrow.astro";
+import LinkArrow from "../../components/ui/LinkArrow.astro";
+import PhotoFrame from "../../components/ui/PhotoFrame.astro";
+import { CATEGORY_LABELS, newsImage } from "../../lib/news";
+import { formatDate, getDateSettings } from "../../lib/dates";
+import { news } from "../../lib/content";
+import { paras } from "../../lib/sections";
+
+export function getStaticPaths() {
+	return news.map((n) => ({ params: { slug: n.slug }, props: { n } }));
+}
+
+const { n } = Astro.props;
+const photo = newsImage(n.category, n.featured_image);
+const when = formatDate(n.event_date, getDateSettings());
+---
+
+<Base title={n.title} description={n.excerpt ?? undefined}>
+	<article class="mx-auto flex max-w-[960px] flex-col gap-6 px-4 py-14 lg:py-24">
+		<LinkArrow href="/news" class="self-start">All news &amp; events</LinkArrow>
+		{/* Category and date are a byline, not a restatement of the headline. */}
+		<Eyebrow muted>{CATEGORY_LABELS[n.category] ?? n.category}{when && ` · ${when}`}</Eyebrow>
+		<h1 class="text-4xl leading-tight font-medium text-navy md:text-6xl">{n.title}</h1>
+		{n.excerpt && <p class="muted text-xl">{n.excerpt}</p>}
+		<PhotoFrame src={photo.src} alt={photo.alt} heightClass="h-64 md:h-110" eager />
+		{
+			n.content ? (
+				<div class="flex flex-col gap-4 text-lg leading-relaxed">
+					{paras(n.content).map((p) => <p>{p}</p>)}
+				</div>
+			) : (
+				<p class="muted">The full report will be added soon.</p>
+			)
+		}
+	</article>
+</Base>

@@ -1,0 +1,24 @@
+---
+// Caption strip under a photo. Named slot "note" for a right-aligned item.
+// `mount` closes the bottom edge of a framed photo, so the caption reads as
+// part of the mounted print rather than a caption floating below it.
+interface Props {
+	class?: string;
+	/** Sit flush against a PhotoFrame's bottom edge, on an aged mount. */
+	mount?: boolean;
+}
+const { class: className, mount = false } = Astro.props;
+---
+
+<figcaption
+	class:list={[
+		"flex justify-between gap-3 font-sans text-xs leading-snug font-semibold tracking-label text-ink-muted uppercase",
+		mount
+			? "-mt-px border border-t-0 border-brass bg-mount px-3.5 py-2.5"
+			: "px-1 pt-2.5 pb-0.5",
+		className,
+	]}
+>
+	<span class="min-w-0"><slot /></span>
+	<slot name="note" />
+</figcaption>

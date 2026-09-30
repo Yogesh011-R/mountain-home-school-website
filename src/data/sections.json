@@ -1,0 +1,1482 @@
+{
+	"home": {
+		"hero": {
+			"eyebrow": "Estd. 1911 · Coonoor, The Nilgiris",
+			"heading": "Knowledge",
+			"accent": "is Power.",
+			"intro": "A co-educational day and residential school among the tea gardens of the Nilgiri hills, teaching ICSE and ISC from LKG to Class XII. Not just a school, but a sacred trust.",
+			"body": "LKG – Class XII\nICSE · ISC\nDay & Residential\nCo-educational\nCoonoor, Tamil Nadu",
+			"note": "Body = the facts strip at the bottom of the hero, one per line.",
+			"items": []
+		},
+		"welcome": {
+			"eyebrow": "A word of welcome",
+			"heading": "For more than a century, children have climbed this hill to learn.",
+			"accent": "",
+			"intro": "Mountain Home School was founded in 1911 by the Women's Home Missionary Society, and it has kept a simple promise ever since: that every child here is known, and cared for, by name.",
+			"body": "Our classes are small and our campus is quiet. The day keeps the rhythm of the hills: morning assembly, lessons, games on the red-earth ground, and evenings when the mist rolls in over the tea. Whether your child joins us in LKG or for the ISC years, and whether you are visiting for the first time or coming home after many years, you are welcome here.",
+			"note": "Investiture Ceremony | [CONFIRM YEAR]",
+			"items": [
+				{
+					"title": "[Principal's name]",
+					"subtitle": "Principal [CONFIRM]",
+					"body": "",
+					"meta": ""
+				}
+			]
+		},
+		"since": {
+			"eyebrow": "",
+			"heading": "Since 1911",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "The milestones shown under this heading are the entries in the Timeline collection.",
+			"items": []
+		},
+		"pillars": {
+			"eyebrow": "Life on the hill",
+			"heading": "Three things we hold on to",
+			"accent": "",
+			"intro": "What a century of families have told us they valued most, and what we promise the next generation.",
+			"body": "",
+			"note": "Subtitle = small label, Extra lines = link text.",
+			"items": [
+				{
+					"title": "Learning, carefully taught",
+					"subtitle": "Academics",
+					"body": "ICSE and ISC in small classes, from the first letters in LKG to the Junior College streams. A computer lab and teachers who notice.",
+					"meta": "Academics"
+				},
+				{
+					"title": "A home in the hills",
+					"subtitle": "Boarding Life",
+					"body": "Residential students live and study together on campus in the care of resident staff, with weekends, chapel and games that turn classmates into family. [CONFIRM HOSTEL DETAILS]",
+					"meta": "Boarding & day life"
+				},
+				{
+					"title": "Houses, traditions, friends",
+					"subtitle": "Community",
+					"body": "Bower, Trutwin, Pound and D'Prazer. Assemblies and chapel, Christmas, Founder's Day and Sports Day: the traditions that bind one generation to the next.",
+					"meta": "Our four houses"
+				}
+			]
+		},
+		"promise": {
+			"eyebrow": "",
+			"heading": "“Not just a school, but a sacred trust.”",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "The Mountain Home promise",
+			"items": []
+		},
+		"news": {
+			"eyebrow": "News & Events",
+			"heading": "On the noticeboard",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"admissions": {
+			"eyebrow": "Admissions",
+			"heading": "Admissions for [YEAR – YEAR]",
+			"accent": "",
+			"intro": "Enquiries are open for LKG to Class XI, day and residential. Seats in each class are limited. [CONFIRM]",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"spotlight": {
+			"eyebrow": "Alumni spotlight",
+			"heading": "[Alumnus name],",
+			"accent": "Batch of [YYYY]",
+			"intro": "[Profession] · [City, Country] · House: [House]",
+			"body": "“[A few lines, in their own words, about what Mountain Home gave them. To be collected from the alumnus with their consent.]”",
+			"note": "From the archive | [REPLACE WITH ARCHIVE SCAN]",
+			"items": []
+		},
+		"visit": {
+			"eyebrow": "",
+			"heading": "Come and see the school for yourself.",
+			"accent": "",
+			"intro": "Visits are arranged on weekdays by appointment. We will help you plan the journey up the ghat, or by the Nilgiri Mountain Railway.",
+			"body": "",
+			"note": "",
+			"items": []
+		}
+	},
+	"our-story": {
+		"hero": {
+			"eyebrow": "Our Story · 1911 to today",
+			"heading": "A hundred and fifteen years",
+			"accent": "on the hill.",
+			"intro": "How a mission school in Coonoor became a home for generations of children, and what it still promises them.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"founders": {
+			"eyebrow": "The founders",
+			"heading": "Begun by women who believed a school could be a home",
+			"accent": "",
+			"intro": "In 1911 the Women's Home Missionary Society opened a school in Coonoor for the children of the hills. [CONFIRM DENOMINATION AND PARENT CHURCH]",
+			"body": "[Two or three paragraphs from the school's own records: who the first teachers were, where the first classroom stood, how many children came in the first year, and when the school first took boarders. Source each fact from the archive or the school office before publishing.]",
+			"note": "Rebeiro Hall | [ARCHIVE SCAN + YEAR]",
+			"items": [
+				{
+					"title": "Women's Home Missionary Society",
+					"subtitle": "ESTABLISHED 1911",
+					"body": "",
+					"meta": "Coonoor, The Nilgiris"
+				}
+			]
+		},
+		"eras": {
+			"eyebrow": "Timeline",
+			"heading": "Four eras of Mountain Home",
+			"accent": "",
+			"intro": "Choose an era. Each milestone will link to photographs sent in by alumni.",
+			"body": "",
+			"note": "Each era: Subtitle = tab label, Title = era name, Text = short intro, Extra lines = one milestone per line as: year | what happened",
+			"items": [
+				{
+					"title": "The first classrooms",
+					"subtitle": "1911 – 1940s",
+					"body": "The mission years: a small school, its first boarders and its first buildings.",
+					"meta": "1911 | School founded in Coonoor by the Women's Home Missionary Society.\n[YEAR] | [First boarders admitted] [CONFIRM]\n[YEAR] | [Rebeiro Hall built or named] [CONFIRM]"
+				},
+				{
+					"title": "Growing up with India",
+					"subtitle": "1950s – 1970s",
+					"body": "The decades after Independence, when the school grew and the house system took shape.",
+					"meta": "[YEAR] | [House system of Bower, Trutwin, Pound and D'Prazer begins] [CONFIRM]\n[YEAR] | [School becomes co-educational] [CONFIRM]\n[YEAR] | [New classroom block] [CONFIRM]"
+				},
+				{
+					"title": "Boards and blazers",
+					"subtitle": "1980s – 1990s",
+					"body": "The ICSE years, and the traditions many of today’s parents remember.",
+					"meta": "[YEAR] | Affiliated to CISCE for the ICSE examination [CONFIRM]\n[YEAR] | [First ICSE results] [CONFIRM]\n[YEAR] | [Platinum / 75th jubilee] [CONFIRM]"
+				},
+				{
+					"title": "A Junior College, and a restoration",
+					"subtitle": "2000s – today",
+					"body": "Classes XI and XII, a computer lab, and old buildings brought back to life.",
+					"meta": "[YEAR] | Junior College opens for Classes XI–XII (ISC) [CONFIRM]\n2011 | The school marks its centenary [CONFIRM CELEBRATIONS]\n[YEAR] | Computer lab and building renovations [CONFIRM]"
+				}
+			]
+		},
+		"crest": {
+			"eyebrow": "Reading the crest",
+			"heading": "Four quarters, one cross of beads",
+			"accent": "",
+			"intro": "[CONFIRM MEANING WITH SCHOOL]",
+			"body": "",
+			"note": "Above the shield: “Estd : 1911”. Around it, two scrolls: “Mountain Home School” and the motto, “Knowledge Is Power”.",
+			"items": [
+				{
+					"title": "The open book",
+					"subtitle": "Open book",
+					"body": "Learning: the scriptures and every book that follows. A school where reading is the first gift.",
+					"meta": ""
+				},
+				{
+					"title": "The crossed keys",
+					"subtitle": "Crossed keys",
+					"body": "Trust and stewardship: what is placed in our keeping, and the doors that knowledge opens.",
+					"meta": ""
+				},
+				{
+					"title": "The harp",
+					"subtitle": "Harp",
+					"body": "Music and the arts: the choir, the hymn, and joy as part of an education.",
+					"meta": ""
+				},
+				{
+					"title": "The oil lamp",
+					"subtitle": "Oil lamp",
+					"body": "Light and service: a lamp is lit to be carried out, into the town and the world.",
+					"meta": ""
+				}
+			]
+		},
+		"trust": {
+			"eyebrow": "A sacred trust",
+			"heading": "“Not just a school, but a sacred trust.”",
+			"accent": "",
+			"intro": "Parents hand us their children. Old students hand us their memories. The hills hand us a place worth caring for. We take all three as a trust to be kept, not a service to be sold.",
+			"body": "",
+			"note": "",
+			"items": [
+				{
+					"title": "Every child known",
+					"subtitle": "",
+					"body": "Small classes and teachers who stay.",
+					"meta": ""
+				},
+				{
+					"title": "A campus kept",
+					"subtitle": "",
+					"body": "Old buildings restored, not replaced.",
+					"meta": ""
+				},
+				{
+					"title": "A light passed on",
+					"subtitle": "",
+					"body": "Service to the town and to each other.",
+					"meta": ""
+				}
+			]
+		},
+		"hymn": {
+			"eyebrow": "The school hymn",
+			"heading": "[Title of the school hymn]",
+			"accent": "",
+			"intro": "",
+			"body": "[Verse 1: words to be supplied by the school]\n[…]\n\n[Chorus]\n[…]",
+			"note": "Words and music: [author, composer, year] [CONFIRM RIGHTS]",
+			"items": []
+		}
+	},
+	"academics": {
+		"hero": {
+			"eyebrow": "Academics · ICSE & ISC",
+			"heading": "From first letters to",
+			"accent": "Class XII.",
+			"intro": "One campus, one set of teachers who know each child, from LKG to the Junior College.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"stages": {
+			"eyebrow": "Stages",
+			"heading": "Five stages, one school",
+			"accent": "",
+			"intro": "Affiliated to the Council for the Indian School Certificate Examinations (CISCE). [CONFIRM AFFILIATION NO.]",
+			"body": "",
+			"note": "Red-and-white check marks the Junior School, after the junior shirt.",
+			"items": [
+				{
+					"title": "Pre-primary",
+					"subtitle": "Junior School",
+					"body": "Play, stories, songs and first letters, in small, warm classrooms. [CONFIRM AGE AT ENTRY]",
+					"meta": "LKG – UKG"
+				},
+				{
+					"title": "Primary",
+					"subtitle": "Junior School",
+					"body": "Reading, number and curiosity; English as the medium of instruction, with [second language]. [CONFIRM]",
+					"meta": "Classes I – V"
+				},
+				{
+					"title": "Middle",
+					"subtitle": "Middle School",
+					"body": "Sciences, social studies, computers and a third language, taught by subject teachers.",
+					"meta": "Classes VI – VIII"
+				},
+				{
+					"title": "ICSE",
+					"subtitle": "Senior School",
+					"body": "The two-year ICSE course, ending in the CISCE Class X examination.",
+					"meta": "Classes IX – X"
+				},
+				{
+					"title": "ISC",
+					"subtitle": "Junior College",
+					"body": "The ISC course in chosen streams, ending in the Class XII examination.",
+					"meta": "Classes XI – XII"
+				}
+			]
+		},
+		"streams": {
+			"eyebrow": "Junior College · Classes XI – XII",
+			"heading": "ISC streams",
+			"accent": "",
+			"intro": "Subject groups are chosen at the end of Class X, with guidance from teachers and, where families wish, alumni mentors. [CONFIRM STREAMS OFFERED]",
+			"body": "",
+			"note": "[CONFIRM SUBJECT GROUPS]",
+			"items": [
+				{
+					"title": "Science",
+					"subtitle": "",
+					"body": "Physics, Chemistry, with Mathematics and/or Biology; English; one elective such as Computer Science.",
+					"meta": ""
+				},
+				{
+					"title": "Commerce",
+					"subtitle": "",
+					"body": "Accounts, Commerce, Economics; English; Mathematics or another elective.",
+					"meta": ""
+				},
+				{
+					"title": "Humanities",
+					"subtitle": "",
+					"body": "History, Political Science, Economics or Psychology; English; one elective.",
+					"meta": ""
+				}
+			]
+		},
+		"facilities": {
+			"eyebrow": "Facilities",
+			"heading": "Rooms for finding things out",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "",
+			"items": [
+				{
+					"title": "Computer lab",
+					"subtitle": "",
+					"body": "A long, light room with a workstation per student, used from the primary classes up.",
+					"meta": ""
+				},
+				{
+					"title": "Physics, chemistry & biology labs",
+					"subtitle": "",
+					"body": "[Describe] [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Library",
+					"subtitle": "",
+					"body": "[Size of collection, reading hours] [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Music room & hall",
+					"subtitle": "",
+					"body": "For choir, assembly and the annual concert. [CONFIRM]",
+					"meta": ""
+				}
+			]
+		},
+		"cocurricular": {
+			"eyebrow": "Beyond the syllabus",
+			"heading": "Co-curricular life",
+			"accent": "",
+			"intro": "Every student joins at least one activity each term. [CONFIRM LIST]",
+			"body": "Choir & music\nArt & craft\nElocution & debate\nDramatics\nAthletics\nFootball\nBasketball\nScripture Union\nQuiz club\nNature & tea-garden walks",
+			"note": "",
+			"items": []
+		},
+		"results": {
+			"eyebrow": "Board results",
+			"heading": "ICSE & ISC results",
+			"accent": "",
+			"intro": "Published here each year after CISCE releases them. We do not publish rankings.",
+			"body": "[RESULTS TO BE PUBLISHED BY THE SCHOOL]",
+			"note": "Results table (to be supplied by the school)",
+			"items": [
+				{
+					"title": "[YYYY]",
+					"subtitle": "ICSE (Class X)",
+					"body": "[n]",
+					"meta": "[—]"
+				},
+				{
+					"title": "[YYYY]",
+					"subtitle": "ISC (Class XII)",
+					"body": "[n]",
+					"meta": "[—]"
+				},
+				{
+					"title": "[YYYY]",
+					"subtitle": "ICSE (Class X)",
+					"body": "[n]",
+					"meta": "[—]"
+				}
+			]
+		}
+	},
+	"life": {
+		"hero": {
+			"eyebrow": "Life at Mountain Home",
+			"heading": "Days shaped by",
+			"accent": "the hills.",
+			"intro": "Bells, chapel, lessons, games and prep, and the mist that rolls in most afternoons.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"belong": {
+			"eyebrow": "Day & residential",
+			"heading": "Two ways to belong",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Two cards: the first is Day scholars, the second Residential. Extra lines = one bullet per line.",
+			"items": [
+				{
+					"title": "Home each evening",
+					"subtitle": "Day scholars",
+					"body": "For families in Coonoor and nearby. Day scholars join the full school day, games and most activities. [CONFIRM TRANSPORT ROUTES]",
+					"meta": "· Classes LKG – XII\n· School day [08:15 – 15:30] [CONFIRM]\n· Lunch [from home / at school] [CONFIRM]"
+				},
+				{
+					"title": "A second home on the hill",
+					"subtitle": "Residential",
+					"body": "Boarders live in separate hostels for boys and girls, each with resident wardens, supervised prep and a weekend programme. [CONFIRM ALL DETAILS]",
+					"meta": "· From Class [I] [CONFIRM]\n· Visiting Sundays and exeats\n· Medical care: [school nurse / tie-up] [CONFIRM]"
+				}
+			]
+		},
+		"day": {
+			"eyebrow": "A day in the life",
+			"heading": "A boarder's weekday",
+			"accent": "",
+			"intro": "A sample timetable to show the shape of the day. Junior boarders have an earlier bedtime. [CONFIRM TIMINGS]",
+			"body": "",
+			"note": "Residential block | [CONFIRM NAME]",
+			"items": [
+				{
+					"title": "06:30",
+					"subtitle": "Rising bell",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "07:15",
+					"subtitle": "Breakfast",
+					"body": "in the dining hall",
+					"meta": ""
+				},
+				{
+					"title": "08:15",
+					"subtitle": "Assembly & chapel",
+					"body": "hymn, reading, notices",
+					"meta": "red"
+				},
+				{
+					"title": "08:45",
+					"subtitle": "Lessons",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "12:45",
+					"subtitle": "Lunch",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "13:30",
+					"subtitle": "Lessons",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "15:30",
+					"subtitle": "Games",
+					"body": "on the ground or in the hall",
+					"meta": "red"
+				},
+				{
+					"title": "17:00",
+					"subtitle": "Tea",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "17:30",
+					"subtitle": "Prep",
+					"body": "supervised study",
+					"meta": ""
+				},
+				{
+					"title": "19:30",
+					"subtitle": "Dinner",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "21:00",
+					"subtitle": "Lights out",
+					"body": "seniors; juniors earlier",
+					"meta": "navy"
+				}
+			]
+		},
+		"traditions": {
+			"eyebrow": "Through the year",
+			"heading": "Traditions we keep",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Subtitle = when it happens. The first three cards have photographs; the rest show a photo placeholder.",
+			"items": [
+				{
+					"title": "Chapel & assembly",
+					"subtitle": "Every morning",
+					"body": "The school begins each day together, with a hymn, a reading and the day’s notices.",
+					"meta": ""
+				},
+				{
+					"title": "Investiture",
+					"subtitle": "[MONTH] [CONFIRM]",
+					"body": "Prefects and house captains take their oath, hands on hearts, before the house flags.",
+					"meta": ""
+				},
+				{
+					"title": "Sports Day",
+					"subtitle": "[MONTH] [CONFIRM]",
+					"body": "March past, track and field and the house cup, on the red-earth ground below the hill.",
+					"meta": ""
+				},
+				{
+					"title": "Founder's Day",
+					"subtitle": "[MONTH] [CONFIRM]",
+					"body": "A service of thanksgiving for the founders, and the day old students come home.",
+					"meta": ""
+				},
+				{
+					"title": "Christmas",
+					"subtitle": "December [CONFIRM]",
+					"body": "Carols in the hall, the nativity play, and the school decorated for the season.",
+					"meta": ""
+				},
+				{
+					"title": "Music & choir",
+					"subtitle": "Through the year [CONFIRM]",
+					"body": "The choir sings at chapel, on Founder’s Day and at the Christmas service.",
+					"meta": ""
+				}
+			]
+		},
+		"uniform": {
+			"eyebrow": "",
+			"heading": "The uniform",
+			"accent": "",
+			"intro": "Red check and grey for the Junior School; navy blazer and grey for the seniors. A full guide for new families.",
+			"body": "",
+			"note": "",
+			"items": []
+		}
+	},
+	"admissions": {
+		"hero": {
+			"eyebrow": "Admissions · [YEAR – YEAR]",
+			"heading": "Joining",
+			"accent": "Mountain Home.",
+			"intro": "Enquiries are welcome all year for LKG to Class XI, day and residential. We keep classes small, so please write early.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"process": {
+			"eyebrow": "The process",
+			"heading": "Five unhurried steps",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Subtitle = the step number shown in the circle.",
+			"items": [
+				{
+					"title": "Enquire",
+					"subtitle": "I",
+					"body": "Send the enquiry form or call the office. We will send the prospectus.",
+					"meta": ""
+				},
+				{
+					"title": "Visit",
+					"subtitle": "II",
+					"body": "Walk the campus with a teacher, and see the hostels if you are considering boarding.",
+					"meta": ""
+				},
+				{
+					"title": "Apply",
+					"subtitle": "III",
+					"body": "Complete the application with birth certificate, report cards and transfer certificate. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Meet",
+					"subtitle": "IV",
+					"body": "An informal interaction for younger children; an assessment for Class II upward. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Join",
+					"subtitle": "V",
+					"body": "Offer letter, fee payment and a welcome day before term begins.",
+					"meta": ""
+				}
+			]
+		},
+		"eligibility": {
+			"eyebrow": "Eligibility by class",
+			"heading": "Who can apply, and when",
+			"accent": "",
+			"intro": "Age on [1 June]",
+			"body": "",
+			"note": "[CONFIRM AGES AND REQUIREMENTS]",
+			"items": [
+				{
+					"title": "LKG",
+					"subtitle": "[3½+ years]",
+					"body": "Birth certificate; informal interaction",
+					"meta": ""
+				},
+				{
+					"title": "UKG",
+					"subtitle": "[4½+ years]",
+					"body": "Birth certificate; informal interaction",
+					"meta": ""
+				},
+				{
+					"title": "Class I",
+					"subtitle": "[5½+ years]",
+					"body": "Birth certificate; readiness interaction",
+					"meta": ""
+				},
+				{
+					"title": "Classes II – VIII",
+					"subtitle": "By class",
+					"body": "Previous report card, transfer certificate, assessment",
+					"meta": ""
+				},
+				{
+					"title": "Class IX",
+					"subtitle": "By class",
+					"body": "As above; subject choices for ICSE",
+					"meta": ""
+				},
+				{
+					"title": "Class XI",
+					"subtitle": "After Class X",
+					"body": "Class X results (any board), stream preference, interaction",
+					"meta": ""
+				}
+			]
+		},
+		"fees": {
+			"eyebrow": "Fees",
+			"heading": "Fee schedule",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Fees are published by the school each year. Scholarships funded by alumni may be available. [FEES TO BE SUPPLIED BY SCHOOL]",
+			"items": [
+				{
+					"title": "LKG – UKG",
+					"subtitle": "[₹ —]",
+					"body": "",
+					"meta": "—"
+				},
+				{
+					"title": "Classes I – V",
+					"subtitle": "[₹ —]",
+					"body": "",
+					"meta": "[₹ —]"
+				},
+				{
+					"title": "Classes VI – X",
+					"subtitle": "[₹ —]",
+					"body": "",
+					"meta": "[₹ —]"
+				},
+				{
+					"title": "Classes XI – XII",
+					"subtitle": "[₹ —]",
+					"body": "",
+					"meta": "[₹ —]"
+				}
+			]
+		},
+		"enquiry": {
+			"eyebrow": "Enquiry",
+			"heading": "Tell us about your child",
+			"accent": "",
+			"intro": "The admissions office replies within [three working days]. [CONFIRM]",
+			"body": "Prefer to talk? Call [phone] between [hours], Monday to Friday.",
+			"note": "",
+			"items": []
+		},
+		"faq": {
+			"eyebrow": "Questions",
+			"heading": "What parents ask us",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Title = the question, Text = the answer.",
+			"items": [
+				{
+					"title": "Is Mountain Home a day school or a boarding school?",
+					"subtitle": "",
+					"body": "Both. Day scholars and residential students share the same classes, houses and activities.",
+					"meta": ""
+				},
+				{
+					"title": "From which class can children board?",
+					"subtitle": "",
+					"body": "Residential places begin from [Class I]. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Which board does the school follow?",
+					"subtitle": "",
+					"body": "The Council for the Indian School Certificate Examinations (CISCE): ICSE for Class X and ISC for Class XII.",
+					"meta": ""
+				},
+				{
+					"title": "Can students join midway through the year?",
+					"subtitle": "",
+					"body": "Sometimes, if a seat is available. Please call the admissions office to ask. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Is the school a Christian school? Are children of all faiths welcome?",
+					"subtitle": "",
+					"body": "The school was founded by a missionary society and keeps a daily chapel and assembly. [CONFIRM ADMISSIONS POLICY ON FAITH]",
+					"meta": ""
+				}
+			]
+		},
+		"travel": {
+			"eyebrow": "Getting to Coonoor",
+			"heading": "Up the ghat, or by the mountain train",
+			"accent": "",
+			"intro": "Coonoor sits at about 1,850 m in the Nilgiris. Bring a jumper, whatever the month.",
+			"body": "",
+			"note": "",
+			"items": [
+				{
+					"title": "Coimbatore International Airport",
+					"subtitle": "By air",
+					"body": "The nearest airport (CJB). About 70 km, roughly two to three hours by road via Mettupalayam and the ghat road. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Mettupalayam",
+					"subtitle": "By rail",
+					"body": "The railhead at the foot of the hills, reached overnight from Chennai on the Nilgiri Express. Taxis wait outside for the drive up.",
+					"meta": ""
+				},
+				{
+					"title": "Nilgiri Mountain Railway",
+					"subtitle": "The scenic way",
+					"body": "The UNESCO-listed rack railway climbs from Mettupalayam to Coonoor through tunnels and tea. Book well ahead. [CONFIRM TIMINGS]",
+					"meta": ""
+				}
+			]
+		}
+	},
+	"uniform": {
+		"hero": {
+			"eyebrow": "Life at Mountain Home · Uniform",
+			"heading": "The uniform,",
+			"accent": "piece by piece.",
+			"intro": "A guide for new families. Colours are taken from the real garments. Please check the list against the school office's current list before buying. [CONFIRM ALL ITEMS]",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"junior": {
+			"eyebrow": "Classes I – X",
+			"heading": "Junior uniform",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Reference photograph of the junior uniform: [PHOTO NEEDED, WITH CONSENT TO PUBLISH]",
+			"items": [
+				{
+					"title": "Shirt",
+					"subtitle": "",
+					"body": "Red and white check, full sleeves",
+					"meta": "check"
+				},
+				{
+					"title": "Sleeveless pullover",
+					"subtitle": "",
+					"body": "Grey V-neck with red trim and the school crest",
+					"meta": "#8A8F97"
+				},
+				{
+					"title": "Tie",
+					"subtitle": "",
+					"body": "Red and grey diagonal stripe",
+					"meta": "#A8342F"
+				},
+				{
+					"title": "Trousers / skirt",
+					"subtitle": "",
+					"body": "Grey. Girls: [skirt or pinafore] [CONFIRM]",
+					"meta": "#A6AABD"
+				},
+				{
+					"title": "Socks",
+					"subtitle": "",
+					"body": "Grey",
+					"meta": "#8E939B"
+				},
+				{
+					"title": "Shoes",
+					"subtitle": "",
+					"body": "Black; velcro straps for the youngest",
+					"meta": "#1B1B1F"
+				}
+			]
+		},
+		"senior": {
+			"eyebrow": "Classes XI – XII",
+			"heading": "Senior uniform",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Reference photograph of the senior uniform, worn at the investiture.",
+			"items": [
+				{
+					"title": "Blazer",
+					"subtitle": "",
+					"body": "Navy, with the school crest and “Coonoor” on the pocket",
+					"meta": "#1E2A4A"
+				},
+				{
+					"title": "Shirt",
+					"subtitle": "",
+					"body": "White, full sleeves",
+					"meta": "#FFFFFF"
+				},
+				{
+					"title": "Tie",
+					"subtitle": "",
+					"body": "Navy or purple with red motif [CONFIRM]",
+					"meta": "#2B2F5E"
+				},
+				{
+					"title": "Trousers / skirt",
+					"subtitle": "",
+					"body": "Grey; girls wear a pleated grey skirt",
+					"meta": "#8E939B"
+				},
+				{
+					"title": "Socks",
+					"subtitle": "",
+					"body": "Grey",
+					"meta": "#A6AABD"
+				},
+				{
+					"title": "Shoes",
+					"subtitle": "",
+					"body": "Black, polished",
+					"meta": "#1B1B1F"
+				}
+			]
+		},
+		"extras": {
+			"eyebrow": "",
+			"heading": "",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Three columns; the third one also shows an 'Ask the school office' link.",
+			"items": [
+				{
+					"title": "Games kit",
+					"subtitle": "",
+					"body": "White T-shirt or house-colour T-shirt, white track pants, white cap and white canvas shoes, as seen on Sports Day. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Winter wear",
+					"subtitle": "",
+					"body": "Coonoor is cool all year. A full-sleeved grey school pullover or navy jacket is allowed [months]. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Where to buy",
+					"subtitle": "",
+					"body": "Uniform and crest badges are available from [supplier, Coonoor]. [CONFIRM SUPPLIER]",
+					"meta": ""
+				}
+			]
+		}
+	},
+	"contact": {
+		"hero": {
+			"eyebrow": "Contact & visits",
+			"heading": "Write to us, or",
+			"accent": "come up the hill.",
+			"intro": "The school office is open [Monday to Friday, 9:00 – 16:00] and [Saturday mornings]. [CONFIRM HOURS]",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"office": {
+			"eyebrow": "",
+			"heading": "",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Title = who, Text = phone or email.",
+			"items": [
+				{
+					"title": "School office",
+					"subtitle": "",
+					"body": "[+91 phone number]",
+					"meta": ""
+				},
+				{
+					"title": "Admissions",
+					"subtitle": "",
+					"body": "[admissions email]",
+					"meta": ""
+				},
+				{
+					"title": "Alumni office",
+					"subtitle": "",
+					"body": "[alumni email]",
+					"meta": ""
+				},
+				{
+					"title": "Principal",
+					"subtitle": "",
+					"body": "[principal email]",
+					"meta": ""
+				}
+			]
+		},
+		"form": {
+			"eyebrow": "",
+			"heading": "Send a message",
+			"accent": "",
+			"intro": "We reply to every message. Please allow [two working days]. [CONFIRM]",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"directions": {
+			"eyebrow": "Getting here",
+			"heading": "Directions",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Subtitle = step number.",
+			"items": [
+				{
+					"title": "Fly to Coimbatore",
+					"subtitle": "I",
+					"body": "Coimbatore International Airport (CJB), about 70 km away. [CONFIRM]",
+					"meta": ""
+				},
+				{
+					"title": "Via Mettupalayam",
+					"subtitle": "II",
+					"body": "The railhead at the foot of the hills; the ghat road climbs to Coonoor from here.",
+					"meta": ""
+				},
+				{
+					"title": "Into Coonoor",
+					"subtitle": "III",
+					"body": "[Directions from Coonoor town or railway station to the school gate.] [CONFIRM]",
+					"meta": ""
+				}
+			]
+		}
+	},
+	"remembering": {
+		"hero": {
+			"eyebrow": "Remembering",
+			"heading": "For those who taught us, cared for us, and grew up beside us.",
+			"accent": "",
+			"intro": "Names are added only after the family, or the school, has confirmed them. If someone is missing, please tell us gently.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"names": {
+			"eyebrow": "",
+			"heading": "In loving memory",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Six placeholder plaques show the layout. [NAMES ONLY WITH FAMILY CONSENT]",
+			"items": [
+				{
+					"title": "[Name]",
+					"subtitle": "TEACHER",
+					"body": "[A short line from family or friends.]",
+					"meta": "[YYYY] – [YYYY] · Taught [subject], [years]"
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "OLD STUDENT",
+					"body": "[A short line from family or friends.]",
+					"meta": "[YYYY] – [YYYY] · Batch of [YYYY]"
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "MEMBER OF STAFF",
+					"body": "[A short line from family or friends.]",
+					"meta": "[YYYY] – [YYYY] · [Role], [years]"
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "OLD STUDENT",
+					"body": "[A short line from family or friends.]",
+					"meta": "[YYYY] – [YYYY] · Batch of [YYYY]"
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "TEACHER",
+					"body": "[A short line from family or friends.]",
+					"meta": "[YYYY] – [YYYY] · Taught [subject], [years]"
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "OLD STUDENT",
+					"body": "[A short line from family or friends.]",
+					"meta": "[YYYY] – [YYYY] · Batch of [YYYY]"
+				}
+			]
+		},
+		"tribute": {
+			"eyebrow": "Share a tribute",
+			"heading": "Tell us about someone we have lost",
+			"accent": "",
+			"intro": "Tributes are read by the alumni office before they appear. We may contact you to check details with the family.",
+			"body": "",
+			"note": "",
+			"items": []
+		}
+	},
+	"alumni": {
+		"hero": {
+			"eyebrow": "Old Students · Every Batch",
+			"heading": "Come",
+			"accent": "home.",
+			"intro": "Wherever the years have taken you, there is still a place for you on this hill. Find your batch, share a memory, and help the next generation of Mountain Home children.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"batches": {
+			"eyebrow": "Batches",
+			"heading": "Pick the year you left the hill",
+			"accent": "",
+			"intro": "Each batch has its own page: the class photograph, a list of those who have signed the register, and news from your year.",
+			"body": "",
+			"note": "class photograph | [REPLACE WITH BATCH PHOTO]",
+			"items": [
+				{
+					"title": "Signed the register",
+					"subtitle": "",
+					"body": "[n] classmates",
+					"meta": ""
+				},
+				{
+					"title": "Batch representative",
+					"subtitle": "",
+					"body": "[Name] [VOLUNTEER]",
+					"meta": ""
+				},
+				{
+					"title": "Next batch meet",
+					"subtitle": "",
+					"body": "[Date, place]",
+					"meta": ""
+				},
+				{
+					"title": "Memories shared",
+					"subtitle": "",
+					"body": "[n]",
+					"meta": ""
+				}
+			]
+		},
+		"directory": {
+			"eyebrow": "Alumni directory",
+			"heading": "Find a classmate",
+			"accent": "",
+			"intro": "Only alumni who opt in are listed, and contact details are shared through the alumni office, never shown publicly. Entries below are layout samples.",
+			"body": "",
+			"note": "Each entry: Title = name, Subtitle = batch year, Text = field of work, Extra lines = city | country | house (Bower, Trutwin, Pound or D'Prazer).",
+			"items": [
+				{
+					"title": "[Alumni name]",
+					"subtitle": "1976",
+					"body": "[Field of work]",
+					"meta": "London | UK | Pound"
+				},
+				{
+					"title": "[Alumni name]",
+					"subtitle": "1984",
+					"body": "[Field of work]",
+					"meta": "Melbourne | Australia | Bower"
+				},
+				{
+					"title": "[Alumni name]",
+					"subtitle": "1991",
+					"body": "[Field of work]",
+					"meta": "Toronto | Canada | D'Prazer"
+				},
+				{
+					"title": "[Alumni name]",
+					"subtitle": "1998",
+					"body": "[Field of work]",
+					"meta": "Chennai | India | Trutwin"
+				},
+				{
+					"title": "[Alumni name]",
+					"subtitle": "1998",
+					"body": "[Field of work]",
+					"meta": "Dubai | UAE | Bower"
+				},
+				{
+					"title": "[Alumni name]",
+					"subtitle": "2005",
+					"body": "[Field of work]",
+					"meta": "Bengaluru | India | Pound"
+				},
+				{
+					"title": "[Alumni name]",
+					"subtitle": "2012",
+					"body": "[Field of work]",
+					"meta": "Singapore | Singapore | D'Prazer"
+				},
+				{
+					"title": "[Alumni name]",
+					"subtitle": "2019",
+					"body": "[Field of work]",
+					"meta": "Coonoor | India | Trutwin"
+				}
+			]
+		},
+		"register": {
+			"eyebrow": "",
+			"heading": "Not in the directory yet?",
+			"accent": "",
+			"intro": "Sign the alumni register. It takes two minutes, and you choose what is shown.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"map": {
+			"eyebrow": "Around the world",
+			"heading": "From Coonoor to everywhere",
+			"accent": "",
+			"intro": "Alumni in India, the Gulf, the UK, Canada, Singapore and Australia [WORLD MAP TO BE ADDED]",
+			"body": "",
+			"note": "The live map will be drawn only from alumni who choose to share their city. [SAMPLE DATA]",
+			"items": []
+		},
+		"chapters": {
+			"eyebrow": "",
+			"heading": "Alumni chapters",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Chapters are proposals until a volunteer convenor steps forward.",
+			"items": [
+				{
+					"title": "Nilgiris & Coimbatore",
+					"subtitle": "",
+					"body": "[n] members",
+					"meta": ""
+				},
+				{
+					"title": "Chennai",
+					"subtitle": "",
+					"body": "[n] members",
+					"meta": ""
+				},
+				{
+					"title": "Bengaluru",
+					"subtitle": "",
+					"body": "[n] members",
+					"meta": ""
+				},
+				{
+					"title": "The Gulf",
+					"subtitle": "",
+					"body": "[n] members",
+					"meta": ""
+				},
+				{
+					"title": "United Kingdom",
+					"subtitle": "",
+					"body": "[n] members",
+					"meta": ""
+				},
+				{
+					"title": "Australia & New Zealand",
+					"subtitle": "",
+					"body": "[n] members",
+					"meta": ""
+				},
+				{
+					"title": "Canada & USA",
+					"subtitle": "",
+					"body": "[n] members",
+					"meta": ""
+				}
+			]
+		},
+		"memories": {
+			"eyebrow": "Memory wall",
+			"heading": "Pinned by old students",
+			"accent": "",
+			"intro": "A story, a photograph, a name you still remember. Every memory is read by the alumni office before it goes up.",
+			"body": "",
+			"note": "Sample memories: Subtitle = label, Text = the memory, Extra lines = who said it. Sample photo captions are in the next entry.",
+			"items": [
+				{
+					"title": "",
+					"subtitle": "Sample memory",
+					"body": "The bell before assembly, and the walk down past the pines with the mist still lying on the ground.",
+					"meta": "[Name] · Batch of [YYYY]"
+				},
+				{
+					"title": "",
+					"subtitle": "Sample memory",
+					"body": "Carols in the hall at Christmas, and the cold that came in the moment the doors opened.",
+					"meta": "[Name] · Batch of [YYYY]"
+				},
+				{
+					"title": "",
+					"subtitle": "Sample memory",
+					"body": "Our house lost the relay by a stride. We still argue about it at every reunion.",
+					"meta": "[Name] · Batch of [YYYY]"
+				}
+			]
+		},
+		"memory_photos": {
+			"eyebrow": "",
+			"heading": "",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Captions for the three sample photographs on the memory wall.",
+			"items": [
+				{
+					"title": "Rebeiro Hall, [YEAR] [SAMPLE]",
+					"subtitle": "",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "Sports Day [SAMPLE]",
+					"subtitle": "",
+					"body": "",
+					"meta": ""
+				},
+				{
+					"title": "Investiture [SAMPLE]",
+					"subtitle": "",
+					"body": "",
+					"meta": ""
+				}
+			]
+		},
+		"memory_form": {
+			"eyebrow": "",
+			"heading": "Pin a memory",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"thennow": {
+			"eyebrow": "Then & Now",
+			"heading": "The campus you remember, and the one we are restoring",
+			"accent": "",
+			"intro": "Drag the handle to compare. As archive photographs come in from alumni, each building will get its own pair.",
+			"body": "",
+			"note": "Pair shown: an archive view of the hall and the campus today. [CONFIRM SAME BUILDING OR REPLACE WITH ARCHIVE SCAN]",
+			"items": []
+		},
+		"reunions": {
+			"eyebrow": "Reunions & events",
+			"heading": "Dates to come back for",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "Subtitle = kind, Extra lines = the link label.",
+			"items": [
+				{
+					"title": "Founder's Day Homecoming",
+					"subtitle": "Homecoming",
+					"body": "Chapel, the school hymn, lunch in the hall and a walk round the campus with current students. [CONFIRM DATE]",
+					"meta": "Register interest"
+				},
+				{
+					"title": "Silver & Ruby Jubilee Reunions",
+					"subtitle": "Milestone batches",
+					"body": "For batches marking 25 and 40 years since leaving. Batch representatives coordinate travel and rooms.",
+					"meta": "Find your batch rep"
+				},
+				{
+					"title": "[City] Chapter Evening",
+					"subtitle": "Chapter meet",
+					"body": "An informal evening for old students in and around [City]. Families welcome. [VENUE TBC]",
+					"meta": "RSVP"
+				}
+			]
+		},
+		"give": {
+			"eyebrow": "Give back",
+			"heading": "Keep the lamp lit for the next child",
+			"accent": "",
+			"intro": "Every gift goes to one named purpose, and every donor receives a receipt from the school itself. This site does not collect money; the buttons will point to the school's official donation channel once agreed. [CONFIRM PROCESS]",
+			"body": "",
+			"note": "Progress bars are illustrative until the school shares real figures. Donation buttons are inactive for now. [CONFIRM FIGURES]",
+			"items": [
+				{
+					"title": "Scholarships",
+					"subtitle": "scholarships",
+					"body": "Help a deserving child from the hills complete school here, from LKG through ISC.",
+					"meta": "35"
+				},
+				{
+					"title": "Hostel restoration",
+					"subtitle": "the hostels",
+					"body": "Roofs, windows and warm, dry dormitories for residential students through the monsoon.",
+					"meta": "55"
+				},
+				{
+					"title": "The library",
+					"subtitle": "the library",
+					"body": "New books, reading tables and care for the old collection. [CONFIRM LIBRARY BUILDING]",
+					"meta": "20"
+				}
+			]
+		},
+		"mentor": {
+			"eyebrow": "Mentorship",
+			"heading": "Hold the door open for a Class XII student",
+			"accent": "",
+			"intro": "An hour a term on a video call can change what a hill-school student believes is possible. Tell us what you can offer and we will match you with students in the Junior College.",
+			"body": "",
+			"note": "Mentors working with students under 18 follow the school's safeguarding policy; sessions are arranged through the school. [CONFIRM POLICY]",
+			"items": []
+		},
+		"distinguished": {
+			"eyebrow": "Distinguished alumni",
+			"heading": "Old students the hill is proud of",
+			"accent": "",
+			"intro": "Nominated by batchmates and confirmed by the school. Four placeholder cards show the layout. [NAMES TO BE CONFIRMED]",
+			"body": "",
+			"note": "",
+			"items": [
+				{
+					"title": "[Name]",
+					"subtitle": "Batch of [YYYY] · [Field]",
+					"body": "[One line on their work and what they credit to Mountain Home.]",
+					"meta": ""
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "Batch of [YYYY] · [Field]",
+					"body": "[One line on their work and what they credit to Mountain Home.]",
+					"meta": ""
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "Batch of [YYYY] · [Field]",
+					"body": "[One line on their work and what they credit to Mountain Home.]",
+					"meta": ""
+				},
+				{
+					"title": "[Name]",
+					"subtitle": "Batch of [YYYY] · [Field]",
+					"body": "[One line on their work and what they credit to Mountain Home.]",
+					"meta": ""
+				}
+			]
+		},
+		"remembering": {
+			"eyebrow": "Remembering",
+			"heading": "For the teachers, staff and old students we have lost.",
+			"accent": "",
+			"intro": "A quiet page to read their names and share a tribute.",
+			"body": "",
+			"note": "",
+			"items": []
+		}
+	},
+	"houses": {
+		"hero": {
+			"eyebrow": "The four houses",
+			"heading": "Bower, Trutwin, Pound",
+			"accent": "& D'Prazer.",
+			"intro": "Every student belongs to a house from the day they arrive, and most never quite stop.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"cards": {
+			"eyebrow": "Houses",
+			"heading": "Four flags, one school",
+			"accent": "",
+			"intro": "Each house has a colour, an initial and a shape, so it can be told apart without relying on colour.",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"points": {
+			"eyebrow": "House cup · [CONFIRM YEAR – YEAR]",
+			"heading": "Points table",
+			"accent": "",
+			"intro": "Points from Sports Day, athletics, elocution, choir and academic effort, updated by the sports office after each event.",
+			"body": "",
+			"note": "[NO POINTS ENTERED YET]",
+			"items": []
+		},
+		"captains": {
+			"eyebrow": "Captains · [CONFIRM YEAR – YEAR]",
+			"heading": "House captains",
+			"accent": "",
+			"intro": "Photographs and names are published only with the consent of students and parents.",
+			"body": "",
+			"note": "",
+			"items": []
+		}
+	},
+	"news": {
+		"hero": {
+			"eyebrow": "News, events & gallery",
+			"heading": "From the",
+			"accent": "noticeboard.",
+			"intro": "",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"latest": {
+			"eyebrow": "",
+			"heading": "Coming up",
+			"accent": "",
+			"intro": "No news has been published yet.",
+			"body": "Read the full report",
+			"note": "No events are listed right now.",
+			"items": []
+		},
+		"more": {
+			"eyebrow": "",
+			"heading": "More stories",
+			"accent": "",
+			"intro": "",
+			"body": "",
+			"note": "",
+			"items": []
+		},
+		"gallery": {
+			"eyebrow": "Gallery",
+			"heading": "Pictures from the hill",
+			"accent": "",
+			"intro": "Photographs load one screen at a time, sized for slow connections.",
+			"body": "",
+			"note": "Shown when a gallery filter has no photographs: Title = heading, Text = message.",
+			"items": [
+				{
+					"title": "No photographs here yet",
+					"subtitle": "",
+					"body": "Have one from your own graduation? Old students can add it to the gallery.",
+					"meta": ""
+				}
+			]
+		}
+	}
+}

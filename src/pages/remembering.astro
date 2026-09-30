@@ -1,0 +1,105 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/ui/Button.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { loadSections } from "../lib/sections";
+
+const candles = [
+	{ h: 60, delay: "0s" },
+	{ h: 90, delay: "0.6s" },
+	{ h: 120, delay: "1.2s" },
+	{ h: 90, delay: "1.8s" },
+	{ h: 60, delay: "0.3s" },
+];
+
+const sec = await loadSections("remembering", Astro);
+
+const field = "flex flex-col gap-1.5 text-caption font-bold tracking-wide text-mustard-tint";
+const input = "min-h-12 w-full rounded-control border border-brass-light/60 bg-paper px-3.5 text-base font-normal text-ink";
+---
+
+<Base title="Remembering" description="A place to remember the teachers, staff and old students of Mountain Home School who have passed away.">
+	<div class="on-navy bg-navy-deep">
+		<section aria-labelledby="rm-title" class="relative overflow-hidden">
+			<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-x-0 bottom-0 h-65 w-full object-cover opacity-25" />
+			<div class="relative mx-auto flex max-w-site flex-col items-center gap-7 px-4 pt-20 pb-16 text-center lg:px-30 lg:pt-30 lg:pb-24">
+				<div aria-hidden="true" class="flex h-50 items-end gap-6 sm:gap-14">
+					{
+						candles.map((k) => (
+							<div class="flex flex-col items-center">
+								<div class="rm-glow -mb-21 size-30 rounded-full candle-glow" style={`animation-delay:${k.delay}`}></div>
+								<div class="rm-flame h-9.5 w-5 rounded-[50%_50%_50%_50%/65%_65%_35%_35%] bg-flame shadow-flame" style={`animation-delay:${k.delay}`}></div>
+								<div class="h-2 w-0.5 bg-soot"></div>
+								<div class="w-8 rounded-t-[3px] bg-parchment-deep sm:w-12" style={`height:${k.h}px`}></div>
+							</div>
+						))
+					}
+				</div>
+				<h1 id="rm-title" class="relative max-w-245 text-4xl leading-tight font-medium text-cream md:text-6xl lg:text-display-xl lg:leading-[1.02]">{sec("hero").heading}</h1>
+				<p class="relative max-w-[62ch] text-lg text-fog lg:text-body-md">{sec("hero").intro}</p>
+			</div>
+		</section>
+
+		<section aria-labelledby="nm-title" class="mx-auto flex max-w-site flex-col gap-8 px-4 pt-8 pb-16 lg:px-30 lg:pb-24">
+			<div class="border-b border-brass-light/45 pb-5">
+				<h2 id="nm-title" class="font-serif text-4xl leading-none font-semibold text-cream">{sec("names").heading}</h2>
+			</div>
+			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					sec("names").items.map((n) => (
+						<article class="flex flex-col gap-2.5 border border-brass bg-card-navy px-7.5 pt-7.5 pb-6.5 outline outline-offset-[5px] outline-brass/40">
+							<Eyebrow onDark>{n.subtitle}</Eyebrow>
+							<h3 class="font-serif text-3xl leading-tight font-semibold text-cream"><Tagged text={n.title} /></h3>
+							<span class="text-label text-brass-pale"><Tagged text={n.meta} /></span>
+							<p class="max-w-[42ch] font-serif text-body-md leading-snug font-medium text-sand italic"><Tagged text={n.body} /></p>
+						</article>
+					))
+				}
+			</div>
+			<p class="text-sm text-fog"><Tagged text={sec("names").note} onDark /></p>
+		</section>
+
+		<section aria-labelledby="tb-title" class="border-t border-brass-light/45 bg-navy">
+			<div class="mx-auto grid max-w-site items-start gap-10 px-4 py-16 lg:grid-cols-[5fr_7fr] lg:gap-18 lg:px-30 lg:py-24">
+				<div class="flex flex-col gap-4">
+					<h2 id="tb-title" class="h2">{sec("tribute").heading}</h2>
+					<p class="text-haze">{sec("tribute").intro}</p>
+				</div>
+				<!-- No endpoint yet: complete form, sending disabled until the alumni office confirms where tributes go. -->
+				<form class="grid gap-x-5 gap-y-4.5 sm:grid-cols-2" onsubmit="return false">
+					<div class={field}><label for="t-name">Their name</label><input id="t-name" class={input} type="text" /></div>
+					<div class={field}>
+						<label for="t-rel">They were a…</label>
+						<select id="t-rel" class={input}><option>Teacher</option><option>Member of staff</option><option>Old student</option></select>
+					</div>
+					<div class={field}><label for="t-years">Years at the school</label><input id="t-years" class={input} type="text" placeholder="e.g. 1972 – 1995" /></div>
+					<div class={field}><label for="t-you">Your name &amp; batch</label><input id="t-you" class={input} type="text" /></div>
+					<div class={`${field} sm:col-span-2`}><label for="t-words">Your tribute</label><textarea id="t-words" class={`${input} min-h-36 py-3`}></textarea></div>
+					<div class="flex flex-wrap items-center gap-3 sm:col-span-2">
+						<Button type="submit" disabled aria-describedby="tr-why">Send tribute</Button>
+						<Confirm id="tr-why" onDark>[FORM NOT YET CONNECTED]</Confirm>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</Base>
+
+<style>
+	/* Scoped and prefixed. This was `is:global` with bare .flame/.glow names and
+	   its own copy of the prefers-reduced-motion block, so it both leaked across
+	   the site and duplicated global.css. */
+	@keyframes rm-flicker {
+		0%, 100% { transform: scale(1) translateY(0); opacity: 1; }
+		35% { transform: scale(0.94, 1.06) translateY(-1px); opacity: 0.92; }
+		70% { transform: scale(1.04, 0.96); opacity: 1; }
+	}
+	@keyframes rm-glow {
+		0%, 100% { opacity: 0.85; }
+		50% { opacity: 1; }
+	}
+	.rm-flame { animation: rm-flicker 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+	.rm-glow { animation: rm-glow 3.2s ease-in-out infinite; }
+</style>

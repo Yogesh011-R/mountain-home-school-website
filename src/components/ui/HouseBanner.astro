@@ -1,0 +1,32 @@
+---
+// Swallow-tailed house pennant hanging from a grey pole.
+import { houseColour, houseInitial, houseOnColour } from "../../lib/houses";
+
+interface Props {
+	name: string;
+	colour: string;
+	shape: string;
+	hex?: string | null;
+}
+
+const { name, colour, shape, hex } = Astro.props;
+
+const shapeMarks: Record<string, string> = {
+	circle: "size-6.5 rounded-full",
+	diamond: "size-5.5 rotate-45",
+	square: "size-6",
+	triangle: "h-6.5 w-7 [clip-path:polygon(50%_0,100%_100%,0_100%)]",
+};
+const onColour = houseOnColour(colour, hex);
+---
+
+<div aria-hidden="true" class="mt-7 flex flex-col items-center">
+	<div class="h-1.5 w-38 rounded-full bg-grey"></div>
+	<div
+		class="-mt-0.5 flex h-50 w-33 flex-col items-center gap-3.5 pt-7 [clip-path:polygon(0_0,100%_0,100%_100%,50%_80%,0_100%)]"
+		style={`background:${houseColour(colour, hex)};color:${onColour}`}
+	>
+		<span class="font-serif text-6xl leading-none font-bold">{houseInitial(name)}</span>
+		<span class:list={[shapeMarks[shape] ?? shapeMarks.square]} style={`background:${onColour}`}></span>
+	</div>
+</div>

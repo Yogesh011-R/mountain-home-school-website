@@ -1,17 +1,227 @@
 ---
+import SmartImage from "../components/ui/SmartImage.astro";
+import Base from "../layouts/Base.astro";
+import BeadRule from "../components/BeadRule.astro";
+import CrestWatermark from "../components/ui/CrestWatermark.astro";
+import NewsCard from "../components/NewsCard.astro";
+import Timeline from "../components/Timeline.astro";
+import Button from "../components/ui/Button.astro";
+import Caption from "../components/ui/Caption.astro";
+import Card from "../components/ui/Card.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import LinkArrow from "../components/ui/LinkArrow.astro";
+import PhotoFrame from "../components/ui/PhotoFrame.astro";
+import Section from "../components/ui/Section.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { lines, loadSections } from "../lib/sections";
+import { news as allNews, timeline as allTimeline } from "../lib/content";
 
+const timeline = allTimeline.slice(0, 6);
+const news = allNews.slice(0, 2);
+
+const sec = await loadSections("home", Astro);
+
+// Photos and link targets stay in code, matched to the pillar by position; the words come from the CMS.
+const pillarArt = [
+	{ img: "/images/computer-lab.jpg", alt: "Students in grey sweaters work at computers in the school's long, sunlit computer lab" },
+	{ img: "/images/hostel-block.jpg", alt: "A two-storey mustard-yellow building with a long upper balcony, framed by tall pines" },
+	{ img: "/images/sports-day.jpg", alt: "Sports Day on the red-earth ground: students in house colours sit in rows while parents watch from the terraces" },
+];
+const pillarHref = ["/academics", "/life", "/houses"];
+// Looked up by position, not cycled: a fourth pillar gets a placeholder rather
+// than silently repeating the first pillar's photograph.
+const pillars = sec("pillars").items.map((p, i) => ({
+	kicker: p.subtitle,
+	title: p.title,
+	body: p.body,
+	link: p.meta,
+	href: pillarHref[i] ?? "/contact",
+	art: pillarArt[i] ?? null,
+}));
+
+const glance = lines(sec("hero").body);
+const [welcomeCaption = "", ...welcomeCaptionTag] = sec("welcome").note.split("|").map((c) => c.trim());
+const [archiveCaption = "", ...archiveCaptionTag] = sec("spotlight").note.split("|").map((c) => c.trim());
+const principal = sec("welcome").items[0];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base title="Home" description="Mountain Home School & Junior College, Coonoor. Knowledge Is Power. A co-educational day and residential school in the Nilgiri hills since 1911.">
+	<!-- HERO -->
+	<section aria-labelledby="hero-title" class="relative overflow-hidden bg-navy">
+		<SmartImage src="/images/hero-campus.jpg"
+			alt="A cream school building with a red roof among tall trees at dusk, Coonoor"
+			loading="eager"
+			fetchpriority="high"
+			quality={65}
+			sizes="100vw"
+			width={1920}
+			class="absolute inset-0 size-full object-cover object-[60%_50%]"
+		/>
+		<div class="absolute inset-0 bg-navy-deep/75"></div>
+		<div class="absolute inset-0 shadow-wash"></div>
+		<div class="mist"></div>
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute bottom-0 left-0 h-48 w-full object-cover opacity-35 lg:h-65" />
+
+		<div class="relative mx-auto grid max-w-site items-center gap-10 px-5 pt-16 pb-10 lg:min-h-195 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-18 lg:px-30 lg:py-0">
+			<div class="animate-rise order-2 flex flex-col gap-6 text-center lg:order-1 lg:gap-7 lg:text-left">
+				<div class="flex items-center justify-center gap-4 lg:justify-start lg:gap-4.5">
+					<BeadRule class="hidden lg:block" />
+				</div>
+				<h1 id="hero-title" class="text-6xl leading-[0.98] font-medium tracking-tight text-cream md:text-8xl">
+					{sec("hero").heading} {sec("hero").accent}
+				</h1>
+				<p class="mx-auto max-w-[62ch] text-lg leading-relaxed text-sand lg:mx-0 lg:text-body-lg">{sec("hero").intro}</p>
+				<div class="mt-2 flex flex-col gap-4 sm:flex-row sm:flex-wrap lg:justify-start">
+					<Button href="/admissions">Apply for Admission</Button>
+					<Button href="/alumni" variant="ghost">Alumni: Come Home</Button>
+				</div>
+			</div>
+			<div class="animate-rise relative order-1 flex items-center justify-center [animation-delay:0.3s] lg:order-2">
+				<div class="absolute hidden size-100 rounded-full border border-brass-light/35 lg:block"></div>
+				<div class="absolute hidden size-110 rounded-full border border-dashed border-brass-light/20 lg:block"></div>
+				<SmartImage src="/images/crest.png"
+					alt="The Mountain Home School crest: a shield quartered by a beaded cross, with an open book, crossed keys, a harp and an oil lamp, under the motto Knowledge Is Power"
+					width={340}
+					quality={85}
+					class="relative size-40 object-contain md:size-52 lg:size-85"
+				/>
+			</div>
+		</div>
+
+		<ul class="relative mx-auto flex max-w-site flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-brass-light/40 px-5 py-5 text-sm font-semibold tracking-nav text-sand uppercase lg:h-19 lg:flex-nowrap lg:justify-between lg:px-30 lg:py-0 lg:text-caption lg:tracking-label">
+			{glance.map((g, i) => (
+				<>
+					<li>{g}</li>
+					{i < glance.length - 1 && <li aria-hidden="true" class="text-brass">●</li>}
+				</>
+			))}
+		</ul>
+	</section>
+
+	<!-- WELCOME -->
+	<Section labelledby="welcome-title" innerClass="grid items-center gap-12 lg:grid-cols-[7fr_5fr] lg:gap-24">
+		<div class="flex flex-col gap-6">
+			<svg width="36" height="36" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true" class="text-brass"><path d="M20 38 C20 26 21 16 26 6"></path><path d="M21 24 C13 22 9 16 10 9 C17 11 21 16 21 24Z"></path><path d="M23 16 C29 15 33 10 33 4 C27 5 23 9 23 16Z"></path></svg>
+			<h2 id="welcome-title" class="h2">{sec("welcome").heading}</h2>
+			<p class="lede">{sec("welcome").intro}</p>
+			<p class="muted">{sec("welcome").body}</p>
+			<div class="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+				{
+					principal && (
+						<div class="flex flex-col gap-0.5">
+							<span class="font-serif text-2xl leading-tight font-semibold text-navy italic"><Tagged text={principal.title} /></span>
+							<span class="muted text-label"><Tagged text={principal.subtitle} /></span>
+						</div>
+					)
+				}
+				<LinkArrow href="/our-story">Read our story</LinkArrow>
+			</div>
+		</div>
+		<figure>
+			<PhotoFrame src="/images/investiture.jpg" alt="Senior students in navy blazers stand on stage with hands on their hearts during the investiture ceremony, house flags behind them" heightClass="h-72 md:h-110" />
+			<Caption>{welcomeCaption}{welcomeCaptionTag.length > 0 && <Fragment slot="note"><Tagged text={welcomeCaptionTag.join(" | ")} /></Fragment>}</Caption>
+		</figure>
+	</Section>
+
+	<!-- TIMELINE TEASER -->
+	<Section labelledby="since-title" bg="overflow-hidden bg-mustard-tint">
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-0 size-full object-cover opacity-35" />
+		<div class="relative flex flex-col items-center gap-10 lg:gap-14">
+			<div class="relative flex h-16 w-full max-w-110 items-center justify-center lg:h-19">
+				<svg viewBox="0 0 440 76" aria-hidden="true" class="absolute inset-0 size-full text-brass"><path d="M60 22 L22 28 L38 44 L18 60 L60 56 Z" fill="var(--color-gold-pale)" stroke="currentColor" stroke-width="1.4"></path><path d="M380 22 L418 28 L402 44 L422 60 L380 56 Z" fill="var(--color-gold-pale)" stroke="currentColor" stroke-width="1.4"></path><path d="M52 16 Q220 4 388 16 L388 58 Q220 46 52 58 Z" fill="var(--color-paper)" stroke="currentColor" stroke-width="1.4"></path></svg>
+				<h2 id="since-title" class="relative pb-1 font-serif text-xl leading-none font-semibold tracking-nav text-navy uppercase lg:text-title-md">{sec("since").heading}</h2>
+			</div>
+
+			{timeline.length > 0 && <Timeline items={timeline} />}
+			<Button href="/our-story" variant="outline">Walk through our history</Button>
+		</div>
+	</Section>
+
+	<!-- PILLARS -->
+	<Section labelledby="pillars-title" innerClass="flex flex-col gap-10 lg:gap-14">
+		<div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-end lg:gap-12">
+			<h2 id="pillars-title" class="h2">{sec("pillars").heading}</h2>
+			<p class="muted">{sec("pillars").intro}</p>
+		</div>
+		<div class="grid gap-10 md:grid-cols-3">
+			{pillars.map((p) => (
+				<article class="flex flex-col gap-5">
+					{p.art ? (
+						<PhotoFrame src={p.art.img} alt={p.art.alt} heightClass="h-56 lg:h-75" lift />
+					) : (
+						<div class="flex h-56 items-center justify-center rounded-frame border border-dashed border-brass bg-mount lg:h-75">
+							<Confirm>[PHOTO NEEDED]</Confirm>
+						</div>
+					)}
+					<Eyebrow muted>{p.kicker}</Eyebrow>
+					<h3 class="h3">{p.title}</h3>
+					<p class="muted"><Tagged text={p.body} /></p>
+					<LinkArrow href={p.href}>{p.link}</LinkArrow>
+				</article>
+			))}
+		</div>
+	</Section>
+
+	<!-- PULL QUOTE -->
+	<section aria-label="Our promise" class="on-navy relative flex flex-col items-center gap-6 overflow-hidden px-5 py-16 text-center lg:gap-7 lg:px-30 lg:py-24">
+		<CrestWatermark class="pointer-events-none absolute top-1/2 left-1/2 size-80 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.06] lg:size-140" />
+		<BeadRule beads={10} class="relative" />
+		<blockquote class="relative max-w-245 font-serif text-4xl leading-[1.1] font-medium text-cream italic md:text-6xl">{sec("promise").heading}</blockquote>
+		<p class="relative max-w-[40ch] text-base leading-relaxed text-brass-light">{sec("promise").note}</p>
+	</section>
+
+	<!-- NEWS -->
+	<Section labelledby="news-title" innerClass="flex flex-col gap-10 lg:gap-12">
+		<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+			<h2 id="news-title" class="h2">{sec("news").heading}</h2>
+			<LinkArrow href="/news">All news &amp; events</LinkArrow>
+		</div>
+		<div class="grid gap-8 lg:grid-cols-3">
+			{news.map((n) => (
+				<NewsCard href={`/news/${n.slug}`} title={n.title} category={n.category} excerpt={n.excerpt} eventDate={n.event_date} image={n.featured_image} />
+			))}
+			<Card variant="navy" class="gap-4 p-8 lg:p-9">
+				<CrestWatermark class="pointer-events-none absolute -right-15 -bottom-15 size-65 object-contain opacity-10" />
+				<h3 class="relative max-w-[20ch] font-serif text-4xl leading-tight text-cream"><Tagged text={sec("admissions").heading} onDark /></h3>
+				<p class="relative max-w-[40ch] text-base text-haze"><Tagged text={sec("admissions").intro} onDark /></p>
+				<div class="relative mt-auto flex flex-col gap-3 pt-4">
+					<Button href="/admissions">Start an enquiry</Button>
+					<Button href="/admissions#fees" variant="ghost">Process, eligibility &amp; fees</Button>
+				</div>
+			</Card>
+		</div>
+	</Section>
+
+	<!-- ALUMNI SPOTLIGHT -->
+	<section aria-labelledby="spot-title" class="grid items-center gap-12 border-t border-brass/40 bg-parchment-deep px-4 py-16 lg:grid-cols-[5fr_7fr] lg:gap-24 lg:px-30 lg:py-24">
+		<figure class="mx-auto w-full max-w-md -rotate-1 lg:max-w-none lg:-rotate-[1.2deg]">
+			<PhotoFrame src="/images/archive-hall.jpg" alt="A gabled hall with arched windows, shown in sepia as a stand-in for an archive photograph" heightClass="h-56 md:h-80 lg:h-115" sepia />
+			<Caption mount>{archiveCaption}{archiveCaptionTag.length > 0 && <Fragment slot="note"><Tagged text={archiveCaptionTag.join(" | ")} /></Fragment>}</Caption>
+		</figure>
+		<div class="flex flex-col gap-6">
+			<h2 id="spot-title" class="h2"><Tagged text={`${sec("spotlight").heading} ${sec("spotlight").accent}`} /></h2>
+			<blockquote class="max-w-[46ch] font-serif text-2xl leading-snug font-medium text-ink italic lg:text-3xl"><Tagged text={sec("spotlight").body} /></blockquote>
+			<p class="muted text-label"><Tagged text={sec("spotlight").intro} /></p>
+			<div class="mt-2 flex flex-col gap-4 sm:flex-row">
+				<Button href="/alumni">Alumni: Come Home</Button>
+				<Button href="/alumni#memories" variant="outline">Share a memory</Button>
+			</div>
+		</div>
+	</section>
+
+	<!-- CLOSING CTA -->
+	<Section labelledby="visit-title">
+		<div class="relative grid items-center gap-8 overflow-hidden rounded-card border border-brass bg-paper p-8 pl-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12 lg:px-14 lg:py-12 lg:pl-18">
+			<div class="gingham absolute inset-y-0 left-0 w-3" aria-hidden="true"></div>
+			<div class="flex flex-col gap-3">
+				<h2 id="visit-title" class="font-serif text-3xl lg:text-display-md">{sec("visit").heading}</h2>
+				<p class="muted">{sec("visit").intro}</p>
+			</div>
+			<div class="flex flex-col gap-4 sm:flex-row">
+				<Button href="/contact">Plan a visit</Button>
+				<Button href="/admissions" variant="outline">Admissions</Button>
+			</div>
+		</div>
+	</Section>
+</Base>

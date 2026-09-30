@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+/*
+ * Mountain Home School design tokens (from the Claude Design concept).
+ * Colours come from the real crest, uniform and campus buildings.
+ * House colours: change here only.
+ *
+ * Token hierarchy (Brand -> Semantic -> Component): raw crest/uniform hues
+ * live here as brand tokens; purpose-named aliases (linen, fog, mount, ...)
+ * are the semantic layer every component must use -- no hardcoded hex in
+ * markup. This is the Tailwind v4 CSS-first setup: no tailwind.config,
+ * keyframes live inside @theme, and --container-site feeds max-w-site.
+ *
+ * Reusable UI lives in src/components/ui/ (Button, Card, PhotoFrame, ...).
+ * This file holds tokens, base styles and a few global helpers only.
+ */
+@theme {
+	--color-navy: #1e2a4a;
+	--color-navy-deep: #151e36;
+	--color-navy-soft: #26345a;
+	--color-grey: #8e939b;
+	--color-grey-light: #c9ced6;
+	--color-brick: #a8342f;
+	--color-brick-dark: #86261f;
+	--color-brass: #b08a2e;
+	--color-brass-light: #d9b862;
+	--color-gold-pale: #e7ce8a;
+	--color-mustard: #e0b23c;
+	--color-mustard-tint: #f1dfa6;
+	--color-parchment: #f7f1e3;
+	--color-parchment-deep: #efe6d1;
+	--color-paper: #fffcf4;
+	--color-cream: #fbf6e8;
+	--color-ink: #24232b;
+	--color-ink-muted: #565a63;
+
+	/* Semantic aliases: purpose-named, so markup reads intent, not hex.
+	   Per the skill's token hierarchy, these are semantic tokens on top of
+	   the brand tokens above; components must use these. */
+	--color-linen: #ede7d6; /* on-navy body copy, header/nav text, card text */
+	--color-haze: #d5d8df; /* on-navy secondary copy */
+	--color-fog: #c5c9d2; /* on-navy muted copy, form help */
+	--color-sand: #e4dfd0; /* hero / intro copy on photo washes */
+	--color-soot: #3a3530; /* warm body ink on paper, progress wicks */
+	--color-bronze: #a07c22; /* confirm borders on light */
+	--color-bronze-ink: #5a430e; /* confirm text on light */
+	--color-brass-deep: #77601c; /* focus ring on light (5.4:1 on parchment) */
+	--color-mount: #f4e9cf; /* aged photo mount */
+	--color-track: #e9e1cc; /* map / media placeholder field */
+	--color-bar: #ede6d3; /* house points track */
+	--color-flame: #f6d67a; /* remembrance candle flame */
+	--color-brass-pale: #cdbb8a; /* on-navy meta / plaque captions */
+	--color-card-navy: #1b2440; /* remembrance name card */
+
+	/* Type scale: repeated display sizes as tokens (skill: extend @theme,
+	   not arbitrary values). Only sizes used 3+ times become tokens;
+	   one-offs (34px numerals, 44px era titles, 84px/120px heroes) stay
+	   literal so the token list matches real repetition. */
+	--text-display-2xl: 5rem; /* 80px page-hero headlines */
+	--text-title-lg: 1.75rem; /* 28px process / step titles */
+	--text-title-md: 1.625rem; /* 26px news / welcome titles */
+	--text-title-sm: 1.375rem; /* 22px contact / intro titles */
+	--text-body-lg: 1.3125rem; /* 21px hero ledes */
+	--text-body-md: 1.1875rem; /* 19px quote / tribute body */
+	--text-label: 0.9375rem; /* 15px nav / meta / excerpts */
+	--text-caption: 0.8125rem; /* 13px footer heads / form labels */
+
+	/* Tracking tokens for the two tracked-label registers. */
+	--tracking-label: 0.14em; /* eyebrows, kickers, ticker */
+	--tracking-nav: 0.1em; /* header strapline, ticker base */
+
+	/* One site container: every width-limited band reads max-w-site. */
+	--container-site: 90rem;
+
+	/* Elevation: mounted prints, pinned notes, and vignette washes. */
+	--shadow-mount: 0 1px 2px rgba(30, 42, 74, 0.08), 0 14px 30px -20px rgba(30, 42, 74, 0.45);
+	--shadow-pinned: 0 10px 20px -14px rgba(30, 42, 74, 0.5);
+	--shadow-vignette: inset 0 0 90px rgba(40, 24, 6, 0.32);
+	--shadow-wash: inset 0 0 260px rgba(5, 8, 18, 0.6);
+	--shadow-flame: 0 0 20px 6px rgba(246, 214, 122, 0.35);
+
+	/* Corner radii: soft on things you touch, near-square on mounted prints. */
+	--radius-control: 6px; /* buttons, inputs, tags */
+	--radius-card: 8px; /* cards, panels */
+	--radius-frame: 2px; /* photo frames (mounted-print look) */
+
+	/* --font-cormorant / --font-source-sans are set by Astro's font pipeline (astro.config.mjs) */
+	--font-serif: var(--font-cormorant), Georgia, "Times New Roman", serif;
+	--font-sans: var(--font-source-sans), "Segoe UI", system-ui, sans-serif;
+
+	--animate-rise: rise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	--animate-drift: drift 40s ease-in-out infinite alternate;
+
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(18px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+	@keyframes drift {
+		from {
+			transform: translateX(-7%);
+		}
+		to {
+			transform: translateX(7%);
+		}
+	}
+}
+
+/*
+ * House colours, keyed by the "colour" field in the CMS (red, blue, green, yellow).
+ * "static" keeps them as CSS variables even when no utility class uses them,
+ * because they are applied from CMS data via var(--color-house-<colour>).
+ */
+@theme static {
+	--color-house-red: #b3312e;
+	--color-house-blue: #2f5fa8;
+	--color-house-green: #2e7d45;
+	--color-house-yellow: #e3b120;
+}
+
+@layer base {
+	html {
+		/* Clears the sticky header (Header.astro) for every #anchor on the site,
+		   so sections are never scrolled underneath it. */
+		scroll-padding-top: 6rem;
+		/* No `scroll-behavior: smooth` here on purpose. Smooth scrolling is Lenis's
+		   job now (see the script at the end of Base.astro), and Lenis writes scroll
+		   with `behavior: "instant"` — leaving CSS smooth on as well double-smoothes
+		   every jump. Lenis reads this scroll-padding-top itself, so anchors still
+		   clear the header. */
+	}
+	body {
+		@apply bg-parchment font-sans text-lg leading-relaxed text-ink antialiased;
+	}
+	/* One link treatment site-wide. Components override the colour with a
+	   text-* utility; nothing falls through to the browser default. */
+	a {
+		color: var(--color-brick);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.2em;
+	}
+	a:hover {
+		color: var(--color-brick-dark);
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+		@apply font-serif font-semibold leading-[1.08] text-navy text-balance;
+	}
+	p {
+		@apply text-pretty;
+	}
+	:focus-visible {
+		@apply outline-3 outline-offset-3 outline-brass-deep;
+	}
+	/* On navy the light-surface ring fails, so dark bands get brass-light instead. */
+	.on-navy :focus-visible {
+		@apply outline-brass-light;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation: none !important;
+			transition: none !important;
+			scroll-behavior: auto !important;
+		}
+	}
+}
+
+/* Global helpers that are too small to be components */
+@layer components {
+	.h2 {
+		@apply font-serif text-4xl font-semibold text-navy md:text-5xl;
+	}
+	.h3 {
+		@apply font-serif text-3xl font-semibold text-navy;
+	}
+	.h4 {
+		@apply font-serif text-2xl font-semibold text-navy;
+	}
+	/* Reading measure. Capping here rather than per-paragraph keeps every long
+	   block of body copy under ~75 characters without touching 91 <p> elements.
+	   Serif and sans both sit comfortably at this width. */
+	.lede {
+		@apply max-w-[58ch] text-xl leading-relaxed;
+	}
+	.muted {
+		@apply max-w-[68ch] text-ink-muted;
+	}
+	.on-navy {
+		@apply bg-navy text-linen;
+	}
+	.on-navy :is(h1, h2, h3, h4) {
+		@apply text-cream;
+	}
+	/* Plain links keep the global brick treatment on light surfaces, but brick
+	   on navy fails contrast (2.2:1 rest, 1.6:1 hover). Dark bands get the
+	   mustard-tint treatment instead. Component colours (Button, LinkArrow
+	   onDark, Eyebrow onDark) still win: they live in the utilities layer. */
+	.on-navy a {
+		color: var(--color-mustard-tint);
+	}
+	.on-navy a:hover {
+		color: var(--color-cream);
+	}
+	.sepia-photo img {
+		filter: sepia(0.6) contrast(0.94) brightness(1.03);
+	}
+	.gingham {
+		background-color: var(--color-paper);
+		background-image:
+			linear-gradient(90deg, color-mix(in oklab, var(--color-brick) 45%, transparent) 50%, transparent 50%),
+			linear-gradient(color-mix(in oklab, var(--color-brick) 45%, transparent) 50%, transparent 50%);
+		background-size: 10px 10px;
+	}
+	/* Press feedback, in one place, for every trigger that is not a Button.
+	   Without an active state a tap on a border-and-background control
+	   registers only once the next page loads, because there is no hover to
+	   fall back on once the pointer leaves. 1px of travel reads as a
+	   depression, moves nothing in the layout, and global.css:112 already
+	   neutralises it under prefers-reduced-motion with every other transition. */
+	.pressable {
+		@apply transition-[color,background-color,border-color,transform] duration-150 active:translate-y-px;
+	}
+	.mist {
+		@apply pointer-events-none absolute -inset-x-[20%] -inset-y-[10%] animate-drift blur-[14px];
+		background:
+			radial-gradient(ellipse 40% 20% at 28% 74%, color-mix(in oklab, var(--color-linen) 22%, transparent), transparent 70%),
+			radial-gradient(ellipse 34% 16% at 72% 62%, color-mix(in oklab, var(--color-linen) 16%, transparent), transparent 70%),
+			radial-gradient(ellipse 55% 18% at 50% 92%, color-mix(in oklab, var(--color-linen) 20%, transparent), transparent 70%);
+	}
+	/* Candle glow: warm radial halo behind each flame. One utility so the
+	   remembrance and alumni candles share the same token-driven halo. */
+	.candle-glow {
+		background: radial-gradient(circle, color-mix(in oklab, var(--color-flame) 35%, transparent), transparent 65%);
+	}
+}

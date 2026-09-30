@@ -1,0 +1,38 @@
+[
+	{
+		"title": "Bower",
+		"colour": "red",
+		"shape": "circle",
+		"summary": "The red house.",
+		"points": 0,
+		"sort_order": 1,
+		"slug": "bower"
+	},
+	{
+		"title": "Trutwin",
+		"colour": "blue",
+		"shape": "diamond",
+		"summary": "The blue house.",
+		"points": 0,
+		"sort_order": 2,
+		"slug": "trutwin"
+	},
+	{
+		"title": "Pound",
+		"colour": "green",
+		"shape": "square",
+		"summary": "The green house.",
+		"points": 0,
+		"sort_order": 3,
+		"slug": "pound"
+	},
+	{
+		"title": "D'Prazer",
+		"colour": "yellow",
+		"shape": "triangle",
+		"summary": "The yellow house.",
+		"points": 0,
+		"sort_order": 4,
+		"slug": "dprazer"
+	}
+]

@@ -1,0 +1,25 @@
+---
+// Decorative crest watermark. The crest appears ~12 times as a low-opacity
+// background flourish, always hidden from assistive tech and served at a capped
+// width rather than as a full-size asset.
+import SmartImage from "./SmartImage.astro";
+
+interface Props {
+	class?: string;
+	/** Rendered width in px; caps the generated asset. */
+	width?: number;
+	style?: string;
+}
+
+const { class: className, width = 560, style } = Astro.props;
+---
+
+<SmartImage
+	src="/images/crest.png"
+	alt=""
+	decorative
+	{width}
+	quality={60}
+	class:list={["pointer-events-none select-none", className]}
+	{style}
+/>

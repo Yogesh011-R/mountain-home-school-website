@@ -1,0 +1,303 @@
+---
+import SmartImage from "../components/ui/SmartImage.astro";
+import Base from "../layouts/Base.astro";
+import CrestWatermark from "../components/ui/CrestWatermark.astro";
+import BeadRule from "../components/BeadRule.astro";
+import Button from "../components/ui/Button.astro";
+import Caption from "../components/ui/Caption.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { cells, lines, loadSections, paras } from "../lib/sections";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import PhotoFrame from "../components/ui/PhotoFrame.astro";
+
+const sec = await loadSections("our-story", Astro);
+
+// Photos and sepia treatment stay in code; the words come from the CMS. Each era
+// looks up its own art by position and renders a placeholder once the CMS runs
+// past the code, rather than silently reusing era one.
+const eraArt = [
+	{ sepia: true, img: "/images/archive-hall.jpg", alt: "Rebeiro Hall in sepia", cap: "Rebeiro Hall" },
+	{ sepia: true, img: "/images/hostel-block.jpg", alt: "The two-storey hostel block in sepia", cap: "The hostel block" },
+	{ sepia: false, img: "/images/investiture.jpg", alt: "Students at the investiture ceremony", cap: "Investiture" },
+	{ sepia: false, img: "/images/computer-lab.jpg", alt: "Students at computers in the lab", cap: "Computer lab" },
+];
+const eras = sec("eras").items.map((e, i) => ({
+	label: e.subtitle,
+	title: e.title,
+	intro: e.body,
+	items: lines(e.meta).map((l) => {
+		const [y, ...t] = cells(l);
+		return { y, t: t.join(" | ") };
+	}),
+	art: eraArt[i] ?? null,
+}));
+
+// Hotspot positions are measured against the crest image, so they only apply to
+// the four symbols that were positioned. Extra symbols get a chip but no dot.
+const crestSpots = [
+	{ x: 30, y: 39 },
+	{ x: 69, y: 38 },
+	{ x: 33, y: 69 },
+	{ x: 64, y: 67 },
+];
+const symbols = sec("crest").items.map((m, i) => ({
+	short: m.subtitle,
+	name: m.title,
+	meaning: m.body,
+	spot: crestSpots[i] ?? null,
+}));
+
+const [founderCaption, ...founderCaptionTag] = sec("founders").note.split("|").map((c) => c.trim());
+const plaque = sec("founders").items[0];
+---
+
+<Base title="Our Story" description="How a mission school in Coonoor became a home for generations of children: the story of Mountain Home School since 1911.">
+	<!-- HERO -->
+	<section aria-labelledby="os-title" class="relative overflow-hidden bg-navy">
+		<SmartImage src="/images/hero-campus.jpg" alt="The Mountain Home School campus among tall trees, Coonoor" loading="eager" fetchpriority="high" quality={80} sizes="100vw" width={1920} class="absolute inset-0 size-full object-cover" />
+		<div class="absolute inset-0 bg-navy-deep/75"></div>
+		<div class="mist"></div>
+		<div class="relative mx-auto flex min-h-96 max-w-site flex-col justify-end gap-5 px-4 pt-24 pb-12 lg:min-h-130 lg:px-30 lg:pb-18">
+			<h1 id="os-title" class="max-w-275 text-5xl leading-none font-medium text-cream md:text-7xl lg:text-[84px]">
+				{sec("hero").heading} {sec("hero").accent}
+			</h1>
+			<p class="max-w-[62ch] text-lg text-sand lg:text-xl">{sec("hero").intro}</p>
+		</div>
+	</section>
+
+	<!-- FOUNDERS -->
+	<section aria-labelledby="f-title" class="mx-auto grid max-w-site items-center gap-12 px-4 py-16 lg:grid-cols-[7fr_5fr] lg:gap-24 lg:px-30 lg:py-24">
+		<div class="flex flex-col gap-5.5">
+			<h2 id="f-title" class="h2">{sec("founders").heading}</h2>
+			<p class="lede"><Tagged text={sec("founders").intro} /></p>
+			{paras(sec("founders").body).map((p) => <p class="muted"><Tagged text={p} /></p>)}
+			{
+				plaque && (
+					<div class="on-navy mt-2 flex items-center gap-5.5 rounded-card border border-brass px-7 py-5.5">
+						<CrestWatermark class="size-16 object-contain" />
+						<div class="flex flex-col gap-1">
+							<span class="text-xs leading-none font-semibold tracking-label text-brass-light uppercase">{plaque.subtitle}</span>
+							<span class="font-serif text-2xl leading-tight font-semibold">{plaque.title}</span>
+							<span class="text-sm text-brass-pale">{plaque.meta}</span>
+						</div>
+					</div>
+				)
+			}
+		</div>
+		<figure class="m-0">
+			<PhotoFrame src="/images/archive-hall.jpg" alt="Rebeiro Hall, a pale yellow gabled building with a pillared veranda, shown in sepia" heightClass="h-80 lg:h-125" sepia />
+			<Caption mount>{founderCaption}{founderCaptionTag.length > 0 && <Fragment slot="note"><Tagged text={founderCaptionTag.join(" | ")} /></Fragment>}</Caption>
+		</figure>
+	</section>
+
+	<!-- TIMELINE ERAS -->
+	<section aria-labelledby="tl-title" class="relative overflow-hidden bg-mustard-tint" data-eras>
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-0 size-full object-cover opacity-30" />
+		<div class="relative mx-auto flex max-w-site flex-col gap-10 px-4 py-16 lg:px-30 lg:py-24">
+			<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+				<h2 id="tl-title" class="h2">{sec("eras").heading}</h2>
+				<p class="muted">{sec("eras").intro}</p>
+			</div>
+
+			<div role="tablist" aria-label="Eras" aria-orientation="horizontal" class="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-0">
+				{
+					eras.map((e, i) => (
+						<button
+							type="button"
+							role="tab"
+							id={`era-tab-${i}`}
+							aria-controls={`era-panel-${i}`}
+							aria-selected={i === 0 ? "true" : "false"}
+							tabindex={i === 0 ? 0 : -1}
+							class="pressable min-h-16 cursor-pointer justify-self-center border border-brass bg-paper px-5 font-serif text-xl font-semibold text-navy hover:border-navy aria-selected:bg-navy aria-selected:text-mustard-tint lg:px-7 lg:text-title-md"
+						>
+							{e.label}
+						</button>
+					))
+				}
+			</div>
+
+			{
+				eras.map((e, i) => (
+					<div
+						role="tabpanel"
+						id={`era-panel-${i}`}
+						aria-labelledby={`era-tab-${i}`}
+						hidden={i !== 0}
+						class="relative grid gap-8 rounded-card border border-brass/50 bg-paper p-6 lg:grid-cols-[5fr_7fr] lg:gap-12 lg:p-10 [&[hidden]]:hidden"
+					>
+						<figure class="m-0">
+							{e.art ? (
+								<>
+									<PhotoFrame src={e.art.img} alt={e.art.alt} heightClass="h-64 lg:h-85" sepia={e.art.sepia} />
+									<Caption>{e.art.cap}</Caption>
+								</>
+							) : (
+								<div class="flex h-64 flex-col items-center justify-center gap-3 rounded-frame border border-dashed border-brass bg-mount lg:h-85">
+									<Eyebrow muted>[ARCHIVE SCAN]</Eyebrow>
+								</div>
+							)}
+						</figure>
+						<div class="flex flex-col gap-4.5">
+							<h3 class="font-serif text-4xl leading-none font-semibold text-navy lg:text-[44px]">{e.title}</h3>
+							<p class="muted">{e.intro}</p>
+							<ol class="m-0 flex list-none flex-col p-0">
+								{e.items.map((it) => (
+									<li class="grid grid-cols-[84px_minmax(0,1fr)] gap-5 border-b border-grey/35 py-3.5 lg:grid-cols-[110px_minmax(0,1fr)]">
+										<strong class="font-serif text-2xl leading-tight font-semibold text-brick"><Tagged text={it.y} /></strong>
+										<span class="min-w-0"><Tagged text={it.t} /></span>
+									</li>
+								))}
+							</ol>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<!-- CREST -->
+	<section aria-labelledby="cr-title" class="on-navy relative overflow-hidden" data-crest>
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-x-0 bottom-0 h-65 w-full object-cover opacity-35" />
+		<div class="relative mx-auto grid max-w-site items-center gap-12 px-4 py-16 lg:grid-cols-[520px_minmax(0,1fr)] lg:gap-24 lg:px-30 lg:py-24">
+			<div class="relative mx-auto aspect-[520/510] w-full max-w-130">
+				<SmartImage src="/images/crest.png" alt="The school crest" width={420} quality={85} class="size-full object-contain" />
+				{
+					// Only symbols with a measured position get a dot on the crest.
+					symbols.map((s, i) =>
+						s.spot ? (
+							<button
+								type="button"
+								data-sym={i}
+								aria-label={`Show meaning: ${s.name}`}
+								aria-pressed={i === 0 ? "true" : "false"}
+								class="absolute size-20 -translate-1/2 cursor-pointer rounded-full border-2 border-dashed border-brass-light/45 bg-transparent aria-pressed:border-mustard-tint aria-pressed:bg-brass-light/25 lg:size-26"
+								style={`left:${s.spot.x}%;top:${s.spot.y}%`}
+							/>
+						) : null,
+					)
+				}
+			</div>
+			<div class="relative flex flex-col gap-5.5">
+				<h2 id="cr-title" class="h2">{sec("crest").heading}</h2>
+				<div role="group" aria-label="Crest symbols" class="flex flex-wrap gap-2.5">
+					{
+						// Chips show the same name the hotspots use, so one symbol has
+						// exactly one accessible name and it matches the visible text.
+						symbols.map((s, i) => (
+							<button
+								type="button"
+								data-sym={i}
+								aria-pressed={i === 0 ? "true" : "false"}
+								class="min-h-11 cursor-pointer rounded-full border border-brass-light bg-transparent px-4.5 text-label font-semibold text-mustard-tint aria-pressed:bg-brass-light aria-pressed:text-navy"
+							>
+								{s.name}
+							</button>
+						))
+					}
+				</div>
+				{/* The live region holds only the name and meaning, so a selection change
+				    announces the symbol and nothing else. The editorial note sits
+				    outside it and is never re-announced. */}
+				<p class="text-sm text-brass-pale"><Tagged text={sec("crest").intro} onDark /></p>
+				<div aria-live="polite" class="flex min-h-50 flex-col gap-3 border-t border-brass-light/60 pt-5.5">
+					<h3 data-crest-name class="font-serif text-4xl leading-tight font-semibold text-cream lg:text-[40px]">{symbols[0]?.name}</h3>
+					<p data-crest-meaning class="max-w-[52ch] text-lg text-sand lg:text-body-md">{symbols[0]?.meaning}</p>
+				</div>
+			</div>
+		</div>
+		{/* `</` is escaped so a symbol name can never close the script element. */}
+		<script type="application/json" id="crest-data" set:html={JSON.stringify(symbols.map(({ name, meaning }) => ({ name, meaning }))).replace(/</g, "\\u003c")} />
+	</section>
+
+	<!-- SACRED TRUST -->
+	<section aria-labelledby="st-title" class="mx-auto grid max-w-site gap-10 px-4 py-16 lg:grid-cols-[5fr_7fr] lg:gap-24 lg:px-30 lg:py-24">
+		<div class="flex flex-col gap-4.5">
+			<h2 id="st-title" class="h2">{sec("trust").heading}</h2>
+		</div>
+		<div class="flex flex-col gap-5.5 lg:pt-2.5">
+			<p class="lede">{sec("trust").intro}</p>
+			<div class="mt-3 grid gap-7 sm:grid-cols-3">
+				{
+					sec("trust").items.map((t) => (
+						<div class="flex flex-col gap-2 border-t-2 border-brick pt-4">
+							<h3 class="font-serif text-2xl">{t.title}</h3>
+							<p class="muted text-sm">{t.body}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<!-- HYMN -->
+	<section aria-labelledby="hy-title" class="border-t border-brass/40 bg-parchment-deep">
+		<div class="mx-auto flex max-w-site justify-center px-4 py-16 lg:px-30 lg:py-24">
+			<article class="flex w-full max-w-180 flex-col items-center gap-5 border border-brass bg-paper px-6 py-12 text-center lg:px-18 lg:py-14">
+				<CrestWatermark class="size-18 object-contain" />
+				<h2 id="hy-title" class="h2"><Tagged text={sec("hymn").heading} /></h2>
+				<BeadRule />
+				<p class="max-w-[46ch] font-serif text-title-sm leading-relaxed font-medium text-ink-muted italic whitespace-pre-line"><Tagged text={sec("hymn").body} /></p>
+				<p class="text-sm text-ink-muted"><Tagged text={sec("hymn").note} /></p>
+				{/* Replaced by a real audio control once the school supplies a recording. */}
+				<Button type="button" disabled aria-describedby="hyn-audio">Listen to the hymn</Button>
+				<p id="hyn-audio" class="text-xs text-ink-muted">No recording yet. <Tagged>[AUDIO NOT YET SUPPLIED]</Tagged></p>
+			</article>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Era tabs: arrow keys move between tabs, and only the chosen panel is shown.
+	const eras = document.querySelector<HTMLElement>("[data-eras]");
+	if (eras) {
+		const tabs = [...eras.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+		const select = (n: number, focus = false) => {
+			tabs.forEach((t, i) => {
+				const on = i === n;
+				t.setAttribute("aria-selected", String(on));
+				t.tabIndex = on ? 0 : -1;
+				eras.querySelector<HTMLElement>(`#${t.getAttribute("aria-controls")}`)!.hidden = !on;
+				if (on && focus) t.focus();
+			});
+		};
+		tabs.forEach((t, i) => {
+			t.addEventListener("click", () => select(i));
+			t.addEventListener("keydown", (e) => {
+				// Every key handled here also scrolls, and Lenis is driving the
+				// page, so the default has to be stopped or the era changes
+				// *and* the viewport jumps. One branch per key so an unhandled
+				// key falls through untouched.
+				if (e.key === "ArrowRight") select((i + 1) % tabs.length, true);
+				else if (e.key === "ArrowLeft") select((i + tabs.length - 1) % tabs.length, true);
+				else if (e.key === "Home") select(0, true);
+				else if (e.key === "End") select(tabs.length - 1, true);
+				else return;
+				e.preventDefault();
+			});
+		});
+	}
+
+	// Crest: the hotspots on the crest and the chips below share one selection.
+	// Selection is driven by click and by focus only. Hovering is not a choice,
+	// so it must not rewrite state or fire the live region.
+	const crest = document.querySelector<HTMLElement>("[data-crest]");
+	if (crest) {
+		const data: { name: string; meaning: string }[] = JSON.parse(crest.querySelector("#crest-data")?.textContent ?? "[]");
+		const buttons = [...crest.querySelectorAll<HTMLButtonElement>("[data-sym]")];
+		const name = crest.querySelector("[data-crest-name]");
+		const meaning = crest.querySelector("[data-crest-meaning]");
+		const pick = (n: number) => {
+			const entry = data[n];
+			if (!entry || !name || !meaning) return;
+			buttons.forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.sym) === n)));
+			name.textContent = entry.name;
+			meaning.textContent = entry.meaning;
+		};
+		buttons.forEach((b) => {
+			const n = Number(b.dataset.sym);
+			b.addEventListener("click", () => pick(n));
+			b.addEventListener("focus", () => pick(n));
+		});
+	}
+</script>

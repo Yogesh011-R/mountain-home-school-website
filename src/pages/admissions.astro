@@ -1,0 +1,181 @@
+---
+import Base from "../layouts/Base.astro";
+import CrestWatermark from "../components/ui/CrestWatermark.astro";
+import Button from "../components/ui/Button.astro";
+import Card from "../components/ui/Card.astro";
+import Confirm from "../components/ui/Confirm.astro";
+import PageHero from "../components/ui/PageHero.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { loadSections } from "../lib/sections";
+
+const sec = await loadSections("admissions", Astro);
+
+const field = "flex flex-col gap-1.5 text-caption font-bold tracking-wide text-mustard-tint";
+const input = "min-h-12 w-full rounded-control border border-brass-light/60 bg-paper px-3.5 text-base font-normal text-ink";
+---
+
+<Base title="Admissions" description="Apply to Mountain Home School, Coonoor: the admissions process, eligibility by class, fees and how to enquire.">
+	<PageHero titleId="ad-title" image="/images/archive-hall.jpg" alt="Rebeiro Hall, a pale yellow gabled building with a pillared veranda and red steps" position="50% 40%" wash="bg-navy-deep/76">
+		{sec("hero").heading} {sec("hero").accent}
+		<Fragment slot="intro">{sec("hero").intro}</Fragment>
+		<Button slot="action" href="#enquire">Start an enquiry</Button>
+	</PageHero>
+
+	<!-- PROCESS -->
+	<section aria-labelledby="pr-title" class="mx-auto flex max-w-site flex-col gap-12 px-4 py-16 lg:px-30 lg:py-24">
+			<h2 id="pr-title" class="h2">{sec("process").heading}</h2>
+		<ol class="relative m-0 grid list-none gap-8 p-0 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+			<li aria-hidden="true" class="absolute inset-x-9 top-8.75 hidden h-px bg-brass lg:block"></li>
+			{
+				sec("process").items.map((s) => (
+					<li class="relative flex flex-col gap-3.5">
+						<span class="flex size-18 items-center justify-center rounded-full border border-brass bg-paper font-serif text-[34px] leading-none font-semibold text-brick">{s.subtitle}</span>
+						<h3 class="font-serif text-title-lg">{s.title}</h3>
+						<p class="muted text-sm"><Tagged text={s.body} /></p>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+
+	<!-- ELIGIBILITY + FEES -->
+	<section id="fees" aria-labelledby="el-title" class="border-y border-brass/40 bg-paper">
+		<div class="mx-auto grid max-w-site items-start gap-12 px-4 py-16 lg:grid-cols-[7fr_5fr] lg:gap-16 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-5">
+				<h2 id="el-title" class="h3">{sec("eligibility").heading}</h2>
+			<div class="overflow-x-auto" data-lenis-prevent tabindex="0" role="region" aria-label="Eligibility by class, scrollable table">
+				<table class="w-full border-collapse text-left">
+						<caption class="sr-only">Eligibility by class</caption>
+						<thead>
+							<tr class="border-b-2 border-brass text-sm tracking-wider text-ink-muted uppercase">
+								<th scope="col" class="py-3 pr-4 font-bold">Class</th>
+								<th scope="col" class="py-3 pr-4 font-bold"><Tagged text={sec("eligibility").intro} /></th>
+								<th scope="col" class="py-3 font-bold">What we ask for</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								sec("eligibility").items.map((e) => (
+									<tr class="border-b border-grey/35 align-top">
+										<td class="py-3.5 pr-4"><strong><Tagged text={e.title} /></strong></td>
+										<td class="py-3.5 pr-4"><Tagged text={e.subtitle} /></td>
+										<td class="muted py-3.5"><Tagged text={e.body} /></td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+				<p class="muted max-w-[46ch] text-sm"><Tagged text={sec("eligibility").note} /></p>
+			</div>
+			<div class="flex flex-col gap-5">
+				<h2 class="h3">{sec("fees").heading}</h2>
+				<div class="overflow-x-auto" data-lenis-prevent tabindex="0" role="region" aria-label="Fees by stage, scrollable table">
+					<table class="w-full border-collapse text-left">
+						<caption class="sr-only">Fees by stage</caption>
+						<thead>
+							<tr class="border-b-2 border-brass text-sm tracking-wider text-ink-muted uppercase">
+								<th scope="col" class="py-3 pr-4 font-bold">Stage</th>
+								<th scope="col" class="py-3 pr-4 font-bold">Day</th>
+								<th scope="col" class="py-3 font-bold">Residential</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								sec("fees").items.map((f) => (
+									<tr class="border-b border-grey/35">
+										<td class="py-3.5 pr-4"><Tagged text={f.title} /></td>
+										<td class="py-3.5 pr-4"><Tagged text={f.subtitle} /></td>
+										<td class="py-3.5"><Tagged text={f.meta} /></td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+				<p class="muted max-w-[46ch] text-sm"><Tagged text={sec("fees").note} /></p>
+			</div>
+		</div>
+	</section>
+
+	<!-- ENQUIRY -->
+	<section id="enquire" aria-labelledby="eq-title" class="on-navy relative overflow-hidden">
+		<CrestWatermark class="pointer-events-none absolute -bottom-25 -left-25 size-115 object-contain opacity-[0.06]" />
+		<div class="relative mx-auto grid max-w-site items-start gap-12 px-4 py-16 lg:grid-cols-[4fr_8fr] lg:gap-18 lg:px-30 lg:py-24">
+			<div class="flex flex-col gap-4.5">
+				<h2 id="eq-title" class="h2">{sec("enquiry").heading}</h2>
+				<p class="max-w-[46ch] text-haze"><Tagged text={sec("enquiry").intro} onDark /></p>
+				<p class="max-w-[52ch] text-haze"><Tagged text={sec("enquiry").body} onDark /></p>
+			</div>
+			<!-- No endpoint yet: the form is complete but cannot be sent until the school confirms where enquiries go. -->
+			<form class="grid gap-x-5 gap-y-4.5 border border-brass-light/50 bg-navy-deep/60 p-6 sm:grid-cols-2 lg:p-10" aria-labelledby="eq-title" onsubmit="return false">
+				<div class={field}><label for="q-parent">Parent or guardian's name</label><input id="q-parent" class={input} type="text" autocomplete="name" /></div>
+				<div class={field}><label for="q-phone">Phone (with country code)</label><input id="q-phone" class={input} type="tel" autocomplete="tel" placeholder="+91" /></div>
+				<div class={field}><label for="q-email">Email</label><input id="q-email" class={input} type="email" autocomplete="email" /></div>
+				<div class={field}><label for="q-child">Child's name</label><input id="q-child" class={input} type="text" /></div>
+				<div class={field}>
+					<label for="q-class">Class applying for</label>
+					<select id="q-class" class={input}>
+						<option>Select</option><option>LKG</option><option>UKG</option><option>Class I – V</option><option>Class VI – VIII</option><option>Class IX</option><option>Class XI (ISC)</option>
+					</select>
+				</div>
+				<div class={field}>
+					<label for="q-year">Academic year <Confirm onDark>[CONFIRM YEAR]</Confirm></label>
+					<select id="q-year" class={input}><option value="">Choose the year</option></select>
+				</div>
+				<fieldset class="m-0 flex flex-wrap items-center gap-x-7 gap-y-1 border-0 p-0 sm:col-span-2">
+					<legend class="float-left mr-3 text-caption font-bold tracking-wide text-mustard-tint">Interested in</legend>
+					{["Day school", "Residential", "Not sure yet"].map((m) => (
+						<label class="flex min-h-11 items-center gap-2.5"><input type="radio" name="mode" class="size-5 accent-brass-light" />{m}</label>
+					))}
+				</fieldset>
+				<div class={`${field} sm:col-span-2`}><label for="q-msg">Anything we should know</label><textarea id="q-msg" class={`${input} min-h-28 py-3`}></textarea></div>
+				<label class="flex items-start gap-2.5 text-sm text-fog sm:col-span-2"><input type="checkbox" class="mt-0.5 size-5 accent-brass-light" />I agree to the school contacting me about this enquiry. Details are used only for admissions.</label>
+				<div class="flex flex-wrap items-center gap-4 sm:col-span-2">
+					<Button type="submit" disabled aria-describedby="eq-why">Send enquiry</Button>
+					<Button href="/contact" variant="ghost">Book a visit instead</Button>
+					<Confirm id="eq-why" onDark>[FORM NOT YET CONNECTED]</Confirm>
+				</div>
+			</form>
+		</div>
+	</section>
+
+	<!-- FAQ -->
+	<section aria-labelledby="fq-title" class="mx-auto grid max-w-site items-start gap-10 px-4 py-16 lg:grid-cols-[4fr_8fr] lg:gap-18 lg:px-30 lg:py-24">
+			<h2 id="fq-title" class="h2">{sec("faq").heading}</h2>
+		<div class="border-t border-grey/40">
+			{
+				sec("faq").items.map((f) => (
+					<details class="group border-b border-grey/40">
+						<summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-serif text-2xl font-semibold text-navy [&::-webkit-details-marker]:hidden">
+							{f.title}
+							<span aria-hidden="true" class="text-brick transition-transform group-open:rotate-45">+</span>
+						</summary>
+						<p class="muted pb-5"><Tagged text={f.body} /></p>
+					</details>
+				))
+			}
+		</div>
+	</section>
+
+	<!-- GETTING HERE -->
+	<section aria-labelledby="gt-title" class="relative overflow-hidden bg-mustard-tint">
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-x-0 bottom-0 h-75 w-full object-cover opacity-35" />
+		<div class="relative mx-auto flex max-w-site flex-col gap-10 px-4 py-16 lg:px-30 lg:py-24">
+			<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+					<h2 id="gt-title" class="h2">{sec("travel").heading}</h2>
+				<p class="max-w-[68ch] text-soot">{sec("travel").intro}</p>
+			</div>
+			<div class="grid gap-7 md:grid-cols-3">
+				{
+					sec("travel").items.map((t, i) => (
+						<Card class:list={["gap-3 p-8", i === 2 && "border-brick"]}>
+							<h3 class="font-serif text-3xl"><Tagged text={t.title} /></h3>
+							<p class="muted text-sm"><Tagged text={t.body} /></p>
+						</Card>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</Base>

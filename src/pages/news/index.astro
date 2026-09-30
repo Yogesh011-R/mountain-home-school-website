@@ -1,0 +1,153 @@
+---
+import Base from "../../layouts/Base.astro";
+import NewsCard from "../../components/NewsCard.astro";
+import Card from "../../components/ui/Card.astro";
+import Caption from "../../components/ui/Caption.astro";
+import Eyebrow from "../../components/ui/Eyebrow.astro";
+import LinkArrow from "../../components/ui/LinkArrow.astro";
+import PhotoFrame from "../../components/ui/PhotoFrame.astro";
+import { GALLERY_LABELS } from "../../lib/gallery";
+import { CATEGORY_LABELS, newsImage } from "../../lib/news";
+import { dateBadge, getDateSettings, isoDay } from "../../lib/dates";
+import { loadSections } from "../../lib/sections";
+import { gallery, news as allNews } from "../../lib/content";
+
+const sec = await loadSections("news", Astro);
+
+const dates = getDateSettings();
+const news = allNews;
+const featured = news.find((n) => !n.is_event) ?? news[0];
+// An event is "coming up" until the end of its day (site timezone); past events
+// become ordinary stories. Evaluated at build time.
+const today = isoDay(new Date(), dates.timeZone);
+const isUpcoming = (n: (typeof news)[number]) =>
+	n.is_event && (!n.event_date || isoDay(n.event_date, dates.timeZone) >= today);
+const events = news
+	.filter(isUpcoming)
+	.sort((a, b) => (a.event_date ? +new Date(a.event_date) : Infinity) - (b.event_date ? +new Date(b.event_date) : Infinity));
+const stories = news.filter((n) => n !== featured && !isUpcoming(n));
+
+const photos = gallery;
+// The site is static, so there is no ?photos= query to read: the filter always shows everything.
+const active = "all";
+const filters = ["all", ...Object.keys(GALLERY_LABELS).filter((c) => photos.some((p) => p.category === c))];
+const shown = active === "all" ? photos : photos.filter((p) => p.category === active);
+const featuredPhoto = featured && newsImage(featured.category, featured.featured_image);
+---
+
+<Base title="News & Gallery" description="News, upcoming events and photographs from Mountain Home School, Coonoor.">
+	<section aria-labelledby="nw-title" class="border-b border-brass/50">
+		<div class="mx-auto flex max-w-site flex-col gap-4 px-4 pt-16 pb-10 lg:px-30 lg:pt-22">
+			<h1 id="nw-title" class="text-5xl leading-none font-medium text-navy md:text-7xl lg:text-display-2xl">
+				{sec("hero").heading} {sec("hero").accent}
+			</h1>
+		</div>
+	</section>
+
+	<section aria-label="Latest news" class="mx-auto grid max-w-site items-start gap-12 px-4 py-14 lg:grid-cols-[7fr_5fr] lg:gap-16 lg:px-30 lg:pt-16 lg:pb-24">
+		{
+			featured ? (
+				<article class="relative flex flex-col gap-4.5">
+					<PhotoFrame src={featuredPhoto!.src} alt={featuredPhoto!.alt} heightClass="h-72 md:h-110" eager />
+					<Eyebrow muted>{CATEGORY_LABELS[featured.category] ?? featured.category}</Eyebrow>
+					<h2 class="h2">
+						<a href={`/news/${featured.slug}`} class="text-navy no-underline after:absolute after:inset-0 hover:text-brick">
+							{featured.title}
+						</a>
+					</h2>
+					{featured.excerpt && <p class="muted">{featured.excerpt}</p>}
+					<span class="font-semibold text-brick">
+						{sec("latest").body} <span aria-hidden="true">→</span>
+					</span>
+				</article>
+			) : (
+				<p class="muted">{sec("latest").intro}</p>
+			)
+		}
+		<div class="flex flex-col">
+			<h2 class="h4 border-b-2 border-brass pb-3">{sec("latest").heading}</h2>
+			{events.length === 0 && <p class="muted py-5">{sec("latest").note}</p>}
+			{
+				events.map((e) => {
+					const badge = dateBadge(e.event_date, dates.timeZone);
+					return (
+						<article class:list={["grid gap-4.5 border-b border-grey/35 py-4.5", badge ? "grid-cols-[64px_minmax(0,1fr)]" : ""]}>
+							{badge && (
+								<div class="flex h-fit flex-col items-center rounded-control border border-brass bg-paper py-2">
+									<span class="font-serif text-3xl leading-none font-semibold text-navy">{badge.day}</span>
+									<span class="text-xs leading-snug font-semibold tracking-label text-brick uppercase">{badge.month}</span>
+								</div>
+							)}
+							<div class="flex flex-col gap-1">
+								<h3 class="font-serif text-2xl">
+									<a href={`/news/${e.slug}`} class="text-navy no-underline hover:text-brick">
+										{e.title}
+									</a>
+								</h3>
+								{e.excerpt && <p class="muted text-label">{e.excerpt}</p>}
+							</div>
+						</article>
+					);
+				})
+			}
+		</div>
+	</section>
+
+	{
+		stories.length > 0 && (
+			<section aria-labelledby="more-title" class="mx-auto flex max-w-site flex-col gap-8 px-4 pb-16 lg:px-30 lg:pb-24">
+				<h2 id="more-title" class="h2">{sec("more").heading}</h2>
+				<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					{stories.map((n) => (
+						<NewsCard href={`/news/${n.slug}`} title={n.title} category={n.category} excerpt={n.excerpt} eventDate={n.event_date} image={n.featured_image} />
+					))}
+				</div>
+			</section>
+		)
+	}
+
+	<section id="gallery" aria-labelledby="ga-title" class="border-t border-brass/40 bg-paper">
+		<div class="mx-auto flex max-w-site flex-col gap-8 px-4 py-16 lg:px-30 lg:py-24">
+			<div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-12">
+					<h2 id="ga-title" class="h2">{sec("gallery").heading}</h2>
+				<p class="muted max-w-105 text-sm">{sec("gallery").intro}</p>
+			</div>
+			<nav aria-label="Filter photographs" class="flex flex-wrap gap-2.5">
+				{filters.map((f) => (
+					<a
+						href={f === "all" ? "/news#gallery" : `/news?photos=${f}#gallery`}
+						aria-current={f === active ? "true" : undefined}
+						class:list={[
+							"inline-flex min-h-11 items-center rounded-control border px-4 text-sm font-semibold no-underline transition-colors",
+							f === active ? "border-navy bg-navy text-white" : "border-brass bg-transparent text-navy hover:bg-navy/5",
+						]}
+					>
+						{f === "all" ? "All" : GALLERY_LABELS[f]}
+					</a>
+				))}
+			</nav>
+			<p aria-live="polite" class="muted text-sm">{shown.length} {shown.length === 1 ? "photograph" : "photographs"}</p>
+			{
+				shown.length > 0 ? (
+					<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+						{shown.map((p) => (
+							<figure class="m-0">
+								<PhotoFrame src={p.image?.src ?? ""} alt={p.image?.alt || p.title} heightClass="h-56 lg:h-62.5" lift />
+								<Caption>
+									{p.caption || p.title}
+									<span slot="note">{GALLERY_LABELS[p.category] ?? p.category}</span>
+								</Caption>
+							</figure>
+						))}
+					</div>
+				) : (
+					<Card class="items-center gap-3 border-dashed p-12 text-center">
+						<h3 class="font-serif text-3xl">{sec("gallery").items[0]?.title}</h3>
+						<p class="muted">{sec("gallery").items[0]?.body}</p>
+						<LinkArrow href="/contact">Send a photograph</LinkArrow>
+					</Card>
+				)
+			}
+		</div>
+	</section>
+</Base>

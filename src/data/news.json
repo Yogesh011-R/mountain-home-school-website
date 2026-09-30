@@ -1,0 +1,16 @@
+[
+	{
+		"title": "Investiture of the School Council",
+		"category": "ceremony",
+		"is_event": false,
+		"excerpt": "The new prefects and house captains take their oath before the school.",
+		"slug": "investiture-of-the-school-council"
+	},
+	{
+		"title": "Annual Sports Day",
+		"category": "sports",
+		"is_event": true,
+		"excerpt": "March past, track events and the house cup, on the ground below the hill. Parents and alumni welcome.",
+		"slug": "annual-sports-day"
+	}
+]

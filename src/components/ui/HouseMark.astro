@@ -1,0 +1,31 @@
+---
+// Small house badge: colour + shape + initial, so houses never rely on colour alone.
+import { houseColour, houseInitial, houseOnColour } from "../../lib/houses";
+
+interface Props {
+	name: string;
+	colour: string;
+	shape: string;
+	hex?: string | null;
+	size?: "sm" | "lg";
+}
+
+const { name, colour, shape, hex, size = "sm" } = Astro.props;
+
+const shapes: Record<string, string> = {
+	circle: "rounded-full",
+	diamond: "rotate-45",
+	square: "",
+	triangle: "[clip-path:polygon(50%_0,100%_100%,0_100%)] pt-1.5",
+};
+const dim = size === "lg" ? "size-10 text-lg" : "size-5 text-xs";
+const counterRotate = shape === "diamond";
+---
+
+<span
+	aria-hidden="true"
+	class:list={["inline-flex items-center justify-center leading-none font-bold", dim, shapes[shape] ?? ""]}
+	style={`background:${houseColour(colour, hex)};color:${houseOnColour(colour, hex)}`}
+>
+	<span class:list={[counterRotate && "-rotate-45"]}>{houseInitial(name)}</span>
+</span>

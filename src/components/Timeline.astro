@@ -1,0 +1,33 @@
+---
+// Horizontal timeline on large screens, vertical rail on small ones.
+// Items come from the CMS "timeline" collection, already sorted.
+interface Item {
+	title: string;
+	description: string;
+}
+interface Props {
+	items: Item[];
+}
+
+const { items } = Astro.props;
+const last = items.length - 1;
+const isToday = (i: number, t: string) => i === last && t.trim().toLowerCase() === "today";
+const dotClass = (i: number, t: string) => (i === 0 ? "bg-brick" : isToday(i, t) ? "bg-navy" : "bg-brass");
+---
+
+<ol
+	class="relative ml-2.5 grid before:absolute before:inset-x-0 before:top-17.75 before:hidden before:h-2.5 before:border-y before:border-brass before:content-[''] lg:before:block w-full gap-0 border-l border-brass lg:ml-0 lg:grid-cols-(--cols) lg:gap-8 lg:border-l-0"
+	style={`--cols:repeat(${Math.max(items.length, 1)},minmax(0,1fr))`}
+>
+	{
+		items.map((t, i) => (
+			<li class="relative flex flex-col gap-2 pb-7 pl-6 lg:gap-3.5 lg:pb-0 lg:pl-0">
+				<span class:list={["font-serif text-3xl leading-none font-semibold lg:h-12 lg:text-5xl lg:whitespace-nowrap", isToday(i, t.title) ? "text-brick italic" : "text-navy"]}>
+					{t.title}
+				</span>
+				<span class:list={["absolute top-2 -left-2.25 size-4 rounded-full border-[3px] border-mustard-tint ring-1 ring-brass lg:static lg:mt-1 lg:size-5.5 lg:border-4", dotClass(i, t.title)]}></span>
+				<span class="text-base leading-normal text-soot">{t.description}</span>
+			</li>
+		))
+	}
+</ol>

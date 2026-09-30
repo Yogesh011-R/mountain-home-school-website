@@ -1,0 +1,32 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "paper" | "navy";
+
+interface Props extends HTMLAttributes<"article"> {
+	variant?: Variant;
+	/** Lift slightly on hover (for clickable or featured cards). */
+	lift?: boolean;
+	/** Element to render. */
+	as?: "article" | "div" | "li";
+}
+
+const { variant = "paper", lift = false, as: Tag = "article", class: className, ...rest } = Astro.props;
+
+const variants: Record<Variant, string> = {
+	paper: "border-brass/50 bg-paper",
+	navy: "border-navy bg-navy text-linen",
+};
+---
+
+<Tag
+	class:list={[
+		"relative flex flex-col overflow-hidden rounded-card border",
+		variants[variant],
+		lift && "transition-transform duration-500 hover:-translate-y-0.5",
+		className,
+	]}
+	{...rest}
+>
+	<slot />
+</Tag>

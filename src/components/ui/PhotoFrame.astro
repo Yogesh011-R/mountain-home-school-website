@@ -1,0 +1,41 @@
+---
+// A photo mounted in a thin brass frame with a soft vignette. Corners stay
+// near-square on purpose: it should read as a printed, mounted photograph.
+//
+// The local/remote decision lives in SmartImage; this component only owns the mount.
+import SmartImage from "./SmartImage.astro";
+
+interface Props {
+	src: string;
+	alt: string;
+	/** Tailwind height classes for the frame, e.g. "h-72 md:h-110". */
+	heightClass?: string;
+	/** Archive look: sepia photo on an aged mount. */
+	sepia?: boolean;
+	/** Lift on hover. */
+	lift?: boolean;
+	/** Frame border and padding. Set false for a bare photo inside a Card. */
+	framed?: boolean;
+	eager?: boolean;
+	class?: string;
+}
+
+const { src, alt, heightClass = "h-72", sepia = false, lift = false, framed = true, eager = false, class: className } = Astro.props;
+
+const sizes = "(min-width: 1024px) 50vw, 100vw";
+---
+
+<div
+	class:list={[
+		"relative overflow-hidden after:pointer-events-none after:absolute after:inset-0 after:shadow-vignette after:content-['']",
+		framed &&
+			"rounded-frame border border-brass p-2 shadow-mount",
+		framed && (sepia ? "bg-mount p-3.5" : "bg-paper"),
+		sepia && "sepia-photo",
+		lift && "transition-transform duration-500 hover:-translate-y-0.5",
+		heightClass,
+		className,
+	]}
+>
+	<SmartImage src={src} alt={alt} sizes={sizes} loading={eager ? "eager" : "lazy"} class="size-full object-cover" />
+</div>

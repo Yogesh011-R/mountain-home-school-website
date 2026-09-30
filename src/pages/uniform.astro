@@ -1,0 +1,134 @@
+---
+import Base from "../layouts/Base.astro";
+import CrestWatermark from "../components/ui/CrestWatermark.astro";
+import Card from "../components/ui/Card.astro";
+import Eyebrow from "../components/ui/Eyebrow.astro";
+import LinkArrow from "../components/ui/LinkArrow.astro";
+import PhotoFrame from "../components/ui/PhotoFrame.astro";
+import Tagged from "../components/ui/Tagged.astro";
+import { loadSections } from "../lib/sections";
+
+const sec = await loadSections("uniform", Astro);
+
+// "Extra lines" holds the swatch colour: a hex code, or "check" for the red-and-white gingham.
+const toItem = (i: { title: string; body: string; meta: string }) => ({
+	name: i.title,
+	note: i.body,
+	check: i.meta.trim() === "check",
+	hex: /^#[0-9a-f]{3,8}$/i.test(i.meta.trim()) ? i.meta.trim() : "#FFFFFF",
+});
+const junior = sec("junior").items.map(toItem);
+const senior = sec("senior").items.map(toItem);
+---
+
+<Base title="Uniform" description="The Mountain Home School uniform, piece by piece: junior and senior uniform, games kit, winter wear and where to buy.">
+	<section aria-labelledby="u-title" class="on-navy relative overflow-hidden">
+		<div class="gingham absolute inset-x-0 bottom-0 h-3.5" aria-hidden="true"></div>
+		<img src="/images/contours.svg" alt="" class="pointer-events-none absolute inset-x-0 bottom-3.5 h-55 w-full object-cover opacity-35" />
+		<div class="relative mx-auto flex max-w-site flex-col gap-4.5 px-4 pt-20 pb-16 lg:px-30 lg:pt-24 lg:pb-20">
+			<h1 id="u-title" class="text-5xl leading-none font-medium text-cream md:text-7xl lg:text-display-2xl">
+				{sec("hero").heading} {sec("hero").accent}
+			</h1>
+			<p class="max-w-175 text-lg text-haze lg:text-xl"><Tagged text={sec("hero").intro} onDark /></p>
+		</div>
+	</section>
+
+	<section aria-label="Uniforms" class="mx-auto grid max-w-site gap-10 px-4 py-16 lg:grid-cols-2 lg:items-start lg:px-30 lg:py-24">
+		<!-- JUNIOR -->
+		<Card class="overflow-hidden">
+			<div class="gingham h-3"></div>
+			<div class="flex flex-col gap-7 p-6 pb-10 sm:p-10">
+				<div class="flex items-baseline justify-between gap-4"><h2 class="h3">{sec("junior").heading}</h2><Eyebrow>{sec("junior").eyebrow}</Eyebrow></div>
+				<div class="grid items-start gap-8 sm:grid-cols-[240px_minmax(0,1fr)]">
+					<svg viewBox="0 0 300 440" role="img" aria-label="Illustration: red gingham shirt, grey V-neck sleeveless sweater with red trim, striped tie, grey trousers and black shoes" class="mx-auto h-auto w-full max-w-60 border border-brass/50 bg-parchment">
+						<defs>
+							<pattern id="gg" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#FFFFFF"></rect><rect width="4" height="8" fill="#D98C88"></rect><rect width="8" height="4" fill="#D98C88"></rect><rect width="4" height="4" fill="#B6433D"></rect></pattern>
+							<pattern id="tie" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="8" height="8" fill="#A8342F"></rect><rect width="3" height="8" fill="#8E939B"></rect></pattern>
+						</defs>
+						<path d="M72 44 L34 62 L22 206 L52 210 L72 104 Z" fill="url(#gg)" stroke="#8A4A45" stroke-width="1"></path>
+						<path d="M228 44 L266 62 L278 206 L248 210 L228 104 Z" fill="url(#gg)" stroke="#8A4A45" stroke-width="1"></path>
+						<path d="M72 42 L122 30 L150 112 L178 30 L228 42 L232 104 L236 212 L64 212 L68 104 Z" fill="#8A8F97"></path>
+						<path d="M118 26 L150 44 L130 56 Z M182 26 L150 44 L170 56 Z" fill="url(#gg)" stroke="#8A4A45" stroke-width="1"></path>
+						<path d="M144 44 L156 44 L160 58 L164 118 L150 134 L136 118 L140 58 Z" fill="url(#tie)"></path>
+						<polyline points="120,30 150,112 180,30" fill="none" stroke="#A8342F" stroke-width="6"></polyline>
+						<rect x="64" y="196" width="172" height="16" fill="#7B8088"></rect><line x1="64" y1="200" x2="236" y2="200" stroke="#A8342F" stroke-width="3"></line>
+						<circle cx="198" cy="92" r="13" fill="#A8342F"></circle><circle cx="198" cy="92" r="7" fill="#D9B862"></circle>
+						<path d="M68 214 L232 214 L238 400 L168 400 L150 252 L132 400 L62 400 Z" fill="#A6AABD"></path>
+						<ellipse cx="97" cy="410" rx="36" ry="12" fill="#1B1B1F"></ellipse><ellipse cx="203" cy="410" rx="36" ry="12" fill="#1B1B1F"></ellipse>
+					</svg>
+					<ul class="m-0 flex list-none flex-col p-0">
+						{
+							junior.map((i) => (
+								<li class="grid grid-cols-[36px_minmax(0,1fr)] gap-3.5 border-b border-grey/35 py-3.5">
+									<span class:list={["size-9 border border-ink/25", i.check && "gingham"]} style={i.check ? undefined : `background-color:${i.hex}`}></span>
+									<span>
+										<strong class="text-navy">{i.name}</strong><br />
+										<span class="muted text-sm"><Tagged text={i.note} /></span>
+									</span>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<p class="muted text-sm"><Tagged text={sec("junior").note} /></p>
+			</div>
+		</Card>
+
+		<!-- SENIOR -->
+		<Card class="overflow-hidden">
+			<div class="h-3 bg-navy"></div>
+			<div class="flex flex-col gap-7 p-6 pb-10 sm:p-10">
+				<div class="flex items-baseline justify-between gap-4"><h2 class="h3">{sec("senior").heading}</h2><Eyebrow>{sec("senior").eyebrow}</Eyebrow></div>
+				<div class="grid items-start gap-8 sm:grid-cols-[240px_minmax(0,1fr)]">
+					<div class="relative mx-auto w-full max-w-60">
+						<svg viewBox="0 0 300 440" role="img" aria-label="Illustration: navy blazer with the school crest, white shirt, navy tie, grey trousers and black shoes" class="h-auto w-full border border-brass/50 bg-parchment">
+							<path d="M62 42 L34 70 L26 238 L58 240 L66 120 Z" fill="#18223D"></path>
+							<path d="M238 42 L266 70 L274 238 L242 240 L234 120 Z" fill="#18223D"></path>
+							<path d="M124 28 L150 96 L176 28 Z" fill="#FFFFFF" stroke="#C9CED6"></path>
+							<path d="M145 40 L155 40 L158 54 L162 132 L150 146 L138 132 L142 54 Z" fill="#2B2F5E"></path>
+							<circle cx="150" cy="80" r="2" fill="#A8342F"></circle><circle cx="148" cy="104" r="2" fill="#A8342F"></circle><circle cx="152" cy="126" r="2" fill="#A8342F"></circle>
+							<path d="M62 42 L124 28 L150 160 L176 28 L238 42 L244 250 L56 250 Z" fill="#1E2A4A"></path>
+							<path d="M124 28 L108 96 L150 160 M176 28 L192 96 L150 160" fill="none" stroke="#33426B" stroke-width="2"></path>
+							<circle cx="150" cy="190" r="4" fill="#B08A2E"></circle><circle cx="150" cy="220" r="4" fill="#B08A2E"></circle>
+							<rect x="172" y="104" width="44" height="4" fill="#33426B"></rect>
+							<path d="M62 252 L238 252 L242 400 L168 400 L150 280 L132 400 L58 400 Z" fill="#8E939B"></path>
+							<ellipse cx="95" cy="410" rx="37" ry="12" fill="#1B1B1F"></ellipse><ellipse cx="205" cy="410" rx="37" ry="12" fill="#1B1B1F"></ellipse>
+						</svg>
+						<CrestWatermark width={96} class="absolute size-9 object-contain" style="left:58.7%;top:24.5%" />
+					</div>
+					<ul class="m-0 flex list-none flex-col p-0">
+						{
+							senior.map((i) => (
+								<li class="grid grid-cols-[36px_minmax(0,1fr)] gap-3.5 border-b border-grey/35 py-3.5">
+									<span class="size-9 border border-ink/25" style={`background-color:${i.hex}`}></span>
+									<span>
+										<strong class="text-navy">{i.name}</strong><br />
+										<span class="muted text-sm"><Tagged text={i.note} /></span>
+									</span>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<figure class="m-0 grid items-center gap-5 sm:grid-cols-[200px_minmax(0,1fr)]">
+					<PhotoFrame src="/images/school-council.jpg" alt="Senior students in navy blazers, white shirts, ties and grey skirts or trousers" heightClass="h-56 sm:h-62.5" />
+					<figcaption class="muted text-sm"><Tagged text={sec("senior").note} /></figcaption>
+				</figure>
+			</div>
+		</Card>
+	</section>
+
+	<section aria-labelledby="ux-title" class="bg-mustard-tint">
+		<div class="mx-auto grid max-w-site content-start gap-10 px-4 py-16 md:grid-cols-3 lg:px-30 lg:py-24">
+			{
+				sec("extras").items.map((x, i, all) => (
+					<div class="flex flex-col gap-3">
+						{i === 0 ? <h2 id="ux-title" class="font-serif text-4xl font-semibold text-navy">{x.title}</h2> : <h2 class="font-serif text-4xl font-semibold text-navy">{x.title}</h2>}
+						<p class="text-soot"><Tagged text={x.body} /></p>
+						{i === all.length - 1 && <LinkArrow href="/contact">Ask the school office</LinkArrow>}
+					</div>
+				))
+			}
+		</div>
+	</section>
+</Base>
